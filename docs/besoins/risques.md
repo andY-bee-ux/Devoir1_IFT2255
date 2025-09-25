@@ -8,6 +8,7 @@ title: Analyse des besoins - Risques
 
 TODO: Lister les principaux risques identifiés (techniques, humains, organisationnels).
 
+M
 ### Risque 1 – Absence prolongée d’un membre clé  
 
 - **Probabilité** : Moyenne  
@@ -17,6 +18,91 @@ TODO: Lister les principaux risques identifiés (techniques, humains, organisati
   - Documentation régulière du travail  
   - Favoriser le pair programming
 
+### Risque 2 – Réduction du taux de participation à certains cours
+
+- **Probabilité** : Moyenne  
+- **Impact** : Élevé  
+- **Plan de mitigation** :  
+  - Essayer de balancer les avis ( what if tous les avis sont négatifs?) 
+  - Ne récolter que des avis objectifs ( par exemple ...)
+
+### Risque 3 - Atteinte à la réputation des professeurs 
+
+- **Probabilité** : Faible 
+- **Impact** : Élevé  
+- **Plan de mitigation** :  
+  - Rendre 
+
+### Risque 4 – Augmentation du stress chez les utilisateurs 
+
+Imaginons un étudiant, en fin de parcours avec une GPA de 1,9 ( limite de gpa?) qui n'a plus le droit à l'erreur, sous peine d'exclusion définitive. Lorsque ce dernier accède à l'outil, son taux de cortisol ne pourra que grimper continuellement s'il réalise que les cours qui lui sont ouverts n'ont que des avis négatifs. Ceci est un cas précis, mais l'outil de manière générale pourrait très vite devenir une source de stress chez les utilisateurs qui passeraient alors des heures et des heures à essayer de perfectionner leurs décisions.
+
+- **Probabilité** : Moyenne  
+- **Impact** : Élevé  
+- **Plan de mitigation** :  
+  - Mentionner sur la page d'accueil par exemple, que les avis non officiels sont avant tout subjectifs,
+  et qu'un cours qui a été mal vécu par 10 étudiants, ne le sera pas forcément pour soi.
+
+### Risque 5 – Bug avec l'API ou le robot Discord ( par exemple s'il y a beaucoup de requêtes)
+
+- **Probabilité** : Moyenne  
+- **Impact** : Élevé  
+- **Plan de mitigation** : 
+   - Imposer une limite sur le temps d'écart entre deux requêtes ( comme on le faisait avec les bots dans le discord de z-lib)
+
+
+### Risque 6 - Le bot Discord qui récupère un avis et l'associe à un cours qui a rien à voir
+
+Après ça dépend de comment on code le bot, mais par exemple si dans un avis une personne cite un cours
+en exemple ( pour référence), et si dans ton code tu récupères des avis par mot-clé, on peut vite se retrouver avec des avis pas vraiment liés au cours en question.
+
+Dans la même veine, notre bot pourrait passer à côté de nombreux avis car certaines personnes ne mentionnent pas le sigle du cours dans leurs réponses ( eg: Une personne demande comment les autres ont trouvé un certain cours, et une autre répond bien à la question, sans jamais mentionner ledit cours dans son texte.)
+
+- **Probabilité** : Moyenne (pour l'instant)
+- **Impact** : Moyen
+- **Plan de mitigation** :  
+  - Bien coder le bot :\
+
+
+### Risque 7 – Discord ou Planifium en panne et dans ce cas notre plateforme sera aussi en panne( risque organisationnel)
+
+Notre plateforme est étroitement liée ( à 90%) à Planifium et Discord, donc si jamais il y a un bug au sein de Discord ou de Planifium, ou par exemple une certaine maintenance, notre plateforme sera grandement affectée.
+
+- **Probabilité** : Faible ( par eg sur le site discord status, les pourcentages de systèmes opérationnels sont assez élévés( avoisinnent 100% https://discordstatus.com ))  
+- **Impact** : Élevé  
+- **Plan de mitigation** : 
+   - Imposer une limite sur le temps d'écart entre deux requêtes ( comme on le faisait avec les bots dans le discord de z-lib)
+
+
+### Risque 8 – Fuite d'informations confidentielles
+
+Notre plateforme est étroitement liée ( à 90%) à Planifium et Discord, donc si jamais il y a un bug au sein de Discord ou de Planifium, ou par exemple une certaine maintenance, notre plateforme sera grandement affectée.
+
+- **Probabilité** : Faible ( par eg sur le site discord status, les pourcentages de systèmes opérationnels sont assez élévés( avoisinnent 100% https://discordstatus.com ))  
+- **Impact** : Élevé  
+- **Plan de mitigation** : 
+   - Imposer une limite sur le temps d'écart entre deux requêtes ( comme on le faisait avec les bots dans le discord de z-lib)
+
+### Risque 9 – Pénurie de données pour certains cours
+
+Par exemple, c'est possible qu'il n'y ait aucun avis pour certains cours. Je considère que c'est un risque dans le sens où ça va aboutir à de l'insatisfaction du côté de l'utilisateur.
+
+- **Probabilité** : Faible ( par eg sur le site discord status, les pourcentages de systèmes opérationnels sont assez élévés( avoisinnent 100% https://discordstatus.com ))  
+- **Impact** : Élevé  
+- **Plan de mitigation** : 
+   - Pour chaque cours, se baser sur le profil de l'utilisateur ainsi que sur les statistiques du cours et générer un conseil un peu iatisé ( new word) genre " ce cours pourrait vous intéresser". 
+
+### Risque 10 – L'API pourrait ne plus être disponible
+
+Notre plateforme est étroitement liée ( à 90%) à Planifium et Discord, donc si jamais il y a un bug au sein de Discord ou de Planifium, ou par exemple une certaine maintenance, notre plateforme sera grandement affectée.
+
+- **Probabilité** : Faible ( par eg sur le site discord status, les pourcentages de systèmes opérationnels sont assez élévés( avoisinnent 100% https://discordstatus.com ))  
+- **Impact** : Élevé  
+- **Plan de mitigation** : 
+   - Imposer une limite sur le temps d'écart entre deux requêtes ( comme on le faisait avec les bots dans le discord de z-lib)
 ## Modification du processus opérationnel
 
+
 > Si la mise en place du système modifie des processus internes ou des pratiques actuelles, il est essentiel de les identifier ici.
+
+J'imagine que le taux de consultation des conseillers et TGDEs sera en baisse. Les questions dans des groupes Discord pour avoir des avis sur un cours également.
