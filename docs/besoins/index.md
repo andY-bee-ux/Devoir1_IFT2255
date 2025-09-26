@@ -57,7 +57,7 @@ TODO: Liste des hypothèses de travail et des contraintes (techniques, organisat
 
 - H2: La plateforme est publique. On distinguera donc deux profils principaux : étudiant ( étudiant de l'UdeM et dans ce cas il faudra créer un compte avec l'adresse email de l'université) et visiteur( ces derniers auront accès à la description de cours, mais n'auront pas accès aux informations issues de Planifium ou du bot Discord. Ils ne pourront pas non plus lancer de discussion, poster un avis...)
 
-- Une des contraintes de l'énoncé est que les avis des étudiants et les donéées officielles provenant de Planifium doivent être centralisés dans une *même interface*. Nous considérons ici que "même interface" signifie qu'on peut se déplacer entre les sections "avis" et "moyennes" par exemple, sans ouvrir un nouvel onglet par exemple si la plateforme est une plateforme web. On les séparera en deux sections différentes; ( les informations ne seront pas sur la même page, mais le déplacement entre les deux sections n'ouvre pas un nouvel onglet)
+- H3 :  Une des contraintes de l'énoncé est que les avis des étudiants et les donéées officielles provenant de Planifium doivent être centralisés dans une *même interface*. Nous considérons ici que "même interface" signifie qu'on peut se déplacer entre les sections "avis" et "moyennes" par exemple, sans ouvrir un nouvel onglet par exemple si la plateforme est une plateforme web. On les séparera en deux sections différentes; ( les informations ne seront pas sur la même page, mais le déplacement entre les deux sections n'ouvre pas un nouvel onglet)
 
 
 Contrainte par rapport au bot Discord?( genre le fait qu'on devra simuler des données)
