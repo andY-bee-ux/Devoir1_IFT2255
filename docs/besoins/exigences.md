@@ -10,7 +10,11 @@ En nous basant sur la liste de souhait de notre client, ainsi que sur notre anal
 
 - [ ] EF0 : L'utilisateur peut sélectionner un profil ( étudiant/visiteur)
 
+En se basant sur l'hypothèse selon laquelle la plateforme est publique, le profil étudiant correspondra donc aux étudiants de l'UdeM et le profil visiteur correspond à toute personne
 
+| Déclencheur | Préconditions | Postconditions | Dépendance | But|
+|-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+|L'utilisateur accède à la plateforme via un lien par exemple|L'utilisateur veut accéder à la plateforme| L'interface du système se met à jour dépendamment du profil( accès direct à la plateforme avec restriction si visiteur et page de connexion si étudiant)| Ce CU ne dépend pas vraiment des autres CU| L'utilisateur veut accéder à la plateforme.|
 
 - [ ] EF1 : L’utilisateur peut créer un compte.
 
@@ -65,27 +69,42 @@ En nous basant sur la liste de souhait de notre client, ainsi que sur notre anal
 
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
 |-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+|L'utilisateur clique sur "Description"| L'utilisateur doit être connectée à son compte qu'il a créé ou non( utilisateur visiteur) et doit être sur la page d'un cours| La requête à Planifium a été effectuée avec succès et la description du cours s'affiche| Ce CU dépend du CU "se connecter"| L'utilisateur veut accéder à la description détailler des cours|
 
 - [ ] EF11 : Le système doit être doté d'un outil de comparaison qui permet à l'utilisateur d'évaluer la charge de travail totale d'une combinaison de cours. Pour cela, le système doit calculer la charge de travail de chaque cours ( par exemple en établissant une corrélation entre les moyennes sur plusieurs années et la charge de travail selon les avis non-officiels), et pourra donc faire une moyenne pour avoir la charge de travail totale de la combinaison ( Facile + Moyen + rès Difficile = Moyen par exemple);
 
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
 |-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+|L'utilisateur va dans la section "comparaison"| L'utilisateur est connecté à son compte qu'il a au préalable créé| Des requêtes à Planifium et à Discord via le bot ont été réalisées avec succès|Ce CU dépend des CU "creer compte" et "se connecter"| L'utilisateur veut choisir des cours dont la charge de travail totale est réalisable|
 
 - [ ] EF12 : Le système doit proposer des cours à l'utilisateur basé sur son historique de recherche et son profil; 
 
+
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
 |-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+|L'utilisateur se connecte à son compte |L'utilisateur a setup son profil lors de la création de son compte, s'est connecté et a idéalement effectué déjà une recherche |La requête Planifium  pour récupérer les cours répondant à certains critères a été effectuée avec succès|Ce CU dépend du CU "creer compte", "se connecter", "rechercher cours"|L'utilisateur aura une expérience plus fluide et personnalisée|
 
 - [ ] EF13:  L'utilisateur peut poster des avis( et dans ce cas on aura donc deux types d'acteurs d'entrée dans notre diagramme : l'étudiant qui recherche un cours et l'étudiant qui a déjà fait ledit cours)
 
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
 |-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
-- [ ] EF14 : L'utilisateur peut ajouter des cours à des favori - liker un cours quoi. ( ou bien ajouter au panier pour que ce soit cohérent avec le centre étudiant)
+- [ ] EF14 : L'utilisateur peut ajouter des cours à ses favoris ;
 
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
 |-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+|L'utilisateur clique sur l'icône "coeur"|L'utilisateur est connecté à son compte qu'il a au préalable créé, et a accédé à la page d'un cours|Le cours est ajouté dans les favoris de l'utilisateur|Ce CU dépend du CU "creer compte", "se connecter" et "rechercher cours"|L'utilisateur veut pouvoir retrouver un cours qu'il a trouvé intéressant|
 
+- [ ] EF15 : L'utilisateur peut démarrer une discussion.
 
+    Comme dans un forum, il devrait être possible sur la plateforme de démarrer une discussion au sujet d'un cours ( par exemple poser une question particulière et par chance, des personnes ayant déjà fait le cours passeront par là et répondront). Cette fonctionnalité peut également être intéressante dans le contexte d'un cours pour lequel on a pas pu récolter au moins 5 avis ( et dans ce cas, aucun avis ne s'affiche).
+
+ Déclencheur | Préconditions | Postconditions | Dépendance | But|
+|-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+|L'utilisateur clique sur "demarrer une discussion"|L'utilisateur est connecté à son comte qu'il a au préalable créé| Les données associées à l'ensemble des discussions sont mis à jour dans la base de données| Ce CU depend des CUs "creer compte", "se connecter"|L'utilisateur souhaite avoir des informations supplémentaires au sujet d'un cours|
+
+- [ ] EF16: Le système peut proposer certaines discussions aux utilisateurs basés sur leur historique et leur profil.
+
+On part du principe que chaque discussion a pour nom le nom d'un cours suivi d'un certain identifiant de discussion, et ainsi, de la même façon que le système propose des cours à l'utilisateur, il pourra lui proposer des discussions.
 
 
 ## Exigences non fonctionnelles
