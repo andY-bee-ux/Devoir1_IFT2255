@@ -33,12 +33,7 @@ Le domaine tel que décrit ci-dessus renferme de nombreux acteurs:
 
 - **Les étudiants de l'université de Montréal**
 
-    Cette catégorie concerne aussi bien:
-      - **Les anciens étudiants** : Il s'agit d'étudiants qui ont déjà eu des cours et qui souhaitent en choisir de nouveaux pour la prochaine [session](glossaire.md);
-      
-      - **Les nouveaux étudiants** : Ces derniers désignent les personnes souhaitant s'inscrire pour la première fois à des cours. Ils peuvent provenir de cégeps, de lycées, ou bien d'autres universités.
-      
-      - **Les étudiants expérimentés** : Cette catégorie désignera dans notre contexte, les étudiants ayant déjà eu le cours en question. Ces derniers interviennent en témoignant de leurs expériences, que ce soit virtuellement ( Discord, reddit...) ou physiquement ( bouche-à-oreille).
+    Cette catégorie concerne aussi bien:- **Les anciens étudiants** : Il s'agit d'étudiants qui ont déjà eu des cours et qui souhaitent en choisir de nouveaux pour la prochaine [session](glossaire.md); - **Les nouveaux étudiants** : Ces derniers désignent les personnes souhaitant s'inscrire pour la première fois à des cours. Ils peuvent provenir de cégeps, de lycées, ou bien d'autres universités. - **Les étudiants expérimentés** : Cette catégorie désignera dans notre contexte, les étudiants ayant déjà eu le cours en question. Ces derniers interviennent en témoignant de leurs expériences, que ce soit virtuellement ( Discord, reddit...) ou physiquement ( bouche-à-oreille).
 
 
 - **Les responsables** : Il s'agit ici de TGDEs et de conseillers qui guident les étudiants dans leur prise de décisions. Les conseillers pourraient aussi bien être des conseillers d'orientation que les profs chargés de cours qui peuvent aider l'étudiant à comprendre s'il satisfait aux exigences du cours.

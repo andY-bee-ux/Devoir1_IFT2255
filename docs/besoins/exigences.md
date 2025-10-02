@@ -13,21 +13,21 @@ En nous basant sur la liste de souhait de notre client, ainsi que sur notre anal
 En se basant sur l'hypothèse selon laquelle la plateforme est publique, le profil étudiant correspondra donc aux étudiants de l'UdeM et le profil visiteur correspond à toute personne
 
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
-|-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
-|L'utilisateur accède à la plateforme via un lien par exemple|L'utilisateur veut accéder à la plateforme| L'interface du système se met à jour dépendamment du profil( accès direct à la plateforme avec restriction si visiteur et page de connexion si étudiant)| Ce CU ne dépend pas vraiment des autres CU| L'utilisateur veut accéder à la plateforme.|
+|------------------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
+| L'utilisateur accède à la plateforme via un lien par exemple| L'utilisateur veut accéder à la plateforme| L'interface du système se met à jour dépendamment du profil( accès direct à la plateforme avec restriction si visiteur et page de connexion si étudiant)| Ce CU ne dépend pas vraiment des autres CU| L'utilisateur veut accéder à la plateforme.|
 
 - [ ] EF1 : L’utilisateur peut créer un compte.
 
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
 |-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
-|L'utilisateur clique sur "créer un compte"| L'utilisateur doit être un étudiant| Un nouvel id de compte est ajouté dans notre base de données| Ce cas d'utilisation n'est accessible que si l'utilisateur a sélectionné le profil étudiant| Un étudiant souhaite se créer un compte|
+| L'utilisateur clique sur "créer un compte"| L'utilisateur doit être un étudiant| Un nouvel id de compte est ajouté dans notre base de données| Ce cas d'utilisation n'est accessible que si l'utilisateur a sélectionné le profil étudiant| Un étudiant souhaite se créer un compte|
 
     
 - [ ] EF2  : L'utilisateur peut se connecter;
 
 | Déclencheur | Préconditions | Postconditions | Dépendance | But|
 |-----------------------|----------------------------------------|-------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------|
-|L'utilisateur clique sur "Se connecter"| L'utilisateur a déjà un compte|L'horodatage de dernière connexion de cet utilisateur est mis à jour dans la base de données| Ce CU dépend du CU "creer compte" car c'est un préalable avant de pouvoir se connecter| Accéder à la plateforme|
+| L'utilisateur clique sur "Se connecter"| L'utilisateur a déjà un compte|L'horodatage de dernière connexion de cet utilisateur est mis à jour dans la base de données| Ce CU dépend du CU "creer compte" car c'est un préalable avant de pouvoir se connecter| Accéder à la plateforme|
 
 - [ ] EF3 : L'utilisateur peut personnaliser son profil ;
 
