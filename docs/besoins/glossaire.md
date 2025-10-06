@@ -8,7 +8,7 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 
 | Terme | Définition |
 |-------|------------|
-| UdeM | Université de Montréal, éetablissement d'enseignement supérieur francophone situé au Canada.
+| UdeM | Université de Montréal, établissement d'enseignement supérieur francophone situé au Canada.
 | Centre étudiant | Plateforme web permettant aux étudiants de l'UdeM d'accéder à leurs données d'étude personnelles. | 
 | cheminement type | Définition du terme 2 |
 | programme | Définition du terme 2 |
