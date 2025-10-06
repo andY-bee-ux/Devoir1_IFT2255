@@ -15,7 +15,7 @@ title: Vue d'ensemble
 ## Équipe
 
 - **`M1`:** Deazo Aude-Prunelle Ahui (matricule) #prupru1203
-- **`M2`:** Mouhamed Ahmed Tidjani Diop (matricule) #_tidjani1
+- **`M2`:** Mouhamed Ahmed Tidjani Diop (20290840) #_tidjani1
 - **`M3`:** Andréa Noukoua Djodi (matricule) #andychloe 
 - **`M4`:** Moussa Adama Sogoba (matricule) #moussas
 
@@ -31,7 +31,7 @@ title: Vue d'ensemble
 | Glossaire                     |              | 🔄 En cours | `M1` `M2`           |
 | Exigences Fonct et Non-Fonct  | 24 septembre | ✅ Terminé  | `M1` `M2` `M3` `M4` |
 | Évaluation des risques        | 24 septembre | ✅ Terminé  | `M2` `M3`           |
-| Personas                      |              | ⏳ À venir  |                     |
+| Personas                      |              | ⏳ À venir  | `M2`                    |
 | Cas d'utilisation             | 26 septembre | ✅ Terminé  | `M1` `M2` `M3` `M4` |
 | Diagramme d'activités         | 29 septembre | 🔄 En cours | `M1` `M2` `M3` `M4` |
 | Modèle C4                     |              | ⏳ À venir  |                     |
