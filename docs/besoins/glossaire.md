@@ -26,3 +26,5 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 | session universitaire | Période déterminéee de l'année durant laquelle les cours du programme son offert, comme l'automne l'hiver ou l'été.
 | Cégep | Etablissement denseignement supérieur québécois offrant des programmes préuniversitaires et techniques avant l'université.
 |Linkedin | Réseau social professionnel de créer un profil, développer son réseau et partager rdes expériences ou offres  d'emploi.
+| API Planifium | Interface de données de l'Udem permettant d'accéder aux programmes, cours et horaires.
+| Mkdocs | Générateur de site statistique utilisé pour documenter le projet.
