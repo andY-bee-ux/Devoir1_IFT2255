@@ -47,7 +47,7 @@ Le répertoire est organisé comme suit :
   Cet élément a été importé à l’aide du modèle MkDocs fourni pour ce devoir.
 
 - **requirements** :
-  Ce fichier contient Dépendances Python.
+  Ce fichier contient les dépendances Python.
 
 # Execution du rapport MkDocs
 
