@@ -30,7 +30,6 @@ TODO: Introduction aux cas d’utilisation du système.
 | CU16 | Recommandation de discussions | Système | Le système propose des discussions basées sur le profil et l’historique de l’utilisateur |
 
 
-## Détail
 
 ## Détail
 
