@@ -94,7 +94,7 @@ Exemple :
 - [ ] ENF10 :  L'adresse courriel utilisée lors de l'inscription doit être une adresse courriel de l'UdeM ( *.*(.*)+@umontreal.ca ) car on veut que seuls les étudiants de l'UdeM aient accès aux données de Planifium, ce qui à notre sens, est logique.;
 - [ ] ENF11 : Pour la validation de courriel, le système doit utiliser une email sending API ( SendGrid par exemple);
 - [ ] ENF12: L'utilisateur doit pouvoir accéder au Centre Étudiant;
-- [] ENF13: Le système doit être disponible à 99.99% de temps ( le pourcentage restant pour les maintenances qui impliquent la fermeture du système pour une période et dans ce cas, la période doit être bien indiquée sur le site ( "Le site sera indisponible entre 17h et 17h30)) ceci afin de favoriser la fiabilité;
+- [ ] ENF13: Le système doit être disponible à 99.99% de temps ( le pourcentage restant pour les maintenances qui impliquent la fermeture du système pour une période et dans ce cas, la période doit être bien indiquée sur le site ( "Le site sera indisponible entre 17h et 17h30)) ceci afin de favoriser la fiabilité;
 
 
 ## Priorisation
