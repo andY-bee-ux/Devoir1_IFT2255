@@ -101,6 +101,24 @@ Exemple :
 
 TODO: Identifier les exigences critiques.
 
+Les exigences critiques représentent les fonctionnalités essentielles au fonctionnement de la plateforme.
+Ce sont celles qu’on doit absolument inclure dans la première version pour que le système soit utilisable et cohérent.
+
+
+| Exigence | Description |
+|-----------|------------------------|
+| **EF0** | L'utilisateur peut sélectionner un profil (étudiant ou visiteur). |
+| **EF1** | L'utilisateur peut créer un compte. |
+| **EF2** | L'utilisateur peut se connecter. |
+| **EF6** | Le système envoie un courriel de confirmation. |
+| **EF7** | L'utilisateur peut rechercher un cours par sigle, nom ou mot-clé. |
+| **EF8** | L'utilisateur peut consulter la liste des avis d'un cours. |
+| **EF10** | L'utilisateur peut voir la description détaillée d’un cours. |
+| **ENF1** | Les résultats de recherche doivent s’afficher en moins d’une seconde. |
+| **ENF3** | La plateforme doit être compatible avec les principaux systèmes d’exploitation. |
+| **ENF6** | Les données sensibles doivent être anonymisées pour protéger la vie privée. |
+
+
 ## Types d'utilisateurs
 
 > Identifier les différents profils qui interagiront avec le système.
