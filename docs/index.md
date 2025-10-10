@@ -17,7 +17,7 @@ title: Vue d'ensemble
 - **`M1`:** Deazo Aude-Prunelle Ahui (matricule) #prupru1203
 - **`M2`:** Mouhamed Ahmed Tidjani Diop (20290840) #_tidjani1
 - **`M3`:** Andréa Noukoua Djodi (matricule) #andychloe 
-- **`M4`:** Moussa Adama Sogoba (matricule) #moussas
+- **`M4`:** Moussa Adama Sogoba (20201487) #moussas
 
 ## Description du projet
 
