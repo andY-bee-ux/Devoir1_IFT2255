@@ -103,7 +103,9 @@ Scénarios alternatifs:
 
 ## Diagrammes
 
-TODO: Insérer ici des diagrammes d'activités
+![Diagramme pour les cas d'utilisation "Connexion, Creation de compte"](../images/Diagramme_Creation_Compte.png) *Diagramme pour les cas d'utilisation "Connexion, Creation de compte"*.
+
+![Diagramme pour le cas d'utilisation "Comparer Cours"](../images/Diagramme_Comparer_Cours.jpg) *Diagramme pour les cas d'utilisation "Comparer Cours"*
 
 ### Description des flux complexes
 
