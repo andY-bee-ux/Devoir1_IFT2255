@@ -33,7 +33,11 @@ TODO: Introduction aux cas d’utilisation du système.
 
 ## Détail
 
+<<<<<<< HEAD
+### CU01 - Sélectionner profil
+=======
 ### CU01 - Sélection du profil
+>>>>>>> 74212818d40af88e827963aa993306b819786451
 
 **Acteurs** : Utilisateur (principal)  
 **Préconditions** :  
