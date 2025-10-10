@@ -8,21 +8,28 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 
 | Terme | Définition |
 |-------|------------|
-| UdeM |
+| UdeM | Université de Montréal, établissement d'enseignement supérieur francophone situé au Canada.
 | Centre étudiant | Plateforme web permettant aux étudiants de l'UdeM d'accéder à leurs données d'étude personnelles. | 
-| cheminement type | Définition du terme 2 |
-| programme | Définition du terme 2 |
-| discord | plateforme de messagerie instantanée | 
-| ratemyprofessor | Définition du terme 2 |
-| reddit | Définition du terme 2 |
-| étudiant international | Définition du terme 2 |
-| retour aux études | Définition du terme 2 |
-| crédits | Définition du terme 2 |
-| gpa | Définition du terme 2 |
-| plan de cours | Définition du terme 2 |
-| tableaux de bord? | Définition du terme 2 |
-| TGDE | Définition du terme 2 |
-| conseillers | Définition du terme 2 |
-| session universitaire |
-| cégep |
-|Linkedin |
+| cheminement type | Parcours d'étude standard proposé par un programme universitaire, indiquant les cours a suivre chaque session.
+| Programme d'étude | Ensemble structuré de cours et d'activités pédagogiques menant a l'obtention d'un diplome.
+| discord | plateforme de messagerie instantanée. 
+| ratemyprofessor | PLateforme en ligne sur laquelle les étudiants évaluent et partagent leur avis sur leurs professeurs et cours universitaires.
+| reddit | Plateforme communautaire en ligne sur laquelle les utilisateurs publient, commentent et votent sur les discussions organisées par des thèmes appelés subreddit.
+| étudiant international | étudiant inscrit dans un établissement supérieur d'un pays autre que son pays d'origine.
+| retour aux études | reprise d'un parcours scolaire ou universitaire après une période d'interruption.
+| crédits | unité de mesure représentant la charge de travail associée a un cours dans un programme d'études.
+| gpa | Moyenne pondéréee des notes d'un étudiant, calculée sur une échelle (de 0 a 4.3) pour évaluer son rendement académique.
+| plan de cours | Document qui présente les objectifs, le contenu, les méthodes d'évaluation et l'organisation d'un cours universitaire.
+| tableaux de bord? | Interface qui regroupe et affcihe des indicateurs clés pour suivre la progression ou la perfomance d'un étudiant ou d'un projet.
+| TGDE | Technicien en gesttion des dossiers étudiants, personne qui acccompagne les étudiants dans la planification et le suivi administratif de leur parcours universitaire.
+| conseillers | Professionel universitaire qui guide les étudiants dans le choix de leurs cours, la planification de leur parcours et leur réussite académique.
+| session universitaire | Période déterminéee de l'année durant laquelle les cours du programme son offert, comme l'automne l'hiver ou l'été.
+| Cégep | Etablissement denseignement supérieur québécois offrant des programmes préuniversitaires et techniques avant l'université.
+|Linkedin | Réseau social professionnel de créer un profil, développer son réseau et partager rdes expériences ou offres  d'emploi.
+| API Planifium | Interface de données de l'Udem permettant d'accéder aux programmes, cours et horaires.
+| Mkdocs | Générateur de site statistique utilisé pour documenter le projet.
+| Front-end | Partie visible d'une application, avec laquelle l'utilisateur interagit directement (interface utilisateur). 
+| Back-end | Partie serveur d'une application, responsable de la logique métier, du traitement des données et des interactions avec la base de données. 
+| Base de données | Système de stockage structuré des informations nécessaires au fonctionnement de l'application.
+| Utilisateur | Personne interagissant avec la plateforme (étudiant, visiteur ou administrateur).
+

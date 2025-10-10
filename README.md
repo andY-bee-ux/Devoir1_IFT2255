@@ -1,6 +1,55 @@
-# Template de site web pour IFT2255
+# Projet pour le cours IFT2255
 
-Ce projet est un template pour le rapport à produire pour le cours IFT2255 (Génie logiciel), construit avec [MkDocs](https://www.mkdocs.org/) et le thème [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+# Description du projet 
+
+Ce projet vise à concevoir une **plateforme web intelligente**, accessible via une **API REST**, 
+destinée aux étudiants de l’Université de Montréal et plus particulièrement du **DIRO** 
+afin de les aider à faire des **choix de cours éclairés**.
+
+La plateforme combinera :
+
+- des **données officielles** (résultats académiques, informations provenant de l’API Planifium),
+- et des **données collectées auprès des étudiants** (forums, Discord, etc).
+
+L’objectif est d’offrir aux étudiants une **vue centralisée**, **fiable et personnalisée** des cours, leur permettant de :
+
+- comparer plusieurs cours selon la charge de travail, la difficulté perçue et la compatibilité avec leur profil ;
+- consulter des **tableaux de bord interactifs** par cours ;
+- **personnaliser l’affichage** selon leur profil académique et leurs préférences ;
+- **interroger les données** de manière dynamique et intuitive.
+
+# Structure du projet
+
+Le répertoire est organisé comme suit :
+
+- **.history** :
+  Ce dossier fait partie des éléments importés à partir du modèle MkDocs fourni pour ce devoir.
+
+- **.idea** :
+  Ce dossier fait partie des éléments importés à partir du modèle MkDocs fourni pour ce devoir.
+
+- **diagrammes** :
+  Ce dossier contiendra les differents diagrammes que nous aurons à realiser dans le cadre de notre projet. Le dossier contiendra a la fois les images
+  et les fichiers **.vpp** (format des fichiers Visual Paradigm).
+
+- **docs** : 
+  Ce dossier contient tous les fichiers Markdown du site pour notre rapport construit avec [MkDocs](https://www.mkdocs.org/) et le thème [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+
+  - **Pour executer le rapport, veuillez suivre les instructions plus bas.**
+
+- **.gitignore** :
+  Spécifie quelles fichiers sont ignorer par git.
+
+- **mkdocs.yml** :
+  Ce fichier contient la configuration de MkDocs.
+
+- **Pipfile** :
+  Cet élément a été importé à l’aide du modèle MkDocs fourni pour ce devoir.
+
+- **requirements** :
+  Ce fichier contient les dépendances Python.
+
+# Execution du rapport MkDocs
 
 ## Prérequis
 
@@ -14,23 +63,17 @@ Assurez-vous d’avoir les outils suivants installés :
 
 ## Pour commencer
 
-### Option 1: Le répertoire n'est pas encore créé
-
-1. Cliquez sur le bouton `Use this template` sur GitHub.
-2. Choisissez l'option `Create a new repository`.
-3. À la fin des étapes, vous devriez avoir un nouveau répertoire avec le contenu du template.
-
-### Option 2: Le répertoire existe déjà
+### Le répertoire existe déjà
 
 1. Clonez ce dépôt (optionnel) pour obtenir le template localement 
 ```bash
-git clone git@github.com:udem-diro/template-rapport-ift2255.git
+git clone git@github.com:andY-bee-ux/Devoir1_IFT2255.git
 ```
 2. Copiez les fichiers du template (en local) dans votre répertoire de projet.
 
 > Note : Cette option est utile si vous souhaitez récupérer le contenu du template sans créer un nouveau dépôt (répertoire).
 
-## Installation
+### Installation
 
 > Vous avez maintenant le contenu du template sur votre poste. Il ne reste qu’à installer les dépendances pour commencer à l’utiliser.
 
@@ -44,7 +87,7 @@ pipenv shell
 pip install -r requirements.txt
 ```
 
-## Utilisation
+### Utilisation
 
 > Avant toute utilisation, assurez-vous que l’environnement virtuel est activé (`pipenv shell`).
 
@@ -80,24 +123,17 @@ mkdocs gh-deploy
 
 > Cette commande pousse automatiquement le contenu du site sur la branche `gh-pages`. Si la branche n'existe pas, elle est crée automatiquement.
 
-## Structure du projet
-
-- `docs/` : Contient tous les fichiers Markdown du site
-- `mkdocs.yml` : Configuration de MkDocs
-- `requirements.txt` : Dépendances Python
-- `site/` : Site généré (créé lors de la construction) -- *optionnel*
-
-## Personnalisation
+### Personnalisation
 
 1. Modifiez `mkdocs.yml` pour changer la configuration du site
 2. Ajoutez/modifiez les fichiers Markdown (`.md`) dans `docs/`
 3. Personnalisez le thème en modifiant les paramètres dans `mkdocs.yml`
 
-## Licence
+### Licence
 
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-## Ressources utiles
+### Ressources utiles
 
 - Documentation officielle MkDocs
 - Thème Material for MkDocs
