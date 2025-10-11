@@ -14,9 +14,9 @@ title: Vue d'ensemble
 
 ## Équipe
 
-- **`M1`:** Deazo Aude-Prunelle Ahui (matricule) #prupru1203
+- **`M1`:** Deazo Aude-Prunelle Ahui (20268927) #prupru1203
 - **`M2`:** Mouhamed Ahmed Tidjani Diop (20290840) #_tidjani1
-- **`M3`:** Andréa Noukoua Djodi (matricule) #andychloe 
+- **`M3`:** Andréa Noukoua Djodi (20279717) #andychloe 
 - **`M4`:** Moussa Adama Sogoba (20201487) #moussas
 
 ## Description du projet
