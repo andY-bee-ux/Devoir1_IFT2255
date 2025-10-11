@@ -33,8 +33,8 @@ title: Vue d'ensemble
 | Évaluation des risques        | 24 septembre | ✅ Terminé  | `M2` `M3`           |
 | Personas                      |              | ❌ Pas nécessaire  |                     |
 | Cas d'utilisation             | 26 septembre | ✅ Terminé  | `M1` `M2` `M3` `M4` |
-| Diagramme d'activités         | 29 septembre | 🔄 En cours | `M1` `M2` `M3` `M4` |
-| Modèle C4                     |              | ⏳ À venir  |                     |
+| Diagramme d'activités         | 29 septembre | ✅ Terminé  | `M1` `M2` `M3` `M4` |
+| Modèle C4                     | 01 octobre             | ✅ Terminé  |                     |
 | Prototype fonctionnel (bonus) | 08 octobre   | ✅ Terminé  |  `M3`                   |
 | Rapport                       |              | 🔄 En cours |                     |
 
