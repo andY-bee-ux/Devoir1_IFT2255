@@ -34,3 +34,8 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 |Linkedin | Réseau social professionnel de créer un profil, développer son réseau et partager rdes expériences ou offres  d'emploi.
 | API Planifium | Interface de données de l'Udem permettant d'accéder aux programmes, cours et horaires.
 | Mkdocs | Générateur de site statistique utilisé pour documenter le projet.
+| Front-end | Partie visible d'une application, avec laquelle l'utilisateur interagit directement (interface utilisateur). 
+| Back-end | Partie serveur d'une application, responsable de la logique métier, du traitement des données et des interactions avec la base de données. 
+| Base de données | Système de stockage structuré des informations nécessaires au fonctionnement de l'application.
+| Utilisateur | Personne interagissant avec la plateforme (étudiant, visiteur ou administrateur).
+

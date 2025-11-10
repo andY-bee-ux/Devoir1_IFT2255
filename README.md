@@ -29,8 +29,7 @@ Le répertoire est organisé comme suit :
   Ce dossier fait partie des éléments importés à partir du modèle MkDocs fourni pour ce devoir.
 
 - **diagrammes** :
-  Ce dossier contiendra les differents diagrammes que nous aurons à realiser dans le cadre de notre projet. Le dossier contiendra a la fois les images
-  et les fichiers **.vpp** (format des fichiers Visual Paradigm).
+  Ce dossier contiendra les differents diagrammes que nous aurons à realiser dans le cadre de notre projet. Le dossier contiendra les images de nos differents diagrammes.
 
 - **docs** : 
   Ce dossier contient tous les fichiers Markdown du site pour notre rapport construit avec [MkDocs](https://www.mkdocs.org/) et le thème [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
