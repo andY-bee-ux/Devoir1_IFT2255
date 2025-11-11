@@ -12,7 +12,7 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 | Centre étudiant | Plateforme web permettant aux étudiants de l'UdeM d'accéder à leurs données d'étude personnelles. | 
 | cheminement type | Parcours d'étude standard proposé par un programme universitaire, indiquant les cours a suivre chaque session.
 | Programme d'étude | Ensemble structuré de cours et d'activités pédagogiques menant a l'obtention d'un diplome.
-| discord | plateforme de messagerie instantanée. 
+| Bot Discord | Programme automatisé intégré à Discord qui permet de collecter les avis des étudiants sur les cours (difficulté, charge de travail, commentaires) et de les transmettre au système sous format structuré (ex. : JSON). 
 | Planifium | Interface de programmation donnant accès au catalogue officiel des programmes, cours, crédits, préalables et horaires de l’Université de Montréal.
 | Autres types d'etudiant | Catégorie regroupant les anciens étudiants ayant déjà suivi un cours et pouvant partager leur expérience ou donner un avis sur celui-ci, sans être inscrits actuellement au programme.
 |  Personnalisation | Fonctionnalité permettant à l’étudiant de définir ses préférences (théorie/pratique, centres d’intérêt) afin d’obtenir des recommandations et résultats adaptés à son profil.
