@@ -13,14 +13,14 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 | cheminement type | Parcours d'étude standard proposé par un programme universitaire, indiquant les cours a suivre chaque session.
 | Programme d'étude | Ensemble structuré de cours et d'activités pédagogiques menant a l'obtention d'un diplome.
 | discord | plateforme de messagerie instantanée. 
-| Planifium | 
-| Autres types d'etudiant |
-|  Personnalisation |
-| Avis étudiants |
-| Résultats academique |
-| Comparaison de cours |
-| Interface |
-| Eligible |
+| Planifium | Interface de programmation donnant accès au catalogue officiel des programmes, cours, crédits, préalables et horaires de l’Université de Montréal.
+| Autres types d'etudiant | Catégorie regroupant les anciens étudiants ayant déjà suivi un cours et pouvant partager leur expérience ou donner un avis sur celui-ci, sans être inscrits actuellement au programme.
+|  Personnalisation | Fonctionnalité permettant à l’étudiant de définir ses préférences (théorie/pratique, centres d’intérêt) afin d’obtenir des recommandations et résultats adaptés à son profil.
+| Avis étudiants | Commentaires et évaluations recueillis auprès des étudiants (via Discord) décrivant leur expérience d’un cours — difficulté, charge de travail, satisfaction, etc.
+| Résultats academique | Données agrégées indiquant la moyenne, le nombre d’inscrits et d’échecs d’un cours à une session donnée.
+| Comparaison de cours | Outil permettant de comparer plusieurs cours selon leur charge de travail, difficulté et résultats pour aider l’étudiant à planifier sa session.
+| Interface | Partie visible et interactive du système permettant à l’utilisateur (étudiant) d’accéder aux informations et fonctionnalités — par exemple, la page web où il peut rechercher, comparer ou consulter les cours.
+| Eligible | Se dit d’un étudiant qui remplit les conditions nécessaires (prérequis, co-requis, cycle ou statut) pour s’inscrire à un cours donné.
 | étudiant international | étudiant inscrit dans un établissement supérieur d'un pays autre que son pays d'origine.
 | retour aux études | reprise d'un parcours scolaire ou universitaire après une période d'interruption.
 | crédits | unité de mesure représentant la charge de travail associée a un cours dans un programme d'études.
@@ -32,10 +32,5 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 | session universitaire | Période déterminéee de l'année durant laquelle les cours du programme son offert, comme l'automne l'hiver ou l'été.
 | Cégep | Etablissement denseignement supérieur québécois offrant des programmes préuniversitaires et techniques avant l'université.
 |Linkedin | Réseau social professionnel de créer un profil, développer son réseau et partager rdes expériences ou offres  d'emploi.
-| API Planifium | Interface de données de l'Udem permettant d'accéder aux programmes, cours et horaires.
-| Mkdocs | Générateur de site statistique utilisé pour documenter le projet.
-| Front-end | Partie visible d'une application, avec laquelle l'utilisateur interagit directement (interface utilisateur). 
-| Back-end | Partie serveur d'une application, responsable de la logique métier, du traitement des données et des interactions avec la base de données. 
-| Base de données | Système de stockage structuré des informations nécessaires au fonctionnement de l'application.
 | Utilisateur | Personne interagissant avec la plateforme (étudiant, visiteur ou administrateur).
 
