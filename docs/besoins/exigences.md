@@ -42,17 +42,15 @@ Les exigences non-fonctionnelles liées à notre système sont les suivantes:
 -  [ ] ENF2 : Les avis associés à un cours ne peuvent être affichés que si leur nombre excède 4. 
 - [ ] ENF3 : La plateforme doit être compatible avec les systèmes d'exploitation majeurs ( Windows, Mac, Linux) afin de satisfaire la portabilité;
 - [ ] ENF4 : La plateforme doit utiliser l'API Planifium; ( c'est une contrainte d'implémentation)
-- [ ] ENF5 :  La plateforme doit communiquer avec un robot Discord qui se charge de la collecte de données sur un serveur Discord;
+- [ ] ENF5 :  La plateforme doit communiquer avec un bot Discord qui se charge de la collecte de données sur un serveur Discord;
 - [ ] ENF6 : Les données sensibles ( noms des personnes qui ont posté les avis, noms associés aux anciens étudiants ou toute autre information personnelle ) inclus dans des avis doivent être supprimées de sorte à ce que rien ne puisse être associé à qui que ce soit, ceci afin de protéger les données personnelles.
 
 - [ ] ENF7 : Toutes les données doivent être centralisées au sein de la plateforme, c'est-à-dire qu'il ne faut pas de lien vers un serveur Discord par exemple dans la page des avis;
 
-- [ ] ENF9 :  L'interface doit être ergonomique et accessible, car cela attire plus de personnes et rend l'expérience agréable.
+- [ ] ENF8 :  L'interface doit être ergonomique et simple à utiliser, les principaux principes de UI/UX design doivent être respectés afin d'offir une bonne expérience aux utilisateurs de la plateforme.
 
-- [ ] ENF10 :  L'adresse courriel utilisée lors de l'inscription doit être une adresse courriel de l'UdeM ( *.*(.*)+@umontreal.ca ) car on veut que seuls les étudiants de l'UdeM aient accès aux données de Planifium, ce qui à notre sens, est logique.;
-- [ ] ENF11 : Pour la validation de courriel, le système doit utiliser une email sending API ( SendGrid par exemple);
-- [ ] ENF12: L'utilisateur doit pouvoir accéder au Centre Étudiant;
-- [ ] ENF13: Le système doit être disponible à 99.99% de temps ( le pourcentage restant pour les maintenances qui impliquent la fermeture du système pour une période et dans ce cas, la période doit être bien indiquée sur le site ( "Le site sera indisponible entre 17h et 17h30)) ceci afin de favoriser la fiabilité;
+- [ ] ENF9 :  L'adresse courriel utilisée lors de l'inscription doit être une adresse courriel de l'UdeM ( *.*(.*)+@umontreal.ca ) car on veut que seuls les étudiants de l'UdeM aient accès aux données de Planifium, ce qui à notre sens, est logique.;
+- [ ] ENF10: Le système doit être disponible à 99.99% de temps ( le pourcentage restant pour les maintenances qui impliquent la fermeture du système pour une période et dans ce cas, la période doit être bien indiquée sur le site ( "Le site sera indisponible entre 17h et 17h30)) ceci afin de favoriser la fiabilité;
 
 
 ## Priorisation
