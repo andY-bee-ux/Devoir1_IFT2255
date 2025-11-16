@@ -41,14 +41,14 @@ Décrire les flux d’interaction entre les acteurs et le système.
 
      Scénarios alternatifs
      2.a L'entrée est invalide
-     2.a.1. Le système indique qu'aucun cours ne correspond à la recherche et fait une proposition de résultats ( vous cherchez peut-être...)
+     2.a.1. Le système indique qu'aucun cours ne correspond à la recherche et fait une proposition de résultats
      2.a.2. L'utilisateur sélectionne un cours de la liste
      2.a.3. Le scénario reprend à l'étape 3
 
      2.a.2.a. Aucun des cours de la liste ne correspond au cours recherché par l'utilisateur
-     2.a.2.a.1. Le scénario reprend à l'étape 1 ( et si le user ne veut plus faire de recherche?)
+     2.a.2.a.1. Le scénario reprend à l'étape 1.
 
-     5.a Il y a pas assez d'avis associés au cours ( moins de 5) -> est-ce qu'on considère ça dans le scénario alternatif? parce que c'est lié aux acteurs externes.
+     5.a Il y a pas assez d'avis associés au cours ( moins de 5) 
      5.a.1. Le système indique qu'il y a aucun avis pour le cours et propose à l'utilisateur de poster un avis
      5.a.2. L'utilisateur poste un avis
 
@@ -66,14 +66,14 @@ Décrire les flux d’interaction entre les acteurs et le système.
 
 Scénarios alternatifs:
 2.a L'entrée est invalide
-2.a.1. Le système indique qu'aucun cours ne correspond à la recherche et fait une proposition de résultats ( vous cherchez peut-être...)
+2.a.1. Le système indique qu'aucun cours ne correspond à la recherche et fait une proposition de résultats.
      2.a.2. L'utilisateur sélectionne un cours de la liste
      2.a.3. Le scénario reprend à l'étape 3
 
  2.a.2.a. Aucun des cours de la liste ne correspond au cours recherché par l'utilisateur
      2.a.2.a.1. Le scénario reprend à l'étape 1 ( et si le user ne veut plus faire de recherche?)
 
-5.a Le système n'a pas pu récupérer les informations associées au cours ( problème de communication avec Planifium)
+5.a Le système n'a pas pu récupérer les informations associées au cours.
 5.a.1. Le système indique que les informations ne sont pas disponibles et propose à l'utilisateur de consulter les avis plutôt
 5.a.2. Appel du cas "consulter les avis"
 
@@ -85,7 +85,7 @@ Scénarios alternatifs:
 1. L'utilisateur entre dans la section "Comparaison de cours"
 2. L'utilisateur recherche les cours qu'il veut comparer
 3. Le système vérifie la validité de la recherche
-4. Le système calcule la charge de travail totale de la combinaison des cours et l'affiche
+4. Le système affiche les informations relatives à l'ensemble des cours sous forme de tableau.
 
 Scénarios alternatifs:
 
@@ -97,15 +97,9 @@ Scénarios alternatifs:
 4.a Les informations nécessaires pour le calcul ne sont pas disponibles ( est-ce vraiment un scénario alternatif?)
 
 
-
-    
-
-
 ## Diagrammes
-
-![Diagramme pour les cas d'utilisation "Connexion, Creation de compte"](../images/Diagramme_Creation_Compte.png) *Diagramme pour les cas d'utilisation "Connexion, Creation de compte"*.
 
 ![Diagramme pour le cas d'utilisation "Comparer Cours"](../images/Diagramme_Comparer_Cours.jpg) *Diagramme pour les cas d'utilisation "Comparer Cours"*
 
-### Description des flux complexes
+![Diagramme pour le cas d'utilisation "Consulter Avis et Cours"](../images/diagramme2_voirAvis_voirCours.jpg) *Diagramme pour les cas d'utilisation "Voir Avis, consulter cours"*
 
