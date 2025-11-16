@@ -12,58 +12,21 @@ TODO: Introduction aux cas d’utilisation du système.
 
 | ID | Nom | Acteurs principaux | Description |
 |----|-----|---------------------|-------------|
-| CU01 | Sélectionner le profil | Utilisateur | L'utilisateur sélectionne un profil (étudiant ou visiteur) |
-| CU02 | Créer un compte | Étudiant | L'utilisateur (étudiant) crée un compte sur la plateforme |
-| CU03 | Se connecter à son compte | Utilisateur | L'utilisateur se connecte à son compte existant |
-| CU04 | Personnaliser son profil | Utilisateur | L'utilisateur personnalise son profil lors de la création de compte |
-| CU05 | Modifier profil | Utilisateur | L'utilisateur modifie les informations de son profil |
-| CU06 | Rechercher un cours | Utilisateur | L'utilisateur recherche un cours par sigle, nom ou mot-clé |
-| CU07 | Consulter les avis | Utilisateur | L'utilisateur consulte la liste des avis d’un cours |
-| CU08 | Filtrer la recherche | Utilisateur | L'utilisateur filtre les résultats selon ses préférences |
-| CU09 | Consulter la description d’un cours | Utilisateur | L'utilisateur consulte les détails d’un cours |
-| CU10 | Comparer des cours | Utilisateur | Le système permet de comparer la charge de travail de plusieurs cours |
-| CU11 | Lancer une discussion | Étudiant | L'utilisateur peut poster un avis/ lancer une discussion concernant un cours ( pour avoir des conseils ou des avis) |
-| CU12 | Ajouter aux favoris | Utilisateur | L'utilisateur ajoute un cours à ses favoris |
+| CU01 | Personnaliser son profil | Utilisateur | L'utilisateur personnalise son profil lors de la création de compte |
+| CU02 | Modifier profil | Utilisateur | L'utilisateur modifie les informations de son profil |
+| CU03 | Rechercher un cours | Utilisateur | L'utilisateur recherche un cours par sigle, nom ou mot-clé |
+| CU04 | Voir les avis | Utilisateur | L'utilisateur consulte la liste des avis d’un cours |
+| CU05 | Filtrer la recherche | Utilisateur | L'utilisateur filtre les résultats selon ses préférences |
+| CU06 | Voir les informations officielles | Utilisateur | L'utilisateur consulte les détails d’un cours |
+| CU07 | Comparer combinaison de cours | Utilisateur | Le système permet d'évaluer la charge de travail d'une combinaison de cours |
+| CU08 | Comparer ensembles de cours | Utilisateur | Le système permet de comparer la charge de travail de plusieurs ensembles de cours |
+
 
 
 
 ## Détail
 
-### CU01 - Sélectionner profil
-
-**Acteurs** : Utilisateur (principal)  
-**Préconditions** :  Aucune
-**PostConditions** : Aucune 
-**Déclencheur** : L'utilisateur accède à la plateforme via un lien par exemple  
-**Dépendances** : Ce CU ne dépend pas vraiment des autres CU  
-**But** : L'utilisateur veut accéder à la plateforme.
-
-En se basant sur l'hypothèse selon laquelle la plateforme est publique, le profil étudiant correspondra donc aux étudiants de l'UdeM et le profil visiteur correspond à toute personne.
-
----
-
-### CU02 - Créer compte
-**Acteurs** : Étudiant (principal)  
-**Préconditions** : L'utilisateur doit être un étudiant  
-**PostConditions** : Les informations d'authentification de l'utilisateur sont ajoutées dans notre base de données  
-**Déclencheur** : L'utilisateur clique sur "créer un compte"  
-**Dépendances** : Ce cas d'utilisation n'est accessible que si l'utilisateur a sélectionné le profil étudiant  
-**But** : Un étudiant souhaite se créer un compte
-
----
-
-### CU03 - Se connecter à son compte
-
-**Acteurs** : Utilisateur (principal)  
-**Préconditions** : L'utilisateur a déjà un compte  
-**PostConditions** : L'horodatage de dernière connexion de cet utilisateur est mis à jour dans la base de données  
-**Déclencheur** : L'utilisateur clique sur "Se connecter"  
-**Dépendances** : Ce CU dépend du CU "créer compte" car c'est un préalable avant de pouvoir se connecter  
-**But** : Accéder à la plateforme
-
----
-
-### CU04 - Personnaliser profil
+### CU01 - Personnaliser profil
 
 **Acteurs** : Étudiant (principal)  
 **Préconditions** : L'utilisateur a amorcé le processus de création de compte  
@@ -74,7 +37,7 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 
 ---
 
-### CU05 - Modifier profil
+### CU02 - Modifier profil
 
 **Acteurs** : Étudiant (principal)  
 **Préconditions** : L'utilisateur doit déjà avoir un compte et être connecté sur ce dernier  
@@ -87,7 +50,7 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 
 ---
 
-### CU06 - Rechercher cours
+### CU03 - Rechercher cours
 
 **Acteurs** : Utilisateur (principal)  
 **Préconditions** : L'utilisateur doit être connecté sur son compte qu'il a au préalable créé  
@@ -98,7 +61,7 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 
 ---
 
-### CU07 - Consultation des avis
+### CU04 - Voir avis
 
 **Acteurs** : Utilisateur (principal)  
 **Préconditions** : L'utilisateur doit être connecté sur son compte qu'il a au préalable créé, et doit avoir recherché (ou sélectionné) un cours  
@@ -109,7 +72,7 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 
 ---
 
-### CU08 - Filtrage de recherche
+### CU05 - Filtrer la recherche
 
 **Acteurs** : Utilisateur (principal)  
 **Préconditions** : L'utilisateur doit être connecté sur son compte qu'il a au préalable créé, et doit avoir ou non effectué une recherche  
@@ -120,7 +83,7 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 
 ---
 
-### CU09 - Consultation de la description d’un cours
+### CU06 - Voir informations officielles
 
 **Acteurs** : Utilisateur (principal)  
 **Préconditions** : L'utilisateur doit être connecté à son compte qu'il a créé ou non (utilisateur visiteur) et doit être sur la page d'un cours  
@@ -131,7 +94,7 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 
 ---
 
-### CU10 - Comparaison de cours
+### CU07 - Comparer combinaison de cours
 
 **Acteurs** : Utilisateur (principal)  
 **Préconditions** : L'utilisateur est connecté à son compte qu'il a au préalable créé  
@@ -141,19 +104,18 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 **But** : L'utilisateur veut choisir des cours dont la charge de travail totale est réalisable
 
 ---
+### CU07 - Comparer ensembles de cours
 
-### CU11 - Recommandation de cours
+**Acteurs** : Utilisateur (principal)  
+**Préconditions** : L'utilisateur est connecté à son compte qu'il a au préalable créé  
+**PostConditions** : Des requêtes à Planifium et à Discord via le bot ont été réalisées avec succès  
+**Déclencheur** : L'utilisateur va dans la section "comparaison"  
+**Dépendances** : Ce CU dépend des CU "créer compte" et "se connecter"  
+**But** : L'utilisateur veut choisir des cours dont la charge de travail totale est la meilleure
 
-**Acteurs** : Système (principal)  
-**Préconditions** : L'utilisateur a setup son profil lors de la création de son compte, s'est connecté et a idéalement effectué déjà une recherche  
-**PostConditions** : La requête Planifium pour récupérer les cours répondant à certains critères a été effectuée avec succès  
-**Déclencheur** : L'utilisateur se connecte à son compte  
-**Dépendances** : Ce CU dépend du CU "créer compte", "se connecter", "rechercher cours"  
-**But** : L'utilisateur aura une expérience plus fluide et personnalisée
 
----
 
-### CU12 - Publication d’un avis
+### CU08 - Soumettre un avis
 
 **Acteurs** : Étudiant (principal)  
 **Préconditions** : L'utilisateur a déjà suivi le cours concerné  
@@ -162,39 +124,6 @@ En se basant sur l'hypothèse selon laquelle la plateforme est publique, le prof
 **Dépendances** : Ce CU dépend du CU "se connecter" et "rechercher cours"  
 **But** : L'utilisateur souhaite partager son expérience sur un cours
 
----
+## Diagramme
 
-### CU13 - Ajout aux favoris
-
-**Acteurs** : Utilisateur (principal)  
-**Préconditions** : L'utilisateur est connecté à son compte qu'il a au préalable créé, et a accédé à la page d'un cours  
-**PostConditions** : Le cours est ajouté dans les favoris de l'utilisateur  
-**Déclencheur** : L'utilisateur clique sur l'icône "coeur"  
-**Dépendances** : Ce CU dépend du CU "créer compte", "se connecter" et "rechercher cours"  
-**But** : L'utilisateur veut pouvoir retrouver un cours qu'il a trouvé intéressant
-
----
-
-### CU14 - Démarrage d’une discussion
-
-**Acteurs** : Utilisateur (principal)  
-**Préconditions** : L'utilisateur est connecté à son compte qu'il a au préalable créé  
-**PostConditions** : Les données associées à l'ensemble des discussions sont mises à jour dans la base de données  
-**Déclencheur** : L'utilisateur clique sur "démarrer une discussion"  
-**Dépendances** : Ce CU dépend des CUs "créer compte", "se connecter"  
-**But** : L'utilisateur souhaite avoir des informations supplémentaires au sujet d'un cours  
-
-Comme dans un forum, il devrait être possible sur la plateforme de démarrer une discussion au sujet d'un cours (par exemple poser une question particulière et par chance, des personnes ayant déjà fait le cours passeront par là et répondront). Cette fonctionnalité peut également être intéressante dans le contexte d'un cours pour lequel on n’a pas pu récolter au moins 5 avis (et dans ce cas, aucun avis ne s'affiche).
-
----
-
-### CU15 - Recommandation de discussions
-
-**Acteurs** : Système (principal)  
-**Préconditions** : L'utilisateur a un profil et un historique de navigation/discussion  
-**PostConditions** : Des discussions pertinentes sont proposées à l'utilisateur  
-**Déclencheur** : L'utilisateur accède à la section des discussions  
-**Dépendances** : Ce CU dépend du CU "démarrer une discussion" et "se connecter"  
-**But** : Le système propose des discussions adaptées aux intérêts et à l’historique de l’utilisateur  
-
-On part du principe que chaque discussion a pour nom le nom d'un cours suivi d'un certain identifiant de discussion, et ainsi, de la même façon que le système propose des cours à l'utilisateur, il pourra lui proposer des discussions.
+![Diagramme des cas d'utilisation](../images/Use_Case_Diagram.jpg) *Diagramme de cas d'utilisation*
