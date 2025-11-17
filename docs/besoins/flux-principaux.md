@@ -90,7 +90,7 @@ Scénarios alternatifs:
 Scénarios alternatifs:
 
 2.a L'entrée est invalide
-2.a.1. Le système indique qu'aucun cours ne correspond à la recherche et fait une proposition de résultats ( vous cherchez peut-être...)
+2.a.1. Le système indique qu'aucun cours ne correspond à la recherche effectuée et fait une proposition de résultats ( vous cherchez peut-être...)
      2.a.2. L'utilisateur sélectionne un cours de la liste
      2.a.3. Le scénario reprend à l'étape 3
 
