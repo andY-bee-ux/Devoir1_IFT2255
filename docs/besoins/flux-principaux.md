@@ -97,6 +97,26 @@ Scénarios alternatifs:
 4.a Les informations nécessaires pour le calcul ne sont pas disponibles ( est-ce vraiment un scénario alternatif?)
 
 
+- Flux 5 : Rechercher un cours
+
+1. L’utilisateur sélectionne l’option “Rechercher Cours” dans le menu.
+2. L’utilisateur choisi le critère selon lequel il désire effectuer une recherche (Selon le nom ou le sigle).
+3. Le système fait appel a l'API Planifium pour obtenir le cours.
+4. Le système retourne le / les cours correspondant aux critères de recherches de l’utilisateur.
+5. Le système affiche le résultat.
+
+Scénarios alternatifs:
+
+3.a. L'API Planifium a une panne.
+3.a.1. Le systeme recherche le cours dans la base de donnee.
+    3.a.2. Le scenario reprends a l'etape 5.
+
+3.b. Le cours n'existe pas dans Planifium.
+    3.b.1 Le systeme retourne un message signalant que le cours n'existe pas. 
+
+3.a.1. Le cours n'existe pas dans la base de donnee.
+    3.a.1.1. Le systeme retourne un message signalant que le cours n'existe pas.
+
 ## Diagrammes
 
 ![Diagramme pour le cas d'utilisation "Comparer Cours"](../images/Diagramme_Comparer_Cours.jpg) *Diagramme pour les cas d'utilisation "Comparer Cours"*
