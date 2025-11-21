@@ -10,4 +10,7 @@ title: Conception - Diagrammes UML
 
 ## Diagrammes de séquence
 
-- Exécution pas à pas d’un scénario type
+- Comparer cours : [TODO: Ajouter une petite description ?]
+
+![Diagramme de séquence lié au CU "Comparer cours"](../images/comparer_cours_seq.jpg)
+
