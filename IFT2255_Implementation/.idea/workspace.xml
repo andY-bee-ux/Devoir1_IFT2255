@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajouts des classes de tests avec une methode vide.">
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajouts de codes dans les classes du fichier /model.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Avis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Avis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Profil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Profil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Resultats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Resultats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/AvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/AvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/UserController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +39,9 @@
     &quot;accountId&quot;: &quot;e3aaab5c-8036-4b45-814f-388d627e4904&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -95,11 +97,20 @@
       <option name="project" value="LOCAL" />
       <updated>1763863793473</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Ajouts de codes dans les classes du fichier /model.">
+      <option name="closed" value="true" />
+      <created>1763904906763</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763904906763</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajouts des classes de tests avec une methode vide." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajouts des classes de tests avec une methode vide." />
+    <MESSAGE value="Ajouts de codes dans les classes du fichier /model." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajouts de codes dans les classes du fichier /model." />
   </component>
 </project>
