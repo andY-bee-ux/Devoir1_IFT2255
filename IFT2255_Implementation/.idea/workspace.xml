@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajout de codes dans les classes du fichiers /controller.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/AvisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/AvisService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/IService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/IService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/UserService.java" afterDir="false" />
-    </list>
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -113,13 +107,22 @@
       <option name="project" value="LOCAL" />
       <updated>1763906585088</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Ajout de codes dans les classes du fichiers /service.">
+      <option name="closed" value="true" />
+      <created>1763908614115</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763908614115</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajouts des classes de tests avec une methode vide." />
     <MESSAGE value="Ajouts de codes dans les classes du fichier /model." />
     <MESSAGE value="Ajout de codes dans les classes du fichiers /controller." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de codes dans les classes du fichiers /controller." />
+    <MESSAGE value="Ajout de codes dans les classes du fichiers /service." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout de codes dans les classes du fichiers /service." />
   </component>
 </project>

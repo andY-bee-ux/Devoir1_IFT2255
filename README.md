@@ -51,6 +51,13 @@ Le répertoire est organisé comme suit :
         - **`Main.java`** : Point d’entrée du serveur (initialise Javalin et enregistre les routes).
       - **resources** :
         Ce dossier contient les fichiers JSON utilisés pour stocker de manière permanente nos données.
+    - **test** :
+      - **java** :
+        - **Model** : Contient les tests pour les classes du fichier **main/java/org/example/model**.
+        - **Controller** : Contient les tests pour les classes du fichier **main/java/org/example/controller**.
+        - **Service** : Contient les tests pour les classes du fichier **main/java/org/example/service**.
+        - **Util** : Contient les tests pour les classes du fichier **main/java/org/example/util**.
+        - **Config** : Contient les tests pour les classes du fichier **main/java/org/example/config**.
     - **pom.xml** : 
       Fichier contenant les dependances Maven.
 
