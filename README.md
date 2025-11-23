@@ -40,12 +40,19 @@ Le répertoire est organisé comme suit :
   Ce dossier contient notre implementation pour le projet via une API-REST avec Javalin. La structure est inspiré du template fournis par l'enseignant et les auxiliaires.
   La structure est organisée suivant une architecture MVC (Model–View–Controller). On aura la structure suivante :
 
-  - **Model (`model/`)** : Représentation des entités du domaine (ex. User, Course).
-  - **Controller (`controller/`)** : Gestion des requêtes HTTP et appels au service.
-  - **Service (`service/`)** : Logique métier central.
-  - **Util (`util/`)** : Fonctions utilitaires réutilisables (validation, réponses, etc.).
-  - **Config (`config/`)** : Configuration du serveur et définition des routes.
-  - **`Main.java`** : Point d’entrée du serveur (initialise Javalin et enregistre les routes).
+  - **src** :
+    - **main** :
+      - **java** :
+        - **Model (`model/`)** : Représentation des entités du domaine (ex. User, Course).
+        - **Controller (`controller/`)** : Gestion des requêtes HTTP et appels au service.
+        - **Service (`service/`)** : Logique métier central.
+        - **Util (`util/`)** : Fonctions utilitaires réutilisables (validation, réponses, etc.).
+        - **Config (`config/`)** : Configuration du serveur et définition des routes.
+        - **`Main.java`** : Point d’entrée du serveur (initialise Javalin et enregistre les routes).
+      - **resources** :
+        Ce dossier contient les fichiers JSON utilisés pour stocker de manière permanente nos données.
+    - **pom.xml** : 
+      Fichier contenant les dependances Maven.
 
 - **.gitignore** :
   Spécifie quelles fichiers sont ignorer par git.
