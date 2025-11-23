@@ -34,7 +34,18 @@ Le répertoire est organisé comme suit :
 - **docs** : 
   Ce dossier contient tous les fichiers Markdown du site pour notre rapport construit avec [MkDocs](https://www.mkdocs.org/) et le thème [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
 
-  - **Pour executer le rapport, veuillez suivre les instructions plus bas.**
+  - **Pour executer le rapport, veuillez suivre les instructions plus bas dans la section **EXECUTION DU RAPPORT MKDOCS** .**
+
+- **IFT2255_Implementation** :
+  Ce dossier contient notre implementation pour le projet via une API-REST avec Javalin. La structure est inspiré du template fournis par l'enseignant et les auxiliaires.
+  La structure est organisée suivant une architecture MVC (Model–View–Controller). On aura la structure suivante :
+
+  - **Model (`model/`)** : Représentation des entités du domaine (ex. User, Course).
+  - **Controller (`controller/`)** : Gestion des requêtes HTTP et appels au service.
+  - **Service (`service/`)** : Logique métier central.
+  - **Util (`util/`)** : Fonctions utilitaires réutilisables (validation, réponses, etc.).
+  - **Config (`config/`)** : Configuration du serveur et définition des routes.
+  - **`Main.java`** : Point d’entrée du serveur (initialise Javalin et enregistre les routes).
 
 - **.gitignore** :
   Spécifie quelles fichiers sont ignorer par git.
