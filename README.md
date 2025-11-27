@@ -87,21 +87,18 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 Compare plusieurs cours selon des critères.
 
 **Format pour le body de la requête:**
-```json
 {
   "cours": ["idCours1", "idCours2",...],
   "criteres": ["critere1", "critere2",...]
 }
 
 **Exemple de Body JSON attendu :**
-```json
 {
   "cours": ["IFT1025", "IFT2255"],
   "criteres": ["name", "credits"]
 }
 
 **Exemple de réponse JSON**: ( status 200)
-```json
 [
   ["IFT1025","Introduction à l'informatique","3"],
   ["IFT2255","Structures de données","3"]
