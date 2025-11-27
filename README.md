@@ -83,7 +83,7 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 # Documentation pour l'API REST développée avec Javalin
 ## Routes
-### POST /cours/comparer
+#### POST /cours/comparer
 Compare plusieurs cours selon des critères.
 
 **Format pour le body de la requête:**
