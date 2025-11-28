@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajouts du package dans les classes de test">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HttpClientApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HttpClientApiResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HttpStatus.java" afterDir="false" />
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Classes pour les dossiers /route et /util">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Avis.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Cours.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Resultats.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/config/Routes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/config/Routes.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="main" />
+        <entry key="$PROJECT_DIR$/.." value="Tests" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -38,10 +38,31 @@
     &quot;assignee&quot;: &quot;musa223-ui&quot;
   }
 }</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
+    {
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOPzk8ec62GKqm&quot;,
+        &quot;number&quot;: 22
+      },
+      &quot;lastSeen&quot;: 1764370173263
+    }
+  ]
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/andY-bee-ux/Devoir1_IFT2255.git&quot;,
     &quot;accountId&quot;: &quot;e3aaab5c-8036-4b45-814f-388d627e4904&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;andY-bee-ux&quot;,
+    &quot;repository&quot;: &quot;Devoir1_IFT2255&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -73,7 +94,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Tests",
+    "git-widget-placeholder": "Creations-Fichiers",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation",
     "node.js.detected.package.eslint": "true",
@@ -230,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764367909781</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Classes pour les dossiers /route et /util">
+      <option name="closed" value="true" />
+      <created>1764369901375</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764369901375</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,7 +282,8 @@
     <MESSAGE value="Ajout de codes dans les classes du fichiers /controller." />
     <MESSAGE value="Ajout de codes dans les classes du fichiers /service." />
     <MESSAGE value="Ajouts du package dans les classes de test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajouts du package dans les classes de test" />
+    <MESSAGE value="Classes pour les dossiers /route et /util" />
+    <option name="LAST_COMMIT_MESSAGE" value="Classes pour les dossiers /route et /util" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
