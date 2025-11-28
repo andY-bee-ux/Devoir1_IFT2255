@@ -1,7 +1,6 @@
 package org.example.service;
 import org.example.model.Cours;
 import org.example.repository.CoursRepository;
-import org.example.service.CoursService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,12 +19,13 @@ class CoursServiceTest {
     @BeforeEach
     void setUp() {
         mockRepo = mock(CoursRepository.class);
-        service = new CoursService(mockRepo);
+        service = CoursService.getInstance();
+        service.setCoursRepository(mockRepo);
     }
     @Test
     void testValidateIdCoursValide() throws Exception {
         // Arrange
-        when(mockRepo.getAllCourses()).thenReturn(Optional.of(Arrays.asList("IFT1025", "IFT2255")));
+        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(Arrays.asList("IFT1025", "IFT2255")));
 
         // On utilise reflection car validateIdCours est private
         Method method = CoursService.class.getDeclaredMethod("validateIdCours", String.class);
@@ -39,7 +39,7 @@ class CoursServiceTest {
     @Test
     void testComparerCoursCoursInexistant() throws Exception {
         // Arrange
-        when(mockRepo.getAllCourses()).thenReturn(Optional.of(Arrays.asList("IFT1025")));
+        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(Arrays.asList("IFT1025")));
         when(mockRepo.getCourseById("IFT1025")).thenReturn(Optional.empty());
 
         // Act
@@ -85,7 +85,7 @@ class CoursServiceTest {
         );
 
         // Mock du repository
-        when(mockRepo.getAllCourses()).thenReturn(Optional.of(Arrays.asList("IFT1025", "IFT2255")));
+        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(Arrays.asList("IFT1025", "IFT2255")));
         when(mockRepo.getCourseById("IFT1025")).thenReturn(Optional.of(cours1));
         when(mockRepo.getCourseById("IFT2255")).thenReturn(Optional.of(cours2));
 

@@ -11,10 +11,20 @@ import java.util.*;
 
 /**
  * Cette classe permet de communiquer avec l'API utilisée contenant les informations relatives aux cours.
+ * CoursRepository sera un Singleton car on ne veut avoir qu'une instance ( ça ne sert à rien d'en avoir plusieurs).
  */
 public class CoursRepository {
+    private static CoursRepository instance;
+    private CoursRepository() {}
+    public static CoursRepository getInstance() {
+        if (instance == null) {
+            instance = new CoursRepository();
+        }
+        return instance;
+    }
+
     public Optional<Cours> getCourseById(String id) throws Exception{
-        if(!this.getAllCourses().get().contains(id)){
+        if(!this.getAllCoursesId().get().contains(id)){
             return Optional.empty();
         }
         HttpRequest getCourseByIdRequest = HttpRequest.newBuilder()
@@ -28,7 +38,7 @@ HttpResponse<String> getResponse = httpClient.send(getCourseByIdRequest, HttpRes
         Cours cours = objectMapper.readValue(getResponse.body(), Cours.class);
         return Optional.ofNullable(cours);
     }
-    public Optional<List<String>> getAllCourses() throws Exception {
+    public Optional<List<String>> getAllCoursesId() throws Exception {
         HttpRequest getAllCourses = HttpRequest.newBuilder()
                 .uri(new URI("https://planifium-api.onrender.com/api/v1/programs"))
                 .build();
@@ -38,32 +48,37 @@ HttpResponse<String> getResponse = httpClient.send(getCourseByIdRequest, HttpRes
         JsonNode root = mapper.readTree(getResponse.body()); // json = contenu de l’API
 
         JsonNode courses = null;
+        List<String> coursesId = new ArrayList<>();
 
         for (JsonNode program : root) {
-            if ("117510".equals(program.path("id").asText())) {
+           // if ("117510".equals(program.path("id").asText())) {
                 courses = program.path("courses");
-                break;
-            }
+                coursesId.add(courses.asText());
+               // break;
+          //  }
         }
         List<String> liste = new ArrayList<>();
-        if (courses != null && courses.isArray()) {
-            for (JsonNode c : courses) {
-                liste.add(c.asText());
+        for(String courseId : coursesId){
+            if (courseId != null ) {
+                for (JsonNode c : courses) {
+                    liste.add(c.asText());
+                }
+            } else {
+                System.out.println("Aucun cours trouvé");
             }
-        } else {
-            System.out.println("Aucun programme avec id 117510 !");
         }
+
         // ce bloc de code permet de supprimer les doublons car le test sur les doublons ne passait pas
         Set<String> set = new HashSet<>();
-        for (JsonNode c : courses) {
-            set.add(c.asText());
-        }
+        set.addAll(liste);
         List<String> listeSansDoublons = new ArrayList<>(set);
 
 
         return Optional.ofNullable(listeSansDoublons);
     }
-
+public Optional<List<String>> getAllCoursesName() throws Exception {
+return null;
+}
 
 }
 

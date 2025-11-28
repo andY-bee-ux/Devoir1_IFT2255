@@ -7,32 +7,54 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
+/**
+ * Cette classe permet de gérer la logique métier associée à la manipulation des cours.
+ * La classe CoursService est un Singleton, car c'est pas nécessaire d'avoir plusieurs instances
+ */
 public class CoursService {
-    CoursRepository CoursRepository;
-    public CoursService(CoursRepository CoursRepository) {
-        this.CoursRepository = CoursRepository;
+    // Le Course repository est un singleton, donc on récupère juste l'instance associée.
+    private CoursRepository coursRepository = CoursRepository.getInstance();
+
+    /**
+     Ce bloc de code permet de définir la classe CoursService comme un Singleton pour
+     garantir que cette dernière n'ait qu'unen instance.
+     **/
+    private static CoursService instance;
+    private CoursService() {}
+    public static CoursService getInstance() {
+        if (instance == null) {
+            instance = new CoursService();
+        }
+        return instance;
     }
 
-    private Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
- // method from https://www.baeldung.com/java-check-string-number
-    public boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
-        }
-        return pattern.matcher(strNum).matches();
+    /**
+     * Cette méthode permet de récupérer le CoursRepository associé à l'instance CoursService
+     * @return l'instance CoursRepository
+     */
+    public CoursRepository getCoursRepository() {
+        return coursRepository;
     }
-    // Cette méthode permet de vérifier si le id du cours est valide.
+
+    /**
+     * Cette méthode gère la logique derrière la validation de l'id d'un cours ( permet de vérifier
+     * si l'id donné correspond à un cours existant.)
+     * @param id id du Cours à vérifier
+     * @return un booléen indiquant si l'id est valide ou non
+     */
     private boolean validateIdCours(String id) {
         try {
-            Optional<List<String>> listeCours = this.CoursRepository.getAllCourses();
+            // le getAllCourses retourne la liste de tous les cours de l'UdeM.
+            Optional<List<String>> listeCours = this.coursRepository.getAllCoursesId();
 
-            // Si l'Optional contient une liste → on vérifie si id est dedans
+            // Si l'Optional contient une liste , on vérifie si id est dedans
             return listeCours
                     .map(list -> list.contains(id))
-                    .orElse(false);  // si vide → false
-        } catch (Exception e) {
+                    .orElse(false);  // si c'est vide alors on retourne false
+        }
+        // Ce bloc permet de catch l'exception potentiellement lancée par getAllCourses().
+        catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
@@ -52,14 +74,14 @@ public class CoursService {
         List<Cours> coursTrouves = new ArrayList<>();
 
         for (String nomCours : cours) {
-
+// est-ce qu'on fait la validation ici ou bien on le fait de manière interactive pendant que l'utilisateur saisit son input?
             if (!validateIdCours(nomCours)) {
                 System.out.println("Cours non valide : " + nomCours);
                 return null;
             }
 
             try {
-                Optional<Cours> opt = this.CoursRepository.getCourseById(nomCours);
+                Optional<Cours> opt = this.coursRepository.getCourseById(nomCours);
                 if (opt.isEmpty()) {
                     System.out.println("Cours introuvable : " + nomCours);
                     return null;

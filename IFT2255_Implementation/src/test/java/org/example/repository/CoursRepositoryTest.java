@@ -9,14 +9,14 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CoursRepositoryTest {
-    CoursRepository coursRepository = new CoursRepository();
+    CoursRepository coursRepository = CoursRepository.getInstance();
 
     @Test
     @DisplayName("getAllCourses() devrait retourner une liste non vide")
-    void testGetAllCoursesListeNonVide() throws Exception {
+    void testGetAllCoursesIdListeNonVide() throws Exception {
 
         // ACT
-        Optional<List<String>> optListe = coursRepository.getAllCourses();
+        Optional<List<String>> optListe = coursRepository.getAllCoursesId();
 
         // ASSERT : l'Optional doit être présent
         assertTrue(optListe.isPresent(), "La liste ne devrait pas être vide");
@@ -29,8 +29,8 @@ public class CoursRepositoryTest {
     }
     @Test
     @DisplayName("La liste de cours devrait contenir le cours ift2255")
-    void testGetAllCoursesListeCoursIft2255() throws Exception {
-        Optional<List<String>> optListe = coursRepository.getAllCourses();
+    void testGetAllCoursesIdListeCoursIft2255() throws Exception {
+        Optional<List<String>> optListe = coursRepository.getAllCoursesId();
         // je sais pas si c'est nécessaire de le remettre ici
         assertTrue(optListe.isPresent(), "La liste ne devrait pas être vide");
         List<String> liste = optListe.get();
@@ -77,8 +77,8 @@ public class CoursRepositoryTest {
     }
     @Test
     @DisplayName("La liste de cours ne doit pas contenir de doublons")
-    void testGetAllCoursesPasDeDoublons() throws Exception {
-        Optional<List<String>> optListe = coursRepository.getAllCourses();
+    void testGetAllCoursesIdPasDeDoublons() throws Exception {
+        Optional<List<String>> optListe = coursRepository.getAllCoursesId();
         assertTrue(optListe.isPresent());
         List<String> liste = optListe.get();
 
