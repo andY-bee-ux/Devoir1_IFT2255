@@ -17,7 +17,6 @@ public class CoursRepository {
     private static CoursRepository instance;
 
     private final ObjectMapper mapper = new ObjectMapper();
-
     private List<Cours> localCourses = null;
 
     private CoursRepository() {}
@@ -29,24 +28,21 @@ public class CoursRepository {
         return instance;
     }
 
-    
-public void loadLocalJson() {
-    try {
-        var url = getClass().getClassLoader().getResource("courses.json");
+    public void loadLocalJson() {
+        try {
+            var url = getClass().getClassLoader().getResource("courses.json");
 
-        if (url == null) {
-            throw new RuntimeException("courses.json introuvable dans src/main/data/");
+            if (url == null) {
+                throw new RuntimeException("courses.json introuvable dans src/main/resources/");
+            }
+
+            File file = new File(url.getFile());
+            localCourses = mapper.readValue(file, new TypeReference<List<Cours>>() {});
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors du chargement du JSON local : " + e.getMessage(), e);
         }
-
-        File file = new File(url.getFile());
-        localCourses = mapper.readValue(file, new TypeReference<List<Cours>>() {});
-        
-    } catch (Exception e) {
-        throw new RuntimeException("Erreur lors du chargement du JSON local : " + e.getMessage(), e);
     }
-}
 
-   
     public List<Cours> getAllCoursesLocal() {
         if (localCourses == null) {
             loadLocalJson();
@@ -54,7 +50,6 @@ public void loadLocalJson() {
         return localCourses;
     }
 
-   
     public Optional<Cours> getCourseByIdLocal(String id) {
         if (localCourses == null) {
             loadLocalJson();
@@ -64,8 +59,6 @@ public void loadLocalJson() {
                 .findFirst();
     }
 
-
-   
     public Optional<Cours> getCourseById(String id) throws Exception {
 
         if (!this.getAllCoursesId().orElse(List.of()).contains(id)) {
@@ -83,7 +76,6 @@ public void loadLocalJson() {
         );
 
         Cours cours = mapper.readValue(response.body(), Cours.class);
-
         return Optional.ofNullable(cours);
     }
 

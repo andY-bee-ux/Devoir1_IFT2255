@@ -1,11 +1,10 @@
 package org.example.controller;
 
+import io.javalin.http.Context;
 import org.example.model.Cours;
 import org.example.service.CoursService;
 
 import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
 
 public class CoursController {
 
@@ -13,71 +12,26 @@ public class CoursController {
 
     public CoursController() {}
 
-    public void handleSearch(String query) {
+    public void handleSearchREST(Context ctx) {
+        String query = ctx.queryParam("query");
 
-        System.out.println("Recherche de cours avec '" + query + "'...");
-
-        List<Cours> results = service.search(query);
-
-        if (results.isEmpty()) {
-            System.out.println("Aucun cours trouvé.");
-            System.out.println("---------------------------------------------");
+        if (query == null || query.isBlank()) {
+            ctx.status(400).json("Le paramètre 'query' est obligatoire.");
             return;
         }
 
-        for (Cours c : results) {
+        try {
+            List<Cours> results = service.search(query);
 
-            String prereq =
-                c.getPrerequisite_courses() == null ? "Aucun" : Arrays.toString(c.getPrerequisite_courses());
-
-            String coreq =
-                c.getConcomitant_courses() == null ? "Aucun" : Arrays.toString(c.getConcomitant_courses());
-
-            String equivalences =
-                c.getEquivalent_courses() == null ? "Aucune" : Arrays.toString(c.getEquivalent_courses());
-
-            String contraintes =
-                (c.getRequirement_text() == null || c.getRequirement_text().isBlank())
-                ? "Aucune information"
-                : c.getRequirement_text();
-
-
-                String dispo;
-            if (c.getAvailable_terms() == null) {
-                dispo = "Non spécifié";
-            } else {
-                List<String> terms = new ArrayList<>();
-
-                if (Boolean.TRUE.equals(c.getAvailable_terms().get("autumn"))) terms.add("Automne");
-                if (Boolean.TRUE.equals(c.getAvailable_terms().get("winter"))) terms.add("Hiver");
-                if (Boolean.TRUE.equals(c.getAvailable_terms().get("summer"))) terms.add("Été");
-
-                dispo = terms.isEmpty() ? "Aucune" : String.join(", ", terms);
+            if (results.isEmpty()) {
+                ctx.status(404).json("Aucun cours trouvé pour : " + query);
+                return;
             }
 
-            String periodes;
-            if (c.getAvailable_periods() == null) {
-                periodes = "Non spécifié";
-            } else {
-                List<String> periods = new ArrayList<>();
+            ctx.status(200).json(results);
 
-                if (Boolean.TRUE.equals(c.getAvailable_periods().get("daytime"))) periods.add("Jour");
-                if (Boolean.TRUE.equals(c.getAvailable_periods().get("evening"))) periods.add("Soir");
-
-                periodes = periods.isEmpty() ? "Aucune" : String.join(", ", periods);
-            }
-
-            // ----- Affichage -----
-            System.out.println("\n=== " + c.getId() + " — " + c.getName() + " ===");
-            System.out.println("Description : " + c.getDescription());
-            System.out.println("Crédits : " + c.getCredits());
-            System.out.println("Sessions offertes : " + dispo);
-            System.out.println("Prérequis : " + prereq);
-            System.out.println("Co-requis : " + coreq);
-            System.out.println("Équivalences : " + equivalences);
-            System.out.println("Contraintes/exigences : " + contraintes);
-            System.out.println("Périodes : " + periodes);
-            System.out.println("---------------------------------------------");
+        } catch (RuntimeException e) {
+            ctx.status(404).json("Aucun cours trouvé pour : " + query);
         }
     }
 }
