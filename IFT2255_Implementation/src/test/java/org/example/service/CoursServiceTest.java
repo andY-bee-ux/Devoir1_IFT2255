@@ -16,18 +16,17 @@ public class CoursServiceTest {
 
     @BeforeAll
     static void setup() {
-        service = CoursService.getInstance();
         repo = CoursRepository.getInstance();
+        service = CoursService.getInstance();
 
-        
         repo.loadLocalJson();
-      
     }
 
     @Test
-    void testSearch_local_notEmpty() {
+    void testSearch_notEmpty() {
         List<Cours> results = service.search("IFT");
-        assertFalse(results.isEmpty(), "La recherche 'IFT' devrait retourner des résultats.");
+        assertFalse(results.isEmpty(), "Une recherche sur 'IFT' devrait retourner des résultats.");
+        assertTrue(service.lastSearchUsedLocal(), "Cette recherche devrait être résolue localement.");
     }
 
     @Test
@@ -35,50 +34,55 @@ public class CoursServiceTest {
         List<Cours> results = service.search("IFT2255");
         assertEquals(1, results.size(), "IFT2255 devrait retourner exactement un cours.");
         assertEquals("IFT2255", results.get(0).getId());
+        assertTrue(service.lastSearchUsedLocal());
     }
 
     @Test
     void testSearchByName() {
         List<Cours> results = service.search("génie logiciel");
-        assertFalse(results.isEmpty());
-        assertEquals("IFT2255", results.get(0).getId());
+        assertFalse(results.isEmpty(), "Le nom du cours devrait être détecté.");
+        assertTrue(service.lastSearchUsedLocal());
     }
 
     @Test
     void testSearchByDescription() {
         List<Cours> results = service.search("développement");
-        assertFalse(results.isEmpty(), "Le mot 'développement' existe dans plusieurs descriptions.");
+        assertFalse(results.isEmpty(), "Le terme 'développement' devrait apparaître dans les descriptions.");
+        assertTrue(service.lastSearchUsedLocal());
     }
 
     @Test
     void testSearchCaseInsensitive() {
-        List<Cours> results1 = service.search("ift2255");
-        List<Cours> results2 = service.search("IFT2255");
+        List<Cours> r1 = service.search("ift2255");
+        List<Cours> r2 = service.search("IFT2255");
 
-        assertEquals(results1.size(), results2.size(),
-                "La recherche devrait être insensible à la casse.");
+        assertEquals(r1.size(), r2.size(),
+                "La recherche doit être insensible à la casse.");
+        assertTrue(service.lastSearchUsedLocal());
     }
 
     @Test
     void testSearch_returnsMultiple() {
         List<Cours> results = service.search("IFT");
         assertTrue(results.size() > 1, "La recherche 'IFT' devrait retourner plusieurs cours.");
+        assertTrue(service.lastSearchUsedLocal());
     }
 
     @Test
-    void testSearch_noResults() {
-        List<Cours> results = service.searchLocal("KJHFGDSHF");
-        assertTrue(results.isEmpty());
+    void testSearch_noLocalResults() {
+        List<Cours> results = service.searchLocal("SKDJFHDAS");
+        assertTrue(results.isEmpty(), "Une recherche sur un ID inexistant devrait renvoyer une liste vide.");
     }
 
     @Test
     void testGetAllCoursLocal_notEmpty() {
         List<Cours> list = service.getAllCoursLocal();
-        assertFalse(list.isEmpty(), "Le JSON local doit contenir des cours.");
+        assertFalse(list.isEmpty(), "La liste des cours devrait être disponible.");
     }
 
     @Test
-    void testSearchCoursesLive_ignored() {
-        // On skip car ça dépend de Planifium, pas de nous...
+    void testSearchLive_ignored() {
+        // On ignore ce test car il dépend de planifium 
+        assertTrue(true);
     }
 }

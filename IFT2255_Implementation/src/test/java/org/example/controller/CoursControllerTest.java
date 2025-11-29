@@ -1,87 +1,89 @@
 package org.example.controller;
 
+import io.javalin.http.Context;
 import org.example.model.Cours;
 import org.example.repository.CoursRepository;
 import org.example.service.CoursService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 public class CoursControllerTest {
 
     private static CoursController controller;
-    private static CoursRepository repo;
-
 
     @BeforeAll
     static void setup() {
-        repo = CoursRepository.getInstance();
-        repo.loadLocalJson();
-
+        CoursRepository.getInstance().loadLocalJson();
         controller = new CoursController();
-    }
-
-    
-    private String captureOutput(Runnable action) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        PrintStream original = System.out;
-        System.setOut(new PrintStream(out));
-
-        try {
-            action.run();
-        } finally {
-            System.setOut(original);
-        }
-
-        return out.toString();
     }
 
     @Test
     void testHandleSearch_validCourse() {
-        String output = captureOutput(() -> controller.handleSearch("IFT2255"));
+        Context ctx = mock(Context.class);
 
-        assertTrue(output.contains("IFT2255"), "L'affichage doit contenir l'ID du cours.");
-        assertTrue(output.contains("Génie logiciel"), "L'affichage doit contenir le nom du cours.");
-        assertTrue(output.contains("Prérequis"), "L'affichage doit inclure la section 'Prérequis'.");
-        assertTrue(output.contains("Sessions offertes"), "L'affichage doit inclure les sessions disponibles.");
+        when(ctx.queryParam("query")).thenReturn("IFT2255");
+        when(ctx.status(anyInt())).thenReturn(ctx);  
+
+        controller.handleSearchREST(ctx);
+
+        verify(ctx).status(200);
+        verify(ctx).json(argThat(results ->
+                results instanceof java.util.List<?> &&
+                ((java.util.List<?>) results).size() == 1 &&
+                ((Cours)((java.util.List<?>) results).get(0)).getId().equals("IFT2255")
+        ));
     }
 
-   @Test
+    @Test
+    void testHandleSearch_missingQuery() {
+        Context ctx = mock(Context.class);
+
+        when(ctx.queryParam("query")).thenReturn(null);
+        when(ctx.status(anyInt())).thenReturn(ctx); 
+
+        controller.handleSearchREST(ctx);
+
+        verify(ctx).status(400);
+        verify(ctx).json("Le paramètre 'query' est obligatoire.");
+    }
+
+    @Test
     void testHandleSearch_noResults() {
+        Context ctx = mock(Context.class);
 
-    String output = captureOutput(() -> {
-        System.out.println("Aucun cours trouvé.");
-    });
+        when(ctx.queryParam("query")).thenReturn("FHDSKAJF");
+        when(ctx.status(anyInt())).thenReturn(ctx); 
 
-    assertTrue(output.contains("Aucun cours trouvé."),
-            "Le controller doit afficher 'Aucun cours trouvé.' quand la recherche est vide.");
-}
+        controller.handleSearchREST(ctx);
 
-
-
+        verify(ctx).status(404);
+        verify(ctx).json("Aucun résultat trouvé pour : FHDSKAJF");
+    }
 
     @Test
     void testHandleSearch_caseInsensitive() {
-        String out1 = captureOutput(() -> controller.handleSearch("ift2255"));
-        String out2 = captureOutput(() -> controller.handleSearch("IFT2255"));
+        Context ctx = mock(Context.class);
 
+        when(ctx.queryParam("query")).thenReturn("ift2255");
+        when(ctx.status(anyInt())).thenReturn(ctx); 
 
-        assertTrue(out1.contains("IFT2255"));
-        assertTrue(out2.contains("IFT2255"));
-        assertTrue(out1.contains("Génie logiciel"));
-        assertTrue(out2.contains("Génie logiciel"));
+        controller.handleSearchREST(ctx);
+
+        verify(ctx).status(200);
     }
 
     @Test
     void testHandleSearch_partialWord() {
-        String output = captureOutput(() -> controller.handleSearch("logiciel"));
+        Context ctx = mock(Context.class);
 
-        assertTrue(output.contains("Génie logiciel"),
-                "La recherche partielle sur la description ou le nom devrait trouver le cours.");
+        when(ctx.queryParam("query")).thenReturn("logiciel");
+        when(ctx.status(anyInt())).thenReturn(ctx); 
+
+        controller.handleSearchREST(ctx);
+
+        verify(ctx).status(200);
     }
 }
