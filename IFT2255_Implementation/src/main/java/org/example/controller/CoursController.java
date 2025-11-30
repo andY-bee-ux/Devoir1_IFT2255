@@ -4,6 +4,7 @@ import io.javalin.http.Context;
 import org.example.model.Avis;
 import org.example.model.Cours;
 import org.example.service.CoursService;
+import org.example.util.ResponseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,21 @@ public class CoursController {
         ctx.status(200);
         ctx.json(resultat);
     }
+
+    public void voirDetailsCours(Context ctx) {
+        String id = ctx.pathParam("id");
+        String session = ctx.pathParam("session");
+
+        Map<String,String> details = coursService.voirDetailsCours(id, session);
+
+        if (details.isEmpty()) {
+            ctx.status(404).json(ResponseUtil.formatError("Les paramètres fournis sont invalides ou le cours n'existe pas pour la session donnée."));
+            return;
+        }
+
+        ctx.status(200).json(details);
+    }
+
 
     /**
      * Cette classe permet de parser le json du body de la requête. La classe est interne donc

@@ -34,11 +34,9 @@ public class Routes {
      * @param app Il s'agit d'une instanciation du serveur Javalin.
      **/
     private static void resgistreCoursRoutes(Javalin app){
-        CoursService coursService = new CoursService(new HttpClientApi());
-        CoursController coursController = new CoursController(coursService);
-
-        app.get("/courses", coursController :: getAllCourses);
-        app.get("/courses/{id}", coursController :: getCourseById);
+        CoursController coursController = new CoursController();
+        app.post("/cours/comparer", coursController::comparerCours);
+        app.get("/voir-details-cours/{id}/{session}", coursController::voirDetailsCours);
     }
 
     /**

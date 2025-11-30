@@ -3,10 +3,14 @@ package org.example.service;
 import org.example.model.Cours;
 import org.example.repository.CoursRepository;
 
+import static org.mockito.ArgumentMatchers.refEq;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 /**
  * Cette classe permet de gérer la logique métier associée à la manipulation des cours.
@@ -60,13 +64,33 @@ public class CoursService {
         }
     }
 
+    // Verifie si le format de la session est valide.
+    private boolean validateSession(String session){
+        String year = session.substring(1);
+        Character season = session.charAt(0);
 
+        Boolean valid;
+        Boolean seasonValide = season.equals('H') || season.equals('A') || season.equals('E');
+        if(session.length() == 3 && seasonValide == true){
+            try{
+                Integer.parseInt(year);
+                valid = true;
+            }catch (NumberFormatException e){
+                valid = false;
+            }
+
+        }else{
+            valid = false;
+        }
+        return valid;
+    }
 
     // je pense que ça sert à rien car dans planifium on peut pas get un cours by name.
     //private boolean validateNomCours(int id){return false;}
 
     // Cette méthode permet de comparer des cours selon certains critères
     public List<List<String>> comparerCours(String[] cours, String[] criteresComparaison) {
+    
 
         List<List<String>> resultat = new ArrayList<>();
 
@@ -170,15 +194,47 @@ public class CoursService {
         }
 
         return resultat;
+    } 
+    
+    public Map<String,String> voirDetailsCours(String id, String session){
+        Map<String,String> horaires = horairesCours(id, session);
+        Map<String,String> details = new HashMap<>();
 
+        if(!horaires.isEmpty()){
+            Map<String,String> contenu = this.coursRepository.detailsCours(id);
+            details.putAll(contenu);
+            int count = horaires.size();
+            for(String key : horaires.keySet()){
+                details.put("Horaires pour la session ("+count+")", horaires.get(key));
+                count --;
+            }
+        }
+        return details;
+    }
 
+    public Map<String,String> horairesCours(String id, String session){
+        Map<String, String> horaires = new HashMap<>();
 
-
-}
+        if(this.coursRepository.doesCourseExist(id)==true && validateSession(session)==true){
+            List<String> horaire = this.coursRepository.getCoursHoraires(id,session);
+            int count = 0;
+            String key;
+            for(String h : horaire){
+                key = session + "_" + count;
+                horaires.put(key, h);
+                count += 1;
+            }
+        }
+        return horaires;
+    }
 
     // A faire
     public List<String> comparerCombinaisonCours(Cours[][] cours){return new ArrayList<>();}
 
     // A faire
     public List<Cours> getAllCours(){return new ArrayList<>();}
+
+    public void setCoursRepository(CoursRepository coursRepository) {
+        this.coursRepository = coursRepository;
+    }
 }
