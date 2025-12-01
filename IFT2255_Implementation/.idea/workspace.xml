@@ -15,6 +15,12 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" afterDir="false" />
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Classes pour les dossiers /route et /util">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Avis.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Cours.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Resultats.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +36,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="Tests" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -38,10 +49,31 @@
     &quot;assignee&quot;: &quot;musa223-ui&quot;
   }
 }</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
+    {
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOPzk8ec62GKqm&quot;,
+        &quot;number&quot;: 22
+      },
+      &quot;lastSeen&quot;: 1764370173263
+    }
+  ]
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/andY-bee-ux/Devoir1_IFT2255.git&quot;,
     &quot;accountId&quot;: &quot;e3aaab5c-8036-4b45-814f-388d627e4904&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;andY-bee-ux&quot;,
+    &quot;repository&quot;: &quot;Devoir1_IFT2255&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -87,6 +119,38 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.All in IFT2255_Implementation.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withMockContext.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withoutMockContext.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetAllCoursesListeCoursIft2255.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetAllCoursesListeNonVide.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetAllCoursesPasDeDoublons.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025BonNom.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetCoursByIdInexistant.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursExistants.executor": "Run",
+    "JUnit.CoursServiceTest.testValidateIdCoursValide.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Creations-Fichiers",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
 }</component>
   <component name="RunManager" selected="Application.Main">
@@ -177,14 +241,6 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -230,7 +286,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763908614115</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Ajouts du package dans les classes de test">
+      <option name="closed" value="true" />
+      <created>1764367909781</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764367909781</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Classes pour les dossiers /route et /util">
+      <option name="closed" value="true" />
+      <created>1764369901375</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764369901375</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,7 +324,9 @@
     <MESSAGE value="Ajouts de codes dans les classes du fichier /model." />
     <MESSAGE value="Ajout de codes dans les classes du fichiers /controller." />
     <MESSAGE value="Ajout de codes dans les classes du fichiers /service." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de codes dans les classes du fichiers /service." />
+    <MESSAGE value="Ajouts du package dans les classes de test" />
+    <MESSAGE value="Classes pour les dossiers /route et /util" />
+    <option name="LAST_COMMIT_MESSAGE" value="Classes pour les dossiers /route et /util" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
