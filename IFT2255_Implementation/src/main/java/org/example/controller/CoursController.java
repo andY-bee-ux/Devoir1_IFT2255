@@ -21,17 +21,7 @@ public class CoursController {
     public List<String> comparerCombinaisonCours(int[] idCours) {
         return new ArrayList<>();}
 
-    /**
-     * Route: POST /cours/compare
-     * Description : Compare deux cours envoyés dans le body JSON.
-     * On utilise POST car on ENVOIE un body.
-     *
-     * Exemple de body :
-     * {
-     *   "cours1": "IFT1025",
-     *   "cours2": "IFT2255"
-     * }
-     */
+
 
     public void checkEligibility(Context ctx){
         RequeteEligibilite req = ctx.bodyAsClass(RequeteEligibilite.class);
