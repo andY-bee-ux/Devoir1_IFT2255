@@ -8,7 +8,7 @@ class AvisClient:
     """
 
     def __init__(self, base_url: str | None = None, timeout: float = 5.0):
-        # URL de base de l'API (ex: http://localhost:7000)
+        #URL de base de l'API (ex: http://localhost:7000/api)
         self.base_url = (base_url or API_BASE_URL).rstrip("/")
         # Délai d'attente max pour les requêtes
         self.timeout = timeout
