@@ -5,10 +5,7 @@ import org.example.model.Avis;
 import org.example.model.Cours;
 import org.example.service.CoursService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Cette classe permet de gérer les requêtes des utilisateurs relatives à la manipulation de cours.
@@ -17,22 +14,6 @@ import java.util.Scanner;
 public class CoursController {
     // CoursService est un Singleton, donc on récupère l'instance existante.
     private CoursService coursService =CoursService.getInstance();
-//    private Scanner scanner = new Scanner(System.in);
-//    private static final Map<String, String> CRITERE_MAP = Map.ofEntries(
-//            Map.entry("id", "id"),
-//            Map.entry("nom", "name"),
-//            Map.entry("description", "description"),
-//            Map.entry("semestre", "scheduledSemester"),
-//            Map.entry("horaires", "schedules"),
-//            Map.entry("cours prerequis", "prerequisite_courses"),
-//            Map.entry("cours equivalents", "equivalent_courses"),
-//            Map.entry("cours concomitants", "concomitant_courses"),
-//            Map.entry("site udem", "udemWebsite"),
-//            Map.entry("credits", "credits"),
-//            Map.entry("exigences", "requirement_text"),
-//            Map.entry("terms", "available_terms"),
-//            Map.entry("periods", "available_periods")
-//    );
 
     public List<Avis> getAvis(Cours cours){return new ArrayList<>();}
 
@@ -52,15 +33,39 @@ public class CoursController {
      * }
      */
 
+    public void checkEligibility(Context ctx){
+        RequeteEligibilite req = ctx.bodyAsClass(RequeteEligibilite.class);
+        String resultat = coursService.checkEligibility(req.idCours,req.listeCours);
+        ctx.json(resultat);
+    }
+
+
+
+
+
+    public void rechercherCours(Context ctx){
+        RequeteRecherche req = ctx.bodyAsClass(RequeteRecherche.class);
+        Optional<List<Cours>> resultat = coursService.rechercherCours(req.param,req.valeur,req.includeSchedule,req.semester);
+        if(resultat.isPresent()){
+            ctx.status(200);
+            ctx.json(resultat.get());
+        }else{
+            ctx.status(404);
+            ctx.json("Cours pas trouvé. Veuillez reessayer. Pour rappel, les paramètres possibles sont id, name et description.");
+        }
+
+    }
     /**
      * Cette méthode permet de traiter la requête de l'utilisateur relative à la comparaison de cours.
      * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
      */
+
     public void comparerCours(Context ctx) {
        /* cette ligne de code map le body de la requête avec un objet Java. Cela permet de
        récupérer la liste de cours et celle des critères.
        */
         RequeteComparaison req = ctx.bodyAsClass(RequeteComparaison.class);
+
         // coursService s'occupera de la logique métier.
         List<List<String>> resultat =
                 coursService.comparerCours(req.cours, req.criteres);
@@ -75,6 +80,17 @@ public class CoursController {
         ctx.json(resultat);
     }
 
+    public void comparerCombinaisonCours(Context ctx){
+     RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
+        List<List<String>> resultat = coursService.comparerCombinaisonCours(req.listeCours);
+        if (resultat == null) {
+            ctx.status(400);
+            ctx.json("Requête invalide");
+            return;
+        }
+        ctx.status(200);
+        ctx.json(resultat);
+    }
     /**
      * Cette classe permet de parser le json du body de la requête. La classe est interne donc
      * on peut déclarer les attributs publics.
@@ -82,6 +98,20 @@ public class CoursController {
     public static class RequeteComparaison {
         public String[] cours;
         public String[] criteres;
+    }
+
+    public static class RequeteRecherche{
+        public String param;
+        public String valeur;
+        public String includeSchedule;
+        public String semester;
+    }
+    public static class RequeteEligibilite{
+        public String idCours;
+        public List<String> listeCours;
+    }
+    public static class RequeteComparaisonCombinaison{
+        public List<List<String>> listeCours;
     }
 
 }

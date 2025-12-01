@@ -9,5 +9,8 @@ public class Main {
         var app = Javalin.create().start(7000);
         // post car on veut pouvoir inclure du body à la requête.
         app.post("/cours/comparer", coursController::comparerCours);
+        app.post("/cours/rechercher", coursController::rechercherCours);
+        app.post("/cours/eligibilite",coursController::checkEligibility);
+        app.post("/cours/comparer/combinaison", coursController::comparerCombinaisonCours);
     }
 }
