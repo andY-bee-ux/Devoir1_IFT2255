@@ -71,9 +71,11 @@ public class CoursRepository implements IRepository {
         }
 
         // Ajouter le semester si demandé
-        if (semester != null && !semester.isEmpty()) {
+        if (semester != null && !semester.isEmpty() && includeScheduleBool == "true") {
             uri.append(hasQuery ? "&" : "?");
             uri.append("schedule_semester=").append(URLEncoder.encode(semester, StandardCharsets.UTF_8));
+        }else  if(semester != null && !semester.isEmpty() && includeScheduleBool == "false" ){
+            return Optional.empty();
         }
 
         // Construire la requête
@@ -180,7 +182,7 @@ public class CoursRepository implements IRepository {
      * @return response body de Planifium
      * @throws Exception
      */
-    public String checkCourseEligibility(String courseId, List<String> completedCourses) throws Exception {
+    public String getCourseEligibility(String courseId, List<String> completedCourses) throws Exception {
 
         // Construire l'objet JSON
         ObjectMapper mapper = new ObjectMapper();
@@ -213,22 +215,6 @@ public class CoursRepository implements IRepository {
 
         }
 
-//public Optional<String> convertNameInId(String name) throws Exception {
-//    HttpRequest request = HttpRequest.newBuilder()
-//            .uri(new URI("https://planifium-api.onrender.com/api/v1/courses/?name=" + URLEncoder.encode("Génie logiciel", StandardCharsets.UTF_8)))
-//            .build();
-//
-//    HttpClient httpClient = HttpClient.newHttpClient();
-//    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//    ObjectMapper mapper = new ObjectMapper();
-//    JsonNode root = mapper.readTree(response.body());
-//
-//    if (root.isArray() && root.size() > 0) {
-//        return Optional.of(root.get(0).get("_id").asText());
-//    }
-//
-//    return Optional.empty();
-//}
 
     }
 

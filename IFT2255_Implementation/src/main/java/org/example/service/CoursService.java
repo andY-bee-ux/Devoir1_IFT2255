@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Cours;
 import org.example.repository.CoursRepository;
 
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -42,29 +43,43 @@ public class CoursService {
     }
 
     /**
+     * Cette méthode permet de set le cours Repository. Elle a été ajoutée pour pouvoir faire passer
+     * les tests avec Mockito, mais si non elle n'est pas vraiment nécessaire car CoursRepository
+     * est un singleton.
+     * @param coursRepository le coursRepository
+     */
+    public void setCoursRepository(CoursRepository coursRepository) {
+        this.coursRepository = coursRepository;
+    }
+    // pour stocker les ids de cours issu de l'appel à getAllCoursesId() afin de réduire le nombre d'appels HTTP quand on appelle validateIdCours.
+    public List<String> cacheCoursIds = new ArrayList<>();
+
+    /**
      * Cette méthode gère la logique derrière la validation de l'id d'un cours ( permet de vérifier
      * si l'id donné correspond à un cours existant.)
      *
      * @param id id du Cours à vérifier
      * @return un booléen indiquant si l'id est valide ou non
      */
+
     private boolean validateIdCours(String id) {
         try {
-            // le getAllCourses retourne la liste de tous les cours de l'UdeM.
-            Optional<List<String>> listeCours = this.coursRepository.getAllCoursesId();
+            //  Si le cache est vide, on va chercher les données une seule fois
+            if (cacheCoursIds.isEmpty()) {
+                Optional<List<String>> listeCours = this.coursRepository.getAllCoursesId();
+                cacheCoursIds = listeCours.orElse(List.of()); // évite les null
+            }
 
-            // Si l'Optional contient une liste , on vérifie si id en fait partie
-            return listeCours
-                    .map(list -> list.contains(id))
-                    .orElse(false);  // si c'est vide alors on retourne false
+            // On utilise le cache pour vérifier l'ID
+            return cacheCoursIds.contains(id);
         }
-        // Ce bloc permet de catch l'exception potentiellement lancée par getAllCourses().
         catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
-    }
 
+
+    }
 
     /**
      * Cette méthode permet de comparer une liste de cours selon des critères donnés.
@@ -187,28 +202,31 @@ public class CoursService {
      * @return un tableau contenant les comparaisons des ensembles de cours donnés.
      */
 
-    public List<List<String>> comparerCombinaisonCours(List<List<String>> listeDeListesDeCours) {
+    public List<List<String>> comparerCombinaisonCours(
+            List<List<String>> listeDeListesDeCours,
+            String sessionChoisie
+    ) {
 
         List<List<String>> resultat = new ArrayList<>();
-        // index de la combinaison ( combinaison 1, combinaison 2 etc)
         int index = 1;
-        // on parcourt chaque ensemble de cours
+
         for (List<String> combinaison : listeDeListesDeCours) {
 
-            // On transforme les ids en objets Cours
+            // Transformer les ids → objets Cours
             List<Cours> coursCombinaison = new ArrayList<>();
 
             for (String idCours : combinaison) {
-                // on vérifie si les ids sont valides.
                 if (!validateIdCours(idCours)) {
                     System.out.println("Cours non valide : " + idCours);
                     return null;
                 }
                 try {
-                    Optional<List<Cours>> opt = this.coursRepository.getCourseBy("id", idCours, "true", null);
-                    if (opt.isEmpty()) {
+                    Optional<List<Cours>> opt =
+                            this.coursRepository.getCourseBy("id", idCours, "true", null);
+
+                    if (opt.isEmpty())
                         throw new RuntimeException("Cours introuvable : " + idCours);
-                    }
+
                     coursCombinaison.add(opt.get().get(0));
 
                 } catch (Exception e) {
@@ -216,83 +234,100 @@ public class CoursService {
                 }
             }
 
-            // Ce bloc permet de calculer les métriques de comparaison.
+            // ---- MÉTRIQUES
             int creditsTotaux = 0;
-            Set<String> listeDeTousLesPrerequis = new HashSet<>();
-            Set<String> listeDeTousLesConcomitants= new HashSet<>();
-            Map<String,Boolean> periodesCommunes = null;
-            Map<String,Boolean> sessionsCommunes = null;
+            Set<String> prerequis = new HashSet<>();
+            Set<String> concomitants = new HashSet<>();
+            Map<String, Boolean> periodesCommunes = null;
+            Map<String, Boolean> sessionsCommunes = null;
+
+            // ---- HORAIRE POUR LA SESSION CHOISIE
+            List<ActivityInfo> activities = new ArrayList<>();
 
             for (Cours c : coursCombinaison) {
 
-                // crédits
                 creditsTotaux += c.getCredits();
 
-                // prerequis
                 if (c.getPrerequisite_courses() != null)
-                    listeDeTousLesPrerequis.addAll(Arrays.asList(c.getPrerequisite_courses()));
+                    prerequis.addAll(Arrays.asList(c.getPrerequisite_courses()));
 
-                // concomitants
                 if (c.getConcomitant_courses() != null)
-                    listeDeTousLesConcomitants.addAll(Arrays.asList(c.getConcomitant_courses()));
-                // available periods
+                    concomitants.addAll(Arrays.asList(c.getConcomitant_courses()));
+
+                // PÉRIODES COMMUNES
                 Map<String, Boolean> periods = c.getAvailable_periods();
-
                 if (periods != null) {
-
                     if (periodesCommunes == null) {
-                        // Première initialisation : on ne garde que les périodes true
                         periodesCommunes = new HashMap<>();
-                        for (Map.Entry<String, Boolean> entry : periods.entrySet()) {
-                            if (entry.getValue()) {
-                                periodesCommunes.put(entry.getKey(), true);
-                            }
+                        for (var e : periods.entrySet()) {
+                            if (e.getValue()) periodesCommunes.put(e.getKey(), true);
                         }
-
                     } else {
-                        // Intersection : garde uniquement les périodes true chez TOUS les cours
-                        periodesCommunes.entrySet().removeIf(e ->
-                                !periods.getOrDefault(e.getKey(), false)
+                        periodesCommunes.entrySet().removeIf(
+                                e -> !periods.getOrDefault(e.getKey(), false)
                         );
                     }
-
                 }
-                // available_terms
+
+                // SESSIONS COMMUNES
                 Map<String, Boolean> terms = c.getAvailable_terms();
-
-                if (terms!= null) {
-
+                if (terms != null) {
                     if (sessionsCommunes == null) {
-                            sessionsCommunes = new HashMap<>();
-                        for (Map.Entry<String, Boolean> entry : terms.entrySet()) {
-                            if (entry.getValue()) {
-                                sessionsCommunes.put(entry.getKey(), true);
-                            }
+                        sessionsCommunes = new HashMap<>();
+                        for (var e : terms.entrySet()) {
+                            if (e.getValue()) sessionsCommunes.put(e.getKey(), true);
                         }
-
                     } else {
-                        sessionsCommunes.entrySet().removeIf(e ->
-                                !terms.getOrDefault(e.getKey(), false)
+                        sessionsCommunes.entrySet().removeIf(
+                                e -> !terms.getOrDefault(e.getKey(), false)
                         );
                     }
-
                 }
 
+                // EXTRACTION DE L'HORAIRE POUR LA SESSION CHOISIE
+                if (c.getSchedules() != null) {
+                    for (Cours.Schedule s : c.getSchedules()) {
 
+                        if (!s.getSemester().equalsIgnoreCase(sessionChoisie))
+                            continue; // Ignore les autres sessions
+
+                        if (s.getSections() == null) continue;
+
+                        for (Cours.Section section : s.getSections()) {
+                            if (section.getVolets() == null) continue;
+                            for (Cours.Volet volet : section.getVolets()) {
+                                if (volet.getActivities() == null) continue;
+                                for (Cours.Activity act : volet.getActivities()) {
+                                    activities.add(new ActivityInfo(
+                                            c.getId(),
+                                            section.getName(),
+                                            act.getDays(),
+                                            act.getStart_time(),
+                                            act.getEnd_time()
+                                    ));
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            // 3. Construire une ligne dans le tableau pour cette combinaison
+            // ---- DÉTECTION DES CONFLITS
+            List<String> conflits = detectConflits(activities);
+
+            // ---- Construction de la ligne
             List<String> ligne = new ArrayList<>();
             ligne.add("Combinaison " + index);
-            ligne.add("Nombre de cours=" + combinaison.size());
+            ligne.add("Cours=" + combinaison);
             ligne.add("Crédits=" + creditsTotaux);
-            ligne.add("Liste de prérequis=" + listeDeTousLesPrerequis);
-            // pb ça retourne les élements de la liste donnée.
-            ligne.add("Liste de concomitants=" + listeDeListesDeCours);
-            ligne.add("périodes communes=" +
-                    (periodesCommunes == null ? "[]" : periodesCommunes.keySet().toString()));
-            ligne.add("sessions communes=" +
-                    (sessionsCommunes == null ? "[]" : sessionsCommunes.keySet().toString()));
+            ligne.add("Prérequis=" + prerequis);
+            ligne.add("Concomitants=" + concomitants);
+            ligne.add("Périodes communes=" +
+                    (periodesCommunes == null ? "[]" : periodesCommunes.keySet()));
+            ligne.add("Sessions communes=" +
+                    (sessionsCommunes == null ? "[]" : sessionsCommunes.keySet()));
+            ligne.add("Horaires=" + activities);
+            ligne.add("Conflits=" + conflits);
 
             resultat.add(ligne);
             index++;
@@ -300,6 +335,67 @@ public class CoursService {
 
         return resultat;
     }
+    static class ActivityInfo {
+        String coursId;
+        String section;
+        List<String> days;
+        String start;
+        String end;
+        LocalTime startTime;
+        LocalTime endTime;
+
+        ActivityInfo(String coursId, String section, List<String> days, String start, String end) {
+            this.coursId = coursId;
+            this.section = section;
+            this.days = days;
+            this.start = start;
+            this.end = end;
+            this.startTime = LocalTime.parse(start);
+            this.endTime = LocalTime.parse(end);
+        }
+
+        @Override
+        public String toString() {
+            return coursId + " [" + section + "] " + days + " " + start + "-" + end;
+        }
+    }
+
+    private List<String> detectConflits(List<ActivityInfo> acts) {
+        List<String> conflits = new ArrayList<>();
+
+        for (int i = 0; i < acts.size(); i++) {
+            ActivityInfo a = acts.get(i);
+            for (int j = i + 1; j < acts.size(); j++) {
+                ActivityInfo b = acts.get(j);
+
+                // Ignore si c'est le même cours
+                if (a.coursId.equals(b.coursId)) continue;
+
+                // Vérifie si mêmes jours
+                boolean memeJour = a.days.stream().anyMatch(b.days::contains);
+                if (!memeJour) continue;
+
+                // Compare les heures
+                if (overlap(a.start, a.end, b.start, b.end)) {
+                    conflits.add(a + " CONFLIT AVEC " + b);
+                }
+            }
+        }
+        return conflits;
+    }
+
+    private boolean overlap(String s1, String e1, String s2, String e2) {
+        return s1.compareTo(e2) < 0 && s2.compareTo(e1) < 0;
+    }
+
+
+    private boolean overlap(ActivityInfo a, ActivityInfo b) {
+        // Si les jours ne se chevauchent pas
+        if (a.days.stream().noneMatch(b.days::contains)) return false;
+        // Comparaison des heures
+        return !(a.endTime.compareTo(b.startTime) <= 0 || b.endTime.compareTo(a.startTime) <= 0);
+    }
+
 
 
     /**
@@ -310,37 +406,53 @@ public class CoursService {
      * @param session session si on veut être plus spécifiqeu ( absent pour la recherche simple)
      * @return la liste de cours associée à la recherche.
      */
+
+
     public Optional<List<Cours>> rechercherCours(String param, String value, String includeSchedule, String session) {
-        // on vérifie si l'id est valide
-        if (param.equalsIgnoreCase("id") && !this.validateIdCours(value)) {
+        // Vérification que param est valide (id, name, description)
+        if (param == null ||
+                !(param.equalsIgnoreCase("id") || param.equalsIgnoreCase("name") || param.equalsIgnoreCase("description"))) {
+            System.out.println("Param doit être 'id', 'name' ou 'description'");
+            return Optional.empty();
+
+        }
+
+
+        // Transformation en upper case si param == id
+        if (param.equalsIgnoreCase("id") && value != null) {
+            value = value.toUpperCase();
+            // Vérifier la validité de l'ID
+            if (!this.validateIdCours(value)) {
+                return Optional.empty();
+            }
+        }
+
+        // Vérification includeSchedule vs session
+        if ((includeSchedule == null || includeSchedule.equalsIgnoreCase("false"))
+                && session != null && !session.isEmpty()) {
+            System.out.println("Impossible de filtrer par semester si includeSchedule=false");
             return Optional.empty();
         }
 
-        // Nous aurions aussi voulu vérifier le name mais vu que les mots-clés et les noms ne sont pas uniques,
-        // par exemple Programmation 1 correspond à deux cours, on s'est dits qu'on donnera la voie libre
-        // à l'utilisateur pour l'instant, et il verra juste null si le mot-clé ne correspond à aucun cours
-        // ( pour l'instant.)
-
         try {
             // Appel au repository
-            Optional<List<Cours>> coursListOpt = this.coursRepository.getCourseBy(param, value,includeSchedule,session);
+            Optional<List<Cours>> coursListOpt = this.coursRepository.getCourseBy(param, value, includeSchedule, session);
 
             // Si null ou liste vide, on return empty
             if (coursListOpt.isEmpty() || coursListOpt.get().isEmpty()) {
                 return Optional.empty();
             }
 
+            // Filtrage par session si nécessaire
             if (session != null && !session.isEmpty()) {
-                List<Cours> filtered = new ArrayList<>();
-                for (Cours cours : coursListOpt.get()) {
-                    boolean hasSemester = cours.getSchedules().stream()
-                            .anyMatch(schedule -> session.equals(schedule.getSemester()));
-                    if (hasSemester) {
-                        filtered.add(cours);
-                    }
-                }
+                List<Cours> filtered = coursListOpt.get().stream()
+                        .filter(cours -> cours.getSchedules().stream()
+                                .anyMatch(schedule -> session.equalsIgnoreCase(schedule.getSemester())))
+                        .toList();
+
                 return filtered.isEmpty() ? Optional.empty() : Optional.of(filtered);
             }
+
             // Sinon retourner la liste
             return coursListOpt;
 
@@ -373,7 +485,7 @@ public class CoursService {
 
 
         try {
-            String responseBody = this.coursRepository.checkCourseEligibility(idCours, listeCours);
+            String responseBody = this.coursRepository.getCourseEligibility(idCours, listeCours);
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(responseBody);
             String retour = "";

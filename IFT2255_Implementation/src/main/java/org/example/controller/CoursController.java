@@ -62,7 +62,7 @@ public class CoursController {
 
         if (resultat == null) {
             ctx.status(400);
-            ctx.json("La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours. Pour rappel, les critères autorisés sont les suivants : [id,name,description, credits, scheduledSemester, schedules, prerequisite_courses, equivalent_courses, concomitant_courses, udemWebsite, requirement_text, available_terms, available_periods]");
+            ctx.json("La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours. Pour rappel, les critères autorisés sont les suivants : id,name,description, credits, scheduledSemester, schedules, prerequisite_courses, equivalent_courses, concomitant_courses, udemWebsite, requirement_text, available_terms, available_periods]");
             return;
         }
 
@@ -70,9 +70,13 @@ public class CoursController {
         ctx.json(resultat);
     }
 
+    /**
+     * Cette méthode permet de comparer des ensembles de cours.
+     * @param ctx
+     */
     public void comparerCombinaisonCours(Context ctx){
      RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
-        List<List<String>> resultat = coursService.comparerCombinaisonCours(req.listeCours);
+        List<List<String>> resultat = coursService.comparerCombinaisonCours(req.listeCours, req.session);
         if (resultat == null) {
             ctx.status(400);
             ctx.json("Requête invalide");
@@ -82,7 +86,7 @@ public class CoursController {
         ctx.json(resultat);
     }
     /**
-     * Cette classe permet de parser le json du body de la requête. La classe est interne donc
+     * Cette classe permet de parser le json du body de la requête comparaison. La classe est interne donc
      * on peut déclarer les attributs publics.
      */
     public static class RequeteComparaison {
@@ -90,18 +94,33 @@ public class CoursController {
         public String[] criteres;
     }
 
+    /**
+     * Cette classe permet de parser le json du body de la requête recherche. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+
     public static class RequeteRecherche{
         public String param;
         public String valeur;
         public String includeSchedule;
         public String semester;
     }
+    /**
+     * Cette classe permet de parser le json du body de la requête eligibilite. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
     public static class RequeteEligibilite{
         public String idCours;
         public List<String> listeCours;
     }
+
+    /**
+     * Cette classe permet de parser le json du body de la requête comparaisonCombinaison. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
     public static class RequeteComparaisonCombinaison{
         public List<List<String>> listeCours;
+        public String session;
     }
 
 }

@@ -13,6 +13,6 @@ public interface IRepository {
             String semester
     ) throws Exception;
     public Optional<List<String>> getAllCoursesId() throws Exception;
-    public String checkCourseEligibility(String courseId, List<String> completedCourses) throws Exception;
+    public String getCourseEligibility(String courseId, List<String> completedCourses) throws Exception;
 
 }
