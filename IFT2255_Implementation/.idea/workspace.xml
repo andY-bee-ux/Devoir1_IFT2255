@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/Repository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/CoursRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/CoursRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" afterDir="false" />
@@ -103,22 +100,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CoursControllerTest.testComparerCours_withMockContext" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="IFT2255_Implementation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.controller" />
-      <option name="MAIN_CLASS_NAME" value="org.example.controller.CoursControllerTest" />
-      <option name="METHOD_NAME" value="testComparerCours_withMockContext" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="CoursControllerTest.testComparerCours_withoutMockContext" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="IFT2255_Implementation" />
       <extension name="coverage">
@@ -167,13 +148,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CoursServiceTest.testValidateIdCoursValide" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.service" />
+      <option name="MAIN_CLASS_NAME" value="org.example.service.CoursServiceTest" />
+      <option name="METHOD_NAME" value="testValidateIdCoursValide" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withoutMockContext" />
-        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withMockContext" />
         <item itemvalue="JUnit.CoursServiceTest.testComparerCoursExistants" />
         <item itemvalue="JUnit.CoursServiceTest.testComparerCoursCoursInexistant" />
+        <item itemvalue="JUnit.CoursServiceTest.testValidateIdCoursValide" />
+        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withoutMockContext" />
       </list>
     </recent_temporary>
   </component>
@@ -197,6 +194,7 @@
       <workItem from="1764035545427" duration="6588000" />
       <workItem from="1764084323444" duration="5823000" />
       <workItem from="1764264432723" duration="8219000" />
+      <workItem from="1764603370378" duration="10881000" />
     </task>
     <task id="LOCAL-00001" summary="Ajouts des classes de tests avec une methode vide.">
       <option name="closed" value="true" />
