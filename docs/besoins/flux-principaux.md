@@ -91,7 +91,6 @@ title: Analyse des besoins - Flux principaux
 ---
 
 ## Flux 5 : Rechercher un cours
-### Variante 1 : Par ID
 1. L’utilisateur saisit l'id du cours qu'il veut rechercher.
 2. Le système fait appel au service de Cours pour valider l'id.
 3. Le système consulte le répertoire de Cours pour obtenir le cours.
@@ -114,23 +113,6 @@ title: Analyse des besoins - Flux principaux
   - Le système retourne un message signalant que le cours n'existe pas.
 - **3.a.1 Le cours n'existe pas dans la base de donnée**
   - Le système retourne un message signalant que le cours n'existe pas.
-
-### Variante 2 : Option "Rechercher Cours" dans le menu
-1. L’utilisateur sélectionne l’option “Rechercher Cours” dans le menu.
-2. L’utilisateur choisit le critère selon lequel il désire effectuer une recherche (nom ou sigle).
-3. Le système fait appel à l'API Planifium pour obtenir le cours.
-4. Le système retourne le/les cours correspondant aux critères de recherche.
-5. Le système affiche le résultat.
-
-#### Scénarios alternatifs
-- **3.a L'API Planifium a une panne**
-  1. Le système recherche le cours dans la base de donnée.
-  2. Le scénario reprend à l'étape 5.
-- **3.b Le cours n'existe pas dans Planifium**
-  - Le système retourne un message signalant que le cours n'existe pas.
-- **3.a.1 Le cours n'existe pas dans la base de donnée**
-  - Le système retourne un message signalant que le cours n'existe pas.
-
 
 ## Diagrammes
 
