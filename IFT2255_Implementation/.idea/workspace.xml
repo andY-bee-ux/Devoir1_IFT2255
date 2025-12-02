@@ -4,12 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajouts du package dans les classes de test">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HttpClientApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HttpClientApiResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/util/HttpStatus.java" afterDir="false" />
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/config/Routes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/config/Routes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/CoursRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/CoursRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" afterDir="false" />
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Classes pour les dossiers /route et /util">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Avis.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Cours.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Resultats.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +35,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="main" />
+        <entry key="$PROJECT_DIR$/.." value="Tests" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -38,10 +46,31 @@
     &quot;assignee&quot;: &quot;musa223-ui&quot;
   }
 }</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
+    {
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOPzk8ec62GKqm&quot;,
+        &quot;number&quot;: 22
+      },
+      &quot;lastSeen&quot;: 1764370173263
+    }
+  ]
+}</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/andY-bee-ux/Devoir1_IFT2255.git&quot;,
     &quot;accountId&quot;: &quot;e3aaab5c-8036-4b45-814f-388d627e4904&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;andY-bee-ux&quot;,
+    &quot;repository&quot;: &quot;Devoir1_IFT2255&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -55,6 +84,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in IFT2255_Implementation.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursControllerTest.testComparerCours_withMockContext.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursControllerTest.testComparerCours_withoutMockContext.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.testGetAllCoursesListeCoursIft2255.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.testGetAllCoursesListeNonVide.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.testGetAllCoursesPasDeDoublons.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025BonNom.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.testGetCoursByIdInexistant.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testComparerCoursExistants.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testValidateIdCoursValide.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ComparerCoursImplementation&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/Desktop/ift2255/Devoir1_IFT2255/IFT2255_Implementation&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
@@ -73,7 +134,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Tests",
+    "git-widget-placeholder": "Creations-Fichiers",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation",
     "node.js.detected.package.eslint": "true",
@@ -88,8 +149,8 @@
     "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
-}]]></component>
-  <component name="RunManager" selected="JUnit.CoursControllerTest.testComparerCours_withoutMockContext">
+}</component>
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="IFT2255_Implementation" />
@@ -99,22 +160,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CoursControllerTest.testComparerCours_withMockContext" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="IFT2255_Implementation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.controller" />
-      <option name="MAIN_CLASS_NAME" value="org.example.controller.CoursControllerTest" />
-      <option name="METHOD_NAME" value="testComparerCours_withMockContext" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -167,13 +212,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CoursServiceTest.testValidateIdCoursValide" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.service" />
+      <option name="MAIN_CLASS_NAME" value="org.example.service.CoursServiceTest" />
+      <option name="METHOD_NAME" value="testValidateIdCoursValide" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withoutMockContext" />
-        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withMockContext" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.CoursServiceTest.testComparerCoursExistants" />
         <item itemvalue="JUnit.CoursServiceTest.testComparerCoursCoursInexistant" />
+        <item itemvalue="JUnit.CoursServiceTest.testValidateIdCoursValide" />
+        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withoutMockContext" />
       </list>
     </recent_temporary>
   </component>
@@ -189,6 +250,7 @@
       <workItem from="1764035545427" duration="6588000" />
       <workItem from="1764084323444" duration="5823000" />
       <workItem from="1764264432723" duration="8219000" />
+      <workItem from="1764603370378" duration="10881000" />
     </task>
     <task id="LOCAL-00001" summary="Ajouts des classes de tests avec une methode vide.">
       <option name="closed" value="true" />
@@ -230,7 +292,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764367909781</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Classes pour les dossiers /route et /util">
+      <option name="closed" value="true" />
+      <created>1764369901375</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764369901375</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,7 +323,8 @@
     <MESSAGE value="Ajout de codes dans les classes du fichiers /controller." />
     <MESSAGE value="Ajout de codes dans les classes du fichiers /service." />
     <MESSAGE value="Ajouts du package dans les classes de test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajouts du package dans les classes de test" />
+    <MESSAGE value="Classes pour les dossiers /route et /util" />
+    <option name="LAST_COMMIT_MESSAGE" value="Classes pour les dossiers /route et /util" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

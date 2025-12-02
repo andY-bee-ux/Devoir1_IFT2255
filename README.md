@@ -125,3 +125,26 @@ Lors de l’appel à `/cours/comparer`, les **critères suivants** sont à consi
 | `requirement_text` | Exigences spécifiques |
 | `available_terms` | Termes disponibles |
 | `available_periods` | Périodes disponibles |
+
+#### POST /cours/comparer/combinaison
+Compare des combinaisons de cours.
+
+**Format pour le body de la requête:**
+{
+  "cours": [["idCours1", "idCours2",...],["idCours1","idCours2",...],...]
+}
+
+**Exemple de Body JSON attendu :**
+{
+  "cours":[["IFT1025", "IFT2255"], ["IFT1015", "IFT2015"]],
+  
+}
+
+**Exemple de réponse JSON**: ( status 200)
+[
+  ["IFT1025","Introduction à l'informatique","3"],
+  ["IFT2255","Structures de données","3"]
+]
+
+**Exemple de réponse JSON ( status 400)**:
+La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours.

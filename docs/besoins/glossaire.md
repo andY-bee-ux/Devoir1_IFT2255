@@ -14,7 +14,6 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 | Programme d'étude | Ensemble structuré de cours et d'activités pédagogiques menant a l'obtention d'un diplome.
 | Bot Discord | Programme automatisé intégré à Discord qui permet de collecter les avis des étudiants sur les cours (difficulté, charge de travail, commentaires) et de les transmettre au système sous format structuré (ex. : JSON). 
 | Planifium | Interface de programmation donnant accès au catalogue officiel des programmes, cours, crédits, préalables et horaires de l’Université de Montréal.
-| Autres types d'etudiant | Cette catégorie regroupe l’ensemble des profils d’étudiants fréquentant les cours offerts par le DIRO et présentant des particularités dans leur parcours, incluant notamment les anciens étudiants, les étudiants internationaux, les étudiants parents, les étudiants inscrits à temps partiel, ainsi que les personnes ayant déjà suivi un cours sans être inscrites dans un programme officiel du département.
 |  Personnalisation | Fonctionnalité permettant à l’étudiant de définir ses préférences (théorie/pratique, centres d’intérêt) afin d’obtenir des recommandations et résultats adaptés à son profil.
 | Avis étudiants | Commentaires et évaluations recueillis auprès des étudiants (via Discord) décrivant leur expérience d’un cours — difficulté, charge de travail, satisfaction, etc.
 | Résultats academique | Données agrégées indiquant la moyenne, le nombre d’inscrits et d’échecs d’un cours à une session donnée.
@@ -22,6 +21,8 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 | Interface | Partie visible et interactive du système permettant à l’utilisateur (étudiant) d’accéder aux informations et fonctionnalités — par exemple, la page web où il peut rechercher, comparer ou consulter les cours.
 | Eligible | Se dit d’un étudiant qui remplit les conditions nécessaires (prérequis, co-requis, cycle ou statut) pour s’inscrire à un cours donné.
 | étudiant international | étudiant inscrit dans un établissement supérieur d'un pays autre que son pays d'origine.
+|étudiant parent | étudiant qui est également un parent.
+|étudiant travailleur| étudiant qui combine un emploi avec ses études.
 | retour aux études | reprise d'un parcours scolaire ou universitaire après une période d'interruption.
 | crédits | unité de mesure représentant la charge de travail associée a un cours dans un programme d'études.
 | gpa | Moyenne pondéréee des notes d'un étudiant, calculée sur une échelle 0 a 4.3.
