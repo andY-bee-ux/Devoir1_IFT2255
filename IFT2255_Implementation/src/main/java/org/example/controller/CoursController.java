@@ -58,7 +58,7 @@ public class CoursController {
 
         // coursService s'occupera de la logique métier.
         List<List<String>> resultat =
-                coursService.comparerCours(req.cours, req.criteres);
+                coursService.comparerCours(req.cours, req.criteres,req.session);
 
         if (resultat == null) {
             ctx.status(400);
@@ -92,6 +92,7 @@ public class CoursController {
     public static class RequeteComparaison {
         public String[] cours;
         public String[] criteres;
+        public String session;
     }
 
     /**
