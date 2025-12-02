@@ -2,11 +2,6 @@ package org.example.config;
 
 import io.javalin.Javalin;
 import org.example.controller.CoursController;
-import org.example.controller.UserController;
-import org.example.model.Cours;
-import org.example.service.CoursService;
-import org.example.service.UserService;
-import org.example.util.HttpClientApi;
 
 public class Routes {
     // Ce code provient du repertoire GitHub : ift2255-template-javalin fournit pour ce projet.
@@ -34,11 +29,18 @@ public class Routes {
      * @param app Il s'agit d'une instanciation du serveur Javalin.
      **/
     private static void resgistreCoursRoutes(Javalin app){
-        CoursService coursService = new CoursService(new HttpClientApi());
-        CoursController coursController = new CoursController(coursService);
+        CoursController coursController = new CoursController();
 
-        app.get("/courses", coursController :: getAllCourses);
-        app.get("/courses/{id}", coursController :: getCourseById);
+        app.post("/cours/comparer", coursController::comparerCours);
+        app.post("/cours/rechercher", coursController::rechercherCours);
+        app.post("/cours/eligibilite",coursController::checkEligibility);
+        app.post("/cours/comparer/combinaison", coursController::comparerCombinaisonCours);
+        app.post("/avis", ctx -> {
+            String body = ctx.body();
+            System.out.println("Avis reçu: " + body);
+            ctx.result("Avis reçu avec succès");
+            
+        });
     }
 
     /**
