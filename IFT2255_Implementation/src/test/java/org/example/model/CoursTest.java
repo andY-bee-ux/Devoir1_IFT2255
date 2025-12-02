@@ -42,7 +42,7 @@ public class CoursTest {
     @Test
     @DisplayName("Test de la structure imbriquée (Schedule -> Section)")
     void testStructureImbriquee() {
-        // 1. On prépare les données (ARRANGE)
+        // 1. ARRANGE
         Cours cours = new Cours();
         Cours.Schedule schedule = new Cours.Schedule();
         Cours.Section section = new Cours.Section();
@@ -62,7 +62,7 @@ public class CoursTest {
         schedules.add(schedule);
         cours.setSchedules(schedules);
 
-        // 2. On vérifie (ASSERT)
+        // 2. ASSERT
         // Vérifie que la liste n'est pas vide
         assertNotNull(cours.getSchedules(), "La liste des horaires ne doit pas être null");
         assertFalse(cours.getSchedules().isEmpty(), "La liste des horaires doit contenir un élément");
@@ -79,7 +79,7 @@ public class CoursTest {
     @Test
     @DisplayName("Les prérequis (Tableau) et les disponibilités (Map) sont bien gérés")
     void testCollections() {
-        // --- ARRANGE 
+        //  ARRANGE 
         Cours cours = new Cours();
         
         // On prépare un tableau de String
@@ -90,7 +90,7 @@ public class CoursTest {
         disponibilites.put("Hiver", true);
         disponibilites.put("Ete", false);
 
-        // --- ACT (Action) ---
+        //  ACT 
         cours.setPrerequisite_courses(prealables);
         cours.setAvailable_terms(disponibilites);
 
