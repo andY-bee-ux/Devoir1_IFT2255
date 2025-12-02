@@ -7,6 +7,8 @@ import org.example.repository.CoursRepository;
 
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Cette classe permet de gérer la logique métier associée à la manipulation des cours.
@@ -85,9 +87,10 @@ public class CoursService {
      * Cette méthode permet de comparer une liste de cours selon des critères donnés.
      * @param cours cours à comparer
      * @param criteresComparaison critères de comparaison
+     * @param session utile lorsque l'utilisateur veut comparer les horaires des cours ( il devra idéalement préciser la session sur laquelle faire la comparaison)
      * @return un tableau contenant les "valeurs" critères associés aux cours.
      */
-    public List<List<String>> comparerCours(String[] cours, String[] criteresComparaison) {
+    public List<List<String>> comparerCours(String[] cours, String[] criteresComparaison,String session) {
 
         List<List<String>> resultatDeComparaison = new ArrayList<>();
 
@@ -144,8 +147,24 @@ public class CoursService {
                         break;
 
                     case "schedules":
-                        ligne.add(Arrays.toString(coursObj.getSchedules().toArray()));
+                        if (session == null || session.isBlank()) {
+                            // Si l'utilisateur ne spécifie pas de session, on affiche tous les schedules
+                            ligne.add(
+                                    coursObj.getSchedules().stream()
+                                            .map(Cours.Schedule::toString)
+                                            .collect(Collectors.joining("\n---\n"))
+                            );
+                        } else {
+                            // Si non, on affiche uniquement les horaires pour le semester choisi
+                            ligne.add(
+                                    coursObj.getSchedules().stream()
+                                            .map(schedule -> schedule.toStringPourSemester(session))
+                                            .collect(Collectors.joining("\n---\n"))
+                            );
+                        }
                         break;
+
+
 
                     case "prerequisite_courses":
                         ligne.add(Arrays.toString(coursObj.getPrerequisite_courses()));
@@ -212,7 +231,7 @@ public class CoursService {
 
         for (List<String> combinaison : listeDeListesDeCours) {
 
-            // Transformer les ids → objets Cours
+            // Transformer les ids en objets Cours
             List<Cours> coursCombinaison = new ArrayList<>();
 
             for (String idCours : combinaison) {
@@ -234,14 +253,14 @@ public class CoursService {
                 }
             }
 
-            // ---- MÉTRIQUES
+            // métriques de comparaison
             int creditsTotaux = 0;
             Set<String> prerequis = new HashSet<>();
             Set<String> concomitants = new HashSet<>();
             Map<String, Boolean> periodesCommunes = null;
             Map<String, Boolean> sessionsCommunes = null;
 
-            // ---- HORAIRE POUR LA SESSION CHOISIE
+            // horaires pour la session choisie
             List<ActivityInfo> activities = new ArrayList<>();
 
             for (Cours c : coursCombinaison) {
@@ -418,11 +437,12 @@ public class CoursService {
         }
 
 
-        // Transformation en upper case si param == id
+        // Transformation en upper case si param == id ( pour ne pas générer d'erreur si l'utilisateur saisit ift1015 par exemple)
         if (param.equalsIgnoreCase("id") && value != null) {
             value = value.toUpperCase();
             // Vérifier la validité de l'ID
             if (!this.validateIdCours(value)) {
+                System.out.println("L'id de cours est invalide. Veuillez saisir un id valide ( Ex: IFT1025)");
                 return Optional.empty();
             }
         }
@@ -440,6 +460,7 @@ public class CoursService {
 
             // Si null ou liste vide, on return empty
             if (coursListOpt.isEmpty() || coursListOpt.get().isEmpty()) {
+                System.out.println("Le cours n'a pas été trouvé. Veuillez vérifier la documentation et fournir un body json correct.")
                 return Optional.empty();
             }
 
@@ -514,12 +535,6 @@ public class CoursService {
 
 
     }
-
-
-
-
-
-
 
 }
 

@@ -7,11 +7,8 @@
     <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/CoursRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/CoursRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +191,8 @@
       <workItem from="1764035545427" duration="6588000" />
       <workItem from="1764084323444" duration="5823000" />
       <workItem from="1764264432723" duration="8219000" />
-      <workItem from="1764603370378" duration="10881000" />
+      <workItem from="1764603370378" duration="11493000" />
+      <workItem from="1764647420579" duration="5124000" />
     </task>
     <task id="LOCAL-00001" summary="Ajouts des classes de tests avec une methode vide.">
       <option name="closed" value="true" />

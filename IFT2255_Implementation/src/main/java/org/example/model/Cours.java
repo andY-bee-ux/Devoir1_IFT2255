@@ -87,6 +87,68 @@ public class Cours {
         public List<Section> getSections() {
             return sections;
         }
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append(semester).append("\n");
+
+            if (sections != null) {
+                for (Section sec : sections) {
+                    sb.append("Section ").append(sec.getName()).append("\n");
+
+                    if (sec.getVolets() != null) {
+                        for (Volet v : sec.getVolets()) {
+
+                            if (v.getActivities() != null) {
+                                for (Activity a : v.getActivities()) {
+                                    sb.append(String.join("/", a.getDays()))
+                                            .append(" ")
+                                            .append(a.getStart_time()).append("–").append(a.getEnd_time())
+                                            .append(" (").append(a.getMode()).append(")")
+                                            .append("\n");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return sb.toString().trim();
+        }
+
+        public String toStringPourSemester(String semesterRecherche) {
+            StringBuilder sb = new StringBuilder();
+
+            if (!this.semester.equalsIgnoreCase(semesterRecherche)) {
+                return "Aucun schedule pour le semester " + semesterRecherche;
+            }
+
+            sb.append("Semester ").append(this.semester).append("\n");
+
+            if (sections != null) {
+                for (Section sec : sections) {
+                    sb.append("Section ").append(sec.getName()).append("\n");
+
+                    if (sec.getVolets() != null) {
+                        for (Volet v : sec.getVolets()) {
+
+                            if (v.getActivities() != null) {
+                                for (Activity a : v.getActivities()) {
+                                    sb.append(String.join("/", a.getDays()))
+                                            .append(" ")
+                                            .append(a.getStart_time()).append("–").append(a.getEnd_time())
+                                            .append(" (").append(a.getMode()).append(")")
+                                            .append("\n");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return sb.toString().trim();
+        }
 
 
     }
