@@ -41,9 +41,9 @@ title: Vue d'ensemble
 
 | Tâches                                  | Terminé le | Statut     | Responsable |
 |-----------------------------------------|------------|------------|-------------|
-| Révision et intégration du feedback                               |            | 🛠️ En cours| `M1` `M2` `M3` `M4` |
-| Modèle C4                               |            | 🛠️ En cours|             |
-| Justification des choix de design       |            | 📌 À faire           |             |
+| Révision et intégration du feedback        12/01/25          | ✅ Terminé |   `M1` `M2` `M3` `M4`          |
+| Modèle C4                               |            | ✅ Terminé|    `M3`         |
+| Justification des choix de design       |            | ✅ Terminé           |             |
 | Diagramme de classes    |            | 🛠️ En cours           | `M1` `M2` `M3` `M4`            |
 | Diagrammes de séquence  |            |   📌 À faire         |             |
 | Implémentation des fonctionnalités       |            |📌 À faire            | `M1` `M2` `M3` `M4`            |
