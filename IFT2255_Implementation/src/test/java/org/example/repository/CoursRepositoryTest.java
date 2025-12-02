@@ -84,4 +84,27 @@ public class CoursRepositoryTest {
 
         assertTrue(opt.isEmpty(), "Un id inexistant doit retourner Optional.empty()");
     }
+
+    @Test
+    @DisplayName("getCourseBy('name') retourne une liste de cours par recherche de mot-clé")
+    void testGetCourseByName() throws Exception {
+        // Teste la recherche par NOM avec un mot-clé courant
+        Optional<List<Cours>> opt = repo.getCourseBy("name", "Programmation", "false", null);
+
+        assertTrue(opt.isPresent(), "La recherche par nom devrait retourner un résultat");
+        assertFalse(opt.get().isEmpty(), "La liste ne devrait pas être vide");
+        
+        // Vérifie le contenu
+        assertTrue(opt.get().get(0).getName().contains("Programmation"));
+    }
+
+    @Test
+    @DisplayName("getCourseEligibility() retourne une réponse JSON valide (Requête POST)")
+    void testGetCourseEligibility() throws Exception {
+        // Teste la connexion réelle à l'API Planifium
+        String jsonReponse = repo.getCourseEligibility("IFT2255", List.of("IFT1025"));
+
+        assertNotNull(jsonReponse, "La réponse de l'API ne doit pas être null");
+        assertTrue(jsonReponse.contains("eligible"), "Le JSON retourné devrait contenir le champ 'eligible'");
+    }
 }

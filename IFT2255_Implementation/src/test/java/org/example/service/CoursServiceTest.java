@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class CoursServiceTest {
@@ -140,4 +142,25 @@ class CoursServiceTest {
 
         assertEquals("Une erreur est survenue lors de la vérification d'éligibilité.", r);
     }
+
+    @Test
+    @DisplayName("checkEligibility() : Gèreune réponse JSON invalide (ne plante pas)")
+    void testCheckEligibility_ProtectionContreJsonCorrompu() throws Exception {
+        //ARRANGE 
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255")));
+
+        // Le serveur renvoie du HTML d'erreur ou du texte vide au lieu du JSON
+        when(mockRepo.getCourseEligibility(anyString(), anyList()))
+                .thenReturn("<html><body>500 Internal Server Error</body></html>");
+
+        // ACT 
+        String resultat = service.checkEligibility("IFT2255", List.of());
+
+        // ASSERT 
+        // On vérifie qu'on est bien tombé dans le catch
+        // et que l'utilisateur reçoit un message propre au lieu d'une "crash page".
+        assertEquals("Une erreur est survenue lors de la vérification d'éligibilité.", resultat);
+    }
 }
+
