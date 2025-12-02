@@ -9,84 +9,79 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CoursRepositoryTest {
-    CoursRepository coursRepository = CoursRepository.getInstance();
+
+    CoursRepository repo = CoursRepository.getInstance();
 
     @Test
-    @DisplayName("getAllCourses() devrait retourner une liste non vide")
-    void testGetAllCoursesIdListeNonVide() throws Exception {
+    @DisplayName("getAllCoursesId() retourne une liste non vide")
+    void testGetAllCoursesIdNonVide() throws Exception {
+        Optional<List<String>> opt = repo.getAllCoursesId();
 
-        // ACT
-        Optional<List<String>> optListe = coursRepository.getAllCoursesId();
-
-        // ASSERT : l'Optional doit être présent
-        assertTrue(optListe.isPresent(), "La liste ne devrait pas être vide");
-
-        List<String> liste = optListe.get();
-
-        // ASSERT : il doit y avoir au moins 1 cours
-        assertFalse(liste.isEmpty(), "Il devrait y avoir au moins un cours");
-
-    }
-    @Test
-    @DisplayName("La liste de cours devrait contenir le cours ift2255")
-    void testGetAllCoursesIdListeCoursIft2255() throws Exception {
-        Optional<List<String>> optListe = coursRepository.getAllCoursesId();
-        // je sais pas si c'est nécessaire de le remettre ici
-        assertTrue(optListe.isPresent(), "La liste ne devrait pas être vide");
-        List<String> liste = optListe.get();
-        assertTrue(liste.contains("IFT2255"), "La liste devrait contenir le cours ift2255");
-    }
-
-    // je ne pense pas que ce soit nécessaire de tester l'échec car cela serait plus imputable à Planifium qu'à nous en cas d'erreur...
-//    @Test
-//    @DisplayName("La liste de cours ne devrait pas contenir ")
-//    void testGetAllCoursesListeCoursIft2255() throws Exception {
-//        Optional<List<String>> optListe = coursRepository.getAllCourses();
-//        // je sais pas si c'est nécessaire de le remettre ici
-//        assertTrue(optListe.isPresent(), "La liste ne devrait pas être vide");
-//        List<String> liste = optListe.get();
-//        assertTrue(liste.contains("ift2255"), "La liste devrait contenir le cours ift2255");
-//    }
-
-    // test d'invariance
-    @Test
-    @DisplayName("La méthode getCoursById() retourne bien le cours recherché")
-    void testGetCoursByIdCoursIFT1025() throws Exception {
-        Optional<Cours> optListe = coursRepository.getCourseById("IFT1025");
-        assertTrue(optListe.isPresent(), "Ça devrait retourner un objet Cours");
-        Cours cours = optListe.get();
-        assertTrue( cours.getId().equals("IFT1025"));
-
+        assertTrue(opt.isPresent(), "L'Optional doit être présent");
+        assertFalse(opt.get().isEmpty(), "La liste doit contenir au moins un cours");
     }
 
     @Test
-    @DisplayName("La méthode getCoursById() retourne bien le cours recherché")
-    void testGetCoursByIdCoursIFT1025BonNom() throws Exception {
-        Optional<Cours> optListe = coursRepository.getCourseById("IFT1025");
-        assertTrue(optListe.isPresent(), "Ça devrait retourner un objet Cours");
-        Cours cours = optListe.get();
-        assertTrue( cours.getName().equals("Programmation 2"), "le nom du cours de id IFT1025 est Programmation 2");
+    @DisplayName("getAllCoursesId() contient IFT2255")
+    void testGetAllCoursesIdContainsIFT2255() throws Exception {
+        Optional<List<String>> opt = repo.getAllCoursesId();
 
+        assertTrue(opt.isPresent());
+        List<String> ids = opt.get();
+
+        assertTrue(ids.contains("IFT2255"), "IFT2255 devrait être présent");
     }
 
     @Test
-    @DisplayName("getCourseById() devrait retourner Optional.empty pour un id inexistant")
-    void testGetCoursByIdInexistant() throws Exception {
-        Optional<Cours> optCours = coursRepository.getCourseById("XYZ0000");
-        assertTrue(optCours.isEmpty(), "Un id inexistant doit retourner Optional.empty()");
-    }
-    @Test
-    @DisplayName("La liste de cours ne doit pas contenir de doublons")
+    @DisplayName("getAllCoursesId() ne contient pas de doublons")
     void testGetAllCoursesIdPasDeDoublons() throws Exception {
-        Optional<List<String>> optListe = coursRepository.getAllCoursesId();
-        assertTrue(optListe.isPresent());
-        List<String> liste = optListe.get();
+        List<String> ids = repo.getAllCoursesId().orElseThrow();
 
-        Set<String> set = new HashSet<>(liste);
-        Set<String> uniques = new HashSet<>();
+        Set<String> uniques = new HashSet<>(ids);
 
-        assertEquals(set.size(), liste.size(), "Il ne devrait pas y avoir de doublons dans la liste des cours");
+        assertEquals(
+                uniques.size(), ids.size(),
+                "Il ne devrait pas y avoir de doublons"
+        );
     }
 
 
+    @Test
+    @DisplayName("getCourseBy(id) retourne une liste contenant le cours demandé")
+    void testGetCourseByIdIFT1025() throws Exception {
+
+        Optional<List<Cours>> opt =
+                repo.getCourseBy("id", "IFT1025", null, null);
+
+        assertTrue(opt.isPresent(), "L'Optional doit être présent");
+
+        List<Cours> list = opt.get();
+        assertEquals(1, list.size(), "La recherche par id doit retourner un seul Cours");
+
+        Cours cours = list.get(0);
+        assertEquals("IFT1025", cours.getId());
+    }
+
+    @Test
+    @DisplayName("getCourseBy(id) retourne un nom cohérent pour IFT1025")
+    void testGetCourseByIdCheckName() throws Exception {
+
+        List<Cours> list =
+                repo.getCourseBy("id", "IFT1025", null, null)
+                        .orElseThrow();
+
+        Cours cours = list.get(0);
+
+        assertEquals("Programmation 2", cours.getName());
+    }
+
+    @Test
+    @DisplayName("getCourseBy(id) retourne Optional.empty() pour un id inexistant")
+    void testGetCourseByIdCoursInexistant() throws Exception {
+
+        Optional<List<Cours>> opt =
+                repo.getCourseBy("id", "TIDJANI45", null, null);
+
+        assertTrue(opt.isEmpty(), "Un id inexistant doit retourner Optional.empty()");
+    }
 }
