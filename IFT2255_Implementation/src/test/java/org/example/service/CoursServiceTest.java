@@ -70,7 +70,7 @@ class CoursServiceTest {
         String r = service.checkEligibility("TJ5035", List.of("IFT1025"));
 
         assertEquals("L'id du cours est invalide", r);
-        verify(mockRepo, never()).checkCourseEligibility(anyString(), anyList());
+        verify(mockRepo, never()).getCourseEligibility(anyString(), anyList());
     }
 
     @Test
@@ -83,7 +83,7 @@ class CoursServiceTest {
         String r = service.checkEligibility("IFT2255", List.of("TJOFF3334"));
 
         assertEquals("Il y a des cours complétés invalides", r);
-        verify(mockRepo, never()).checkCourseEligibility(anyString(), anyList());
+        verify(mockRepo, never()).getCourseEligibility(anyString(), anyList());
     }
 
     @Test
@@ -92,7 +92,7 @@ class CoursServiceTest {
         when(mockRepo.getAllCoursesId())
                 .thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
 
-        when(mockRepo.checkCourseEligibility("IFT2255", List.of("IFT1025")))
+        when(mockRepo.getCourseEligibility("IFT2255", List.of("IFT1025")))
                 .thenReturn("""
                     {
                       "eligible": true,
@@ -111,7 +111,7 @@ class CoursServiceTest {
         when(mockRepo.getAllCoursesId())
                 .thenReturn(Optional.of(List.of("IFT1025", "IFT2255", "IFT1000")));
 
-        when(mockRepo.checkCourseEligibility("IFT2255", List.of("IFT1000")))
+        when(mockRepo.getCourseEligibility("IFT2255", List.of("IFT1000")))
                 .thenReturn("""
                     {
                       "eligible": false,
@@ -133,7 +133,7 @@ class CoursServiceTest {
         when(mockRepo.getAllCoursesId())
                 .thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
 
-        when(mockRepo.checkCourseEligibility(anyString(), anyList()))
+        when(mockRepo.getCourseEligibility(anyString(), anyList()))
                 .thenThrow(new RuntimeException("Erreur Planifium"));
 
         String r = service.checkEligibility("IFT2255", List.of("IFT1025"));
