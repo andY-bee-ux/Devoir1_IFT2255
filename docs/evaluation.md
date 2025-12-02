@@ -26,7 +26,7 @@ title: Évaluation et tests
 
 L'oracle des tests est donné ci-dessous:
 
-| Module | Entité | Entrée | Sortie attendue |Type | Description |
+| Module | Entité | Entrée | Sortie attendue | Type | Description |
 | comparerCours | Controller | { "cours" : ["IFT1025", "IFT2255"], "criteres" : ["name", "credits"]} | Liste de cours comparés| Succès| Si les critères ainsi que les ids des cours sont valides, on s'attend à ce que la réponse ait un statut de succès (200), et à s'attend à avoir une liste.|
 
 | comparerCours | Controller | { "cours" : ["IFT1025", "IFT2255"], "criteres" : ["nom", "credits"]} | message "Critère inconnu"| Échec| Si un critère est invalide, on s'attend à recevoir un message d'erreur.|
