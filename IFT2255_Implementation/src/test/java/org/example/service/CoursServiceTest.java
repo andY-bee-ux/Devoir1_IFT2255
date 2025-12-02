@@ -1,110 +1,143 @@
 package org.example.service;
-import org.example.model.Cours;
+
 import org.example.repository.CoursRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CoursServiceTest {
 
-    CoursRepository mockRepo;
-    CoursService service;
+    private CoursRepository mockRepo;
+    private CoursService service;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         mockRepo = mock(CoursRepository.class);
+
+        Field instanceField = CoursService.class.getDeclaredField("instance");
+        instanceField.setAccessible(true);
+        instanceField.set(null, null); 
+
         service = CoursService.getInstance();
-        service.setCoursRepository(mockRepo);
+
+        Field repoField = CoursService.class.getDeclaredField("coursRepository");
+        repoField.setAccessible(true);
+        repoField.set(service, mockRepo);
     }
+
     @Test
+    @DisplayName("validateIdCours() retourne true pour un id valide")
     void testValidateIdCoursValide() throws Exception {
-        // Arrange
-        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(Arrays.asList("IFT1025", "IFT2255")));
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
 
-        // On utilise reflection car validateIdCours est private
-        Method method = CoursService.class.getDeclaredMethod("validateIdCours", String.class);
-        method.setAccessible(true);
-        boolean result = (boolean)(method.invoke(service, "IFT1025"));
+        Method m = CoursService.class.getDeclaredMethod("validateIdCours", String.class);
+        m.setAccessible(true);
 
-        // Assert
-        assertTrue(result);
+        boolean res = (boolean) m.invoke(service, "IFT1025");
+
+        assertTrue(res);
     }
 
     @Test
-    void testComparerCoursCoursInexistant() throws Exception {
-        // Arrange
-        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(Arrays.asList("IFT1025")));
-        when(mockRepo.getCourseBy("id","IFT1025",null,null)).thenReturn(Optional.empty());
+    @DisplayName("validateIdCours() retourne false pour un id invalide")
+    void testValidateIdCoursInvalide() throws Exception {
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
 
-        // Act
-        List<List<String>> result = service.comparerCours(new String[]{"IFT1025"}, new String[]{"id", "name"});
+        Method m = CoursService.class.getDeclaredMethod("validateIdCours", String.class);
+        m.setAccessible(true);
 
-        // Assert
-        assertNull(result, "Si le cours n'existe pas, la méthode devrait retourner null");
+        boolean res = (boolean) m.invoke(service, "IAMTIDJANI02");
+
+        assertFalse(res);
     }
 
     @Test
-    void testComparerCoursExistants() throws Exception {
-        // Création de cours mockés
-        Cours cours1 = new Cours(
-                Map.of("A2025", true),
-                "IFT1025",
-                "Cours de programmation 2",
-                "Programmation 2",
-                "Hiver",
-                null,
-                new String[]{"IFT1001"},
-                new String[]{},
-                new String[]{},
-                "https://udem.ca/IFT1025",
-                3.0f,
-                "Pré-requis: IFT1001",
-                Map.of("Term1", true)
-        );
+    @DisplayName("checkEligibility() retourne un message d'erreur si l'id du cours est invalide")
+    void testCheckEligibilityIdCoursInvalide() throws Exception {
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
 
-        Cours cours2 = new Cours(
-                Map.of("A2025", true),
-                "IFT2255",
-                "Cours d'algorithmes",
-                "Algorithmes",
-                "Automne",
-                null,
-                new String[]{"IFT1025"},
-                new String[]{},
-                new String[]{},
-                "https://udem.ca/IFT2255",
-                3.0f,
-                "Pré-requis: IFT1025",
-                Map.of("Term1", true)
-        );
+        String r = service.checkEligibility("TJ5035", List.of("IFT1025"));
 
-        // Mock du repository
-        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(Arrays.asList("IFT1025", "IFT2255")));
-        when(mockRepo.getCourseBy("id","IFT1025",null,null)).thenReturn(Optional.of(Arrays.asList(cours1)));
-        when(mockRepo.getCourseBy("id","IFT2255",null,null)).thenReturn(Optional.of(Arrays.asList(cours2)));
-
-        // Critères à comparer
-        String[] coursIds = {"IFT1025", "IFT2255"};
-        String[] criteres = {"id", "name", "credits"};
-
-        // Appel de la méthode
-        List<List<String>> resultat = service.comparerCours(coursIds, criteres);
-
-        // Vérifications
-        assertNotNull(resultat);
-        assertEquals(2, resultat.size());
-
-        List<String> ligne1 = resultat.get(0);
-        assertEquals(Arrays.asList("IFT1025", "IFT1025", "Programmation 2", "3.0"), ligne1);
-
-        List<String> ligne2 = resultat.get(1);
-        assertEquals(Arrays.asList("IFT2255", "IFT2255", "Algorithmes", "3.0"), ligne2);
+        assertEquals("L'id du cours est invalide", r);
+        verify(mockRepo, never()).getCourseEligibility(anyString(), anyList());
     }
 
+    @Test
+    @DisplayName("checkEligibility() retourne un message si des cours complétés sont invalides")
+    void testCheckEligibilityCoursCompletesInvalides() throws Exception {
+
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255")));
+
+        String r = service.checkEligibility("IFT2255", List.of("TJOFF3334"));
+
+        assertEquals("Il y a des cours complétés invalides", r);
+        verify(mockRepo, never()).getCourseEligibility(anyString(), anyList());
+    }
+
+    @Test
+    @DisplayName("checkEligibility() éligible")
+    void testCheckEligibilityEligible() throws Exception {
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
+
+        when(mockRepo.getCourseEligibility("IFT2255", List.of("IFT1025")))
+                .thenReturn("""
+                    {
+                      "eligible": true,
+                      "missing_prerequisites": []
+                    }
+                """);
+
+        String r = service.checkEligibility("IFT2255", List.of("IFT1025"));
+
+        assertEquals("Vous êtes éligible à ce cours!", r);
+    }
+
+    @Test
+    @DisplayName("checkEligibility() non éligible")
+    void testCheckEligibilityNonEligible() throws Exception {
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT1025", "IFT2255", "IFT1000")));
+
+        when(mockRepo.getCourseEligibility("IFT2255", List.of("IFT1000")))
+                .thenReturn("""
+                    {
+                      "eligible": false,
+                      "missing_prerequisites": ["IFT1025"]
+                    }
+                """);
+
+        String r = service.checkEligibility("IFT2255", List.of("IFT1000"));
+
+        assertEquals(
+                "Vous n'êtes pas éligible à ce cours. Il vous manque les prerequis suivants : IFT1025",
+                r
+        );
+    }
+
+    @Test
+    @DisplayName("checkEligibility() gère l'exception du repository")
+    void testCheckEligibilityExceptionRepository() throws Exception {
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
+
+        when(mockRepo.getCourseEligibility(anyString(), anyList()))
+                .thenThrow(new RuntimeException("Erreur Planifium"));
+
+        String r = service.checkEligibility("IFT2255", List.of("IFT1025"));
+
+        assertEquals("Une erreur est survenue lors de la vérification d'éligibilité.", r);
+    }
 }

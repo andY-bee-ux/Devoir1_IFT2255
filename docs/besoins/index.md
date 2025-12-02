@@ -4,10 +4,6 @@ title: Analyse des besoins - Présentation générale
 
 # Présentation du projet
 
-## Méthodologie pour la cueillette des données
-
-TODO: Préciser comment les besoins ont été collectés (entrevues, questionnaires, brainstorming, etc.).
-
 ## Description du domaine
 
 ### Fonctionnement

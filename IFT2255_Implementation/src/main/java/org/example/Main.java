@@ -12,5 +12,11 @@ public class Main {
         app.post("/cours/rechercher", coursController::rechercherCours);
         app.post("/cours/eligibilite",coursController::checkEligibility);
         app.post("/cours/comparer/combinaison", coursController::comparerCombinaisonCours);
+        app.post("/avis", ctx -> {
+            String body = ctx.body();
+            System.out.println("Avis reçu: " + body);
+            ctx.result("Avis reçu avec succès");
+            
+        });
     }
 }
