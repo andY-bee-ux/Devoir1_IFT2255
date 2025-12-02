@@ -4,13 +4,26 @@ title: Conception - Diagrammes UML
 
 # Diagrammes UML
 
-## Diagrammes de classes
+## Diagramme de classes
 
-- Modèle de données orienté objet
+<!-- Ajouter diagramme de classes -->
+![Diagramme de classes"](../images/...)
 
 ## Diagrammes de séquence
 
-- Comparer cours : [TODO: Ajouter une petite description ?]
+- Recherche de cours : 
 
-![Diagramme de séquence lié au CU "Comparer cours"](../images/comparer_cours_seq.jpg)
+<!-- Ajouter diagramme de séquence "Rechercher cours" -->
 
+![Diagramme de séquence lié au CU "Recherche de cours"](../images/...)
+
+
+- Comparer des cours : 
+
+![Diagramme de séquence lié au CU "Comparer des cours"](../images/comparer_cours_seq.jpg)
+
+
+- Soumettre un avis :
+<!-- Ajouter diagramme de séquence "Soumettre un avis" -->
+
+![Diagramme de séquence lié au CU "Soumettre un avis"](../images/...)
