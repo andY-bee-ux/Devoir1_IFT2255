@@ -1,4 +1,3 @@
-<!-- Pour plus tard
 ---
 title: Implémentation
 ---
@@ -35,4 +34,3 @@ title: Implémentation
 
 - Utilisation de middleware
 - Refonte partielle de certains modules
--->
