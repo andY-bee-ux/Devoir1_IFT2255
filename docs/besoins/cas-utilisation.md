@@ -4,7 +4,6 @@ title: Analyse des besoins - Cas d'utilisation
 
 # Cas d'utilisation
 
-## Vue d’ensemble
 
 
 ## Liste des cas d’utilisation
@@ -23,7 +22,7 @@ title: Analyse des besoins - Cas d'utilisation
 
 
 
-## Détail
+## Détails
 
 ### CU01 - Personnaliser profil
 
