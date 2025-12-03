@@ -104,6 +104,25 @@ Compare plusieurs cours selon des critères.
   ["IFT2255","Structures de données","3"]
 ]
 
+**Exemple de Body JSON attendu :**
+{
+    "cours":  ["IFT1215","ANG1933"],
+    "criteres": ["id","mode"]
+}
+
+**Exemple de réponse JSON**: ( status 200)
+[
+    [
+        "IFT1215",
+        "IFT1215",
+        "P"
+    ],
+    [
+        "ANG1933",
+        "ANG1933",
+        "AD, SD, MD"
+    ]
+]
 **Exemple de réponse JSON ( status 400)**:
 La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours.
 
@@ -125,6 +144,7 @@ Lors de l’appel à `/cours/comparer`, les **critères suivants** sont à consi
 | `requirement_text` | Exigences spécifiques |
 | `available_terms` | Termes disponibles |
 | `available_periods` | Périodes disponibles |
+| `mode` | Mode du cours ( P(présentiel), AD( à distance asynchrone) ou SD ( à distance synchrone)) |
 
 #### POST /cours/comparer/combinaison
 Compare des combinaisons de cours.
