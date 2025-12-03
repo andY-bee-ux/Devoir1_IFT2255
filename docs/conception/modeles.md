@@ -83,5 +83,5 @@ Représente les résultats académiques agrégés d’un étudiant.
 
 ## Évolution potentielle du modèle
 
-- Ajouter des statuts de réservation
-- Support multi-utilisateur par ressource
+Actuellement, l’horaire d’un cours est intégré directement dans l’entité Cours.
+Une évolution serait d’introduire des entités dédiées aux sessions, sections et activités. Cela permettrait d’éviter la duplication d’informations entre cours répétés chaque session, de représenter explicitement la structure réelle de l’université, et de faciliter la gestion des informations sur les sessions de manière indépendante du reste (popularité, taux de réussite, etc.).
