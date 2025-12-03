@@ -107,4 +107,16 @@ public class CoursRepositoryTest {
         assertNotNull(jsonReponse, "La réponse de l'API ne doit pas être null");
         assertTrue(jsonReponse.contains("eligible"), "Le JSON retourné devrait contenir le champ 'eligible'");
     }
+
+    // test d'invariance
+    @Test
+    @DisplayName("La méthode getCoursById() retourne bien le cours recherché")
+    void testGetCoursByIdCoursIFT1025() throws Exception {
+        Optional<Cours> optListe = coursRepository.getCourseById("IFT1025");
+        assertTrue(optListe.isPresent(), "Ça devrait retourner un objet Cours");
+        Cours cours = optListe.get();
+        assertTrue( cours.getId().equals("IFT1025"));
+
+    }
+
 }
