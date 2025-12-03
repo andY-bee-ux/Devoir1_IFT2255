@@ -25,6 +25,15 @@ title: Conception - Architecture
 
 ## Diagramme d’architecture (Modèle C4)
 
-![Niveau 1 du modèle C4](../images/image_diagrammec4_niveau1.jpg) *Diagramme pour le niveau 1 du modèle C4*.
+- Niveau 1 : 
 
-![Niveau 2 du modèle C4](../images/diagrammec4_niveau2.jpg) *Diagramme pour le niveau 1 du modèle C4*.
+![Niveau 1 du modèle C4](../images/image_diagrammec4_niveau1.jpg)
+
+- Niveau 2 : 
+
+![Niveau 2 du modèle C4](../images/diagrammec4_niveau2.jpg)
+
+- Niveau 3 :
+  
+<!-- Mettre le modèle C4 et supprimer ce commentaire -->
+![Niveau 3 du modèle C4](../images/...)
