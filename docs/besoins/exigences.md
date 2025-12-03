@@ -77,13 +77,16 @@ Ce sont celles qu’on doit absolument inclure dans la première version pour qu
 | Utilisateur authentifié | Compte personnel, fonctions principales | Réservation, historique |
 | Administrateur | Droits étendus, gestion des ressources | Création/suppression de ressources, gestion des utilisateurs |
 
+<!--
 ## Infrastructures
 
-> Informations sur l’environnement d’exécution cible, les outils ou plateformes nécessaires.
+Informations sur l’environnement d’exécution cible, les outils ou plateformes nécessaires.
 
 - Le système sera hébergé sur un serveur Ubuntu 22.04.
 - Base de données : PostgreSQL version 15.
 - Serveur Web : Nginx + Gunicorn (pour une app Python, par exemple).
 - Framework principal : [À spécifier selon le projet].
+-->
+
 
 
