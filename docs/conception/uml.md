@@ -13,9 +13,8 @@ title: Conception - Diagrammes UML
 
 - Recherche de cours : 
 
-<!-- Ajouter diagramme de séquence "Rechercher cours" -->
 
-![Diagramme de séquence lié au CU "Recherche de cours"](../images/...)
+![Diagramme de séquence lié au CU "Recherche de cours"](../images/rechercher_cours_seq.jpg)
 
 
 - Comparer des cours : 

@@ -460,7 +460,7 @@ public class CoursService {
 
             // Si null ou liste vide, on return empty
             if (coursListOpt.isEmpty() || coursListOpt.get().isEmpty()) {
-                System.out.println("Le cours n'a pas été trouvé. Veuillez vérifier la documentation et fournir un body json correct.")
+                System.out.println("Le cours n'a pas été trouvé. Veuillez vérifier la documentation et fournir un body json correct.");
                 return Optional.empty();
             }
 
