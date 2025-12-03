@@ -4,29 +4,8 @@ title: Analyse des besoins - Flux principaux
 
 # Flux d’interaction entre les acteurs et le système
 
-## Flux 1 : Créer un compte
-1. L'utilisateur clique sur le profil "Étudiant".
-2. Le système affiche la page de connexion.
-3. L'utilisateur clique sur "S'inscrire".
-4. Le système affiche la page d'inscription.
-5. L'utilisateur saisit son nom, ainsi que son mot de passe.
-6. L'utilisateur saisit son adresse email.
-7. Le système vérifie si l'adresse courriel est valide.
-8. Le système affiche la page de personnalisation de profil.
-9. L'utilisateur choisit ses préférences et donne des informations supplémentaires et clique sur "Terminer".
-10. Le système indique que le compte a été créé avec succès et affiche la page d'accueil.
 
-### Scénarios alternatifs
-- **3.a L'utilisateur a déjà un compte**
-  - Appel du cas *Se connecter*.
-- **6.a L'adresse courriel est invalide**
-  1. Le système indique à l'utilisateur qu'il doit s'agir d'une adresse de courriel de l'UdeM.
-  2. Le système invite l'utilisateur à réessayer.
-  3. Le scénario reprend à l'étape 6 (maximum de 3 essais pour éviter une boucle infinie).
-
----
-
-## Flux 2 : Voir les avis d'un cours
+## Flux 1 : Voir les avis d'un cours
 1. L'utilisateur recherche un cours.
 2. Le système vérifie la validité de la recherche.
 3. Le système affiche la page associée au cours.
@@ -49,7 +28,7 @@ title: Analyse des besoins - Flux principaux
 
 ---
 
-## Flux 3 : Voir les informations officielles associées à un cours
+## Flux 2 : Voir les informations officielles associées à un cours
 1. L'utilisateur recherche un cours.
 2. Le système vérifie la validité de la recherche.
 3. Le système affiche la page associée au cours.
@@ -72,7 +51,7 @@ title: Analyse des besoins - Flux principaux
 
 ---
 
-## Flux 4 : Comparer cours
+## Flux 3 : Comparer cours
 1. L'utilisateur sélectionne l'option "Comparer Cours".
 2. L'utilisateur recherche les cours qu'il veut comparer et les ajoute.
 3. Le système vérifie la validité de la recherche.
@@ -90,7 +69,7 @@ title: Analyse des besoins - Flux principaux
 
 ---
 
-## Flux 5 : Rechercher un cours
+## Flux 4 : Rechercher un cours
 1. L’utilisateur saisit l'id du cours qu'il veut rechercher.
 2. Le système fait appel au service de Cours pour valider l'id.
 3. Le système consulte le répertoire de Cours pour obtenir le cours.
