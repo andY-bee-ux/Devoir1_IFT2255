@@ -10,7 +10,15 @@ title: Vue d'ensemble
     }
 </style>
 
-# Nom du projet
+# PickCourse
+
+## Description du projet
+
+Ce projet vise à développer un outil d’aide au choix de cours pour les étudiants de l’Université de Montréal. Il centralise les données de Planifium, les résultats académiques et les avis étudiants (via Discord) afin de permettre la recherche de cours, l’affichage des détails (prérequis, horaires, difficulté, charge, avis), la comparaison de cours, de différentes combinaisons de cours et la personnalisation selon le profil de l’étudiant.
+
+## Repository Git
+
+Le dépôt Git du projet est disponible ici : https://github.com/andY-bee-ux/Devoir1_IFT2255
 
 ## Équipe
 
@@ -19,7 +27,7 @@ title: Vue d'ensemble
 - **`M3`:** Andréa Noukoua Djodi (20279717) #andychloe 
 - **`M4`:** Moussa Adama Sogoba (20201487) #moussas
 
-## Description du projet
+
 
 ## Échéancier du devoir 1
 
@@ -41,12 +49,12 @@ title: Vue d'ensemble
 
 | Tâches                                  | Terminé le | Statut     | Responsable |
 |-----------------------------------------|------------|------------|-------------|
-| Révision et intégration du feedback                               |            | 🛠️ En cours| `M1` `M2` `M3` `M4` |
-| Modèle C4                               |            | 🛠️ En cours|             |
-| Justification des choix de design       |            | 📌 À faire           |             |
-| Diagramme de classes    |            | 🛠️ En cours           | `M1` `M2` `M3` `M4`            |
-| Diagrammes de séquence  |            |   📌 À faire         |             |
-| Implémentation des fonctionnalités       |            |📌 À faire            | `M1` `M2` `M3` `M4`            |
-| Écriture des tests unitaires            |            |   📌 À faire         | `M1` `M2` `M3` `M4`            |
-| Rapport      |            |  🛠️ En cours          |`M1` `M2` `M3` `M4`              | 
-| Bonus : Développement du bot Discord    |            | 💡 Optionnel           |             |
+| Révision et intégration du feedback                               |  10 novembre          | ✅ Terminé | `M1` `M2` `M3` `M4` |
+| Modèle C4 niveau 3                              | 19 novembre           | ✅ Terminé |    `M3`         |
+| Justification des choix de design       | 20 novembre           | ✅ Terminé           |     `M3`        |
+| Diagramme de classes    | 23 novembre           | ✅ Terminé           | `M1` `M2` `M3` `M4`            |
+| Diagrammes de séquence  | 25 novembre           |   ✅ Terminé         |             | `M1` `M2` `M4`
+| Implémentation des fonctionnalités       |   30 novembre         |✅ Terminé            | `M2` `M3` `M4`            |
+| Écriture des tests unitaires            |  01 décembre          |   ✅ Terminé         | `M1` `M2` `M3` `M4`            |
+| Rapport      | 02 décembre           |  ✅ Terminé         |`M1` `M2` `M3` `M4`              | 
+| Bonus : Développement du bot Discord    |  01 décembre          | ✅ Terminé           |  `M1`           |
