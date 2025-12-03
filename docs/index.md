@@ -59,7 +59,7 @@ Le dépôt Git du projet est disponible ici : https://github.com/andY-bee-ux/Dev
 | Rapport      | 02 décembre           |  ✅ Terminé         |`M1` `M2` `M3` `M4`              | 
 | Bonus : Développement du bot Discord    |  01 décembre          | ✅ Terminé           |  `M1`           |
 
-* Répartition — Écriture des tests unitaires
+\* Répartition — Écriture des tests unitaires
 
 - **Tests du `Repository` (`CoursRepository`)**  
   Rédigés majoritairement par **`M2`**, avec des contributions de **`M1`** et **`M3`**.
