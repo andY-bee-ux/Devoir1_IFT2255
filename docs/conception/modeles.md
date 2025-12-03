@@ -81,7 +81,9 @@ Représente les résultats académiques agrégés d’un étudiant.
   - `nombreCredits` doit correspondre à la somme des crédits des cours associés.
   - Un trimestre ne doit pas contenir de cours dupliqués pour un même étudiant.
 
+<!--
 ## Évolution potentielle du modèle
 
 - Ajouter des statuts de réservation
 - Support multi-utilisateur par ressource
+-->
