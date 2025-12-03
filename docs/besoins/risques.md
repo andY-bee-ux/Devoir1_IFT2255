@@ -115,6 +115,6 @@ Ce projet présente de nombreux risques, que ce soit sur le plan technique, huma
   
 ## Modification du processus opérationnel
 
-J'imagine que le taux de consultation des conseillers et TGDEs sera en baisse. Les questions dans des groupes Discord pour avoir des avis sur un cours également.
+Nous émettons l'hypothèse que le taux de consultation des conseillers et TGDEs sera en baisse. Les questions dans des groupes Discord pour avoir des avis sur un cours également.
 
 Un processus interne que ça pourrait modifier, est le fait qu'avec l'accord signé (risque 7), on aurait un peu un droit de propriété sur Planifium.
