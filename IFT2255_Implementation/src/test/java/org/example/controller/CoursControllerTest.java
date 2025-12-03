@@ -13,8 +13,21 @@ import java.util.List;
 
 public class CoursControllerTest {
 
-    //Tests pour comparerCours
+    /**
+     * Tests unitaires pour la classe {@link CoursController}.
+     *
+     * Ces tests vérifient les fonctionnalités de comparaison de cours, 
+     * recherche de cours, vérification, d'éligibilité a un cours, de comparaison de combinaisons de cours et de récupération
+     * des avis associés aux cours.
+     */
 
+    // Tests pour comparerCours
+
+    /**
+     * Vérifie que la comparaison de deux cours avec des critères valides
+     * retourne un statut HTTP 200 et une réponse JSON contenant la
+     * comparaison.
+     */
     @Test
     @DisplayName("Comparaison de deux cours avec critères de comparaison valides")
     void testComparerCours_withValidCriteria() {
@@ -33,6 +46,11 @@ public class CoursControllerTest {
         verify(ctx).json(any(List.class));
     }
 
+    /**
+     * Vérifie le comportement lorsque des critères invalides sont fournis.
+     * Le contrôleur doit gérer le critère inconnu et répondre avec un
+     * statut approprié (ici on attend au minimum un statut 200).
+     */
     @Test
     @DisplayName("Comparaison de cours avec critères invalides")
     void testComparerCours_withInvalidCriteria() {
@@ -47,6 +65,10 @@ public class CoursControllerTest {
         verify(ctx).status(200);
     }
 
+    /**
+     * Vérifie que la comparaison retourne un statut 400 lorsque les
+     * identifiants de cours fournis sont invalides.
+     */
     @Test
     @DisplayName("Comparaison avec cours invalides")
     void testComparerCours_withInvalidCourseIds() {
@@ -61,6 +83,11 @@ public class CoursControllerTest {
         verify(ctx).status(400);
     }
 
+    /**
+     * Teste la comparaison en demandant tous les critères disponibles afin
+     * de s'assurer que la méthode supporte la liste complète des
+     * attributs des cours sans erreur.
+     */
     @Test
     @DisplayName("Comparaison avec tous les critères valides")
     void testComparerCours_withAllValidCriteria() {
@@ -82,6 +109,11 @@ public class CoursControllerTest {
 
     //Tests pour rechercherCours
 
+    /**
+     * Recherche d'un cours par identifiant valide. Le test vérifie que
+     * l'appel au contrôleur retourne un code HTTP (au moins) indiquant
+     * le traitement de la requête.
+     */
     @Test
     @DisplayName("Recherche de cours par ID valide")
     void testRechercherCours_byValidId() {
@@ -100,6 +132,11 @@ public class CoursControllerTest {
         verify(ctx).status(anyInt());
     }
 
+
+    /**
+     * Recherche de cours par nom (champ "name"). Vérifie que le
+     * contrôleur traite la requête et renvoie un statut.
+     */
     @Test
     @DisplayName("Recherche de cours par nom")
     void testRechercherCours_byName() {
@@ -118,6 +155,11 @@ public class CoursControllerTest {
         verify(ctx).status(anyInt());
     }
 
+    /**
+     * Recherche de cours par description. Ce test s'assure que la
+     * recherche textuelle sur la description fonctionne et ne provoque
+     * pas d'erreur côté contrôleur.
+     */
     @Test
     @DisplayName("Recherche de cours par description")
     void testRechercherCours_byDescription() {
@@ -136,6 +178,11 @@ public class CoursControllerTest {
         verify(ctx).status(anyInt());
     }
 
+    /**
+     * Vérifie la gestion d'un paramètre de recherche invalide. Le
+     * contrôleur doit répondre sans planter (au moins un statut est
+     * renvoyé pour signaler l'erreur ou l'absence de résultat).
+     */
     @Test
     @DisplayName("Recherche avec paramètre invalide")
     void testRechercherCours_byInvalidParam() {
@@ -154,6 +201,11 @@ public class CoursControllerTest {
         verify(ctx, atLeastOnce()).status(anyInt());
     }
 
+    /**
+     * Recherche incluant les informations d'horaire et de semestre.
+     * Vérifie que le paramètre `includeSchedule` et `semester` sont
+     * correctement pris en compte par le contrôleur.
+     */
     @Test
     @DisplayName("Recherche avec schedule et semester")
     void testRechercherCours_withScheduleAndSemester() {
@@ -174,6 +226,11 @@ public class CoursControllerTest {
 
     //Tests pour checkEligibility
 
+    /**
+     * Vérifie que la méthode d'éligibilité retourne un JSON indiquant
+     * si l'étudiant est éligible au cours donné en fonction des
+     * prérequis fournis.
+     */
     @Test
     @DisplayName("Vérification d'éligibilité avec cours et prérequis valides")
     void testCheckEligibility_validCourseAndPrerequisites() {
@@ -190,6 +247,11 @@ public class CoursControllerTest {
         verify(ctx).json(any());
     }
 
+    /**
+     * Teste le comportement lorsque l'identifiant du cours n'existe
+     * pas. Le contrôleur doit renvoyer une réponse JSON gérant le
+     * cas d'erreur sans lever d'exception non gérée.
+     */
     @Test
     @DisplayName("Vérification d'éligibilité avec cours invalide")
     void testCheckEligibility_invalidCourse() {
@@ -206,6 +268,11 @@ public class CoursControllerTest {
         verify(ctx).json(any());
     }
 
+    /**
+     * Cas où la liste des prérequis est vide : la vérification doit
+     * retourner une réponse JSON correcte (généralement éligible ou
+     * non selon l'implémentation) sans erreur.
+     */
     @Test
     @DisplayName("Vérification d'éligibilité avec liste de prérequis vide")
     void testCheckEligibility_emptyPrerequisites() {
@@ -224,6 +291,11 @@ public class CoursControllerTest {
 
     //Tests pour comparerCombinaisonCours
 
+    /**
+     * Comparaison de plusieurs combinaisons de cours pour une session
+     * donnée. Vérifie que le contrôleur calcule et renvoie des
+     * résultats (statut et JSON) pour des combinaisons valides.
+     */
     @Test
     @DisplayName("Comparaison de combinaisons de cours valides")
     void testComparerCombinaisonCours_valid() {
@@ -244,6 +316,11 @@ public class CoursControllerTest {
         verify(ctx).json(any());
     }
 
+    /**
+     * Vérifie que la méthode retourne un statut 400 et un message
+     * d'erreur lorsque la combinaison contient des identifiants de
+     * cours invalides.
+     */
     @Test
     @DisplayName("Comparaison de combinaisons avec cours invalide")
     void testComparerCombinaisonCours_invalidCourseId() {
@@ -263,6 +340,11 @@ public class CoursControllerTest {
         verify(ctx).json("Requête invalide");
     }
 
+    /**
+     * Cas avec une seule combinaison fournie : s'assure que le
+     * contrôleur peut traiter une liste contenant une seule
+     * combinaison sans erreur.
+     */
     @Test
     @DisplayName("Comparaison de combinaisons avec une seule combinaison")
     void testComparerCombinaisonCours_singleCombination() {
@@ -283,6 +365,11 @@ public class CoursControllerTest {
 
     //Tests pour getAvis
 
+    /**
+     * Vérifie que la méthode `getAvis` retourne une liste (éventuellement
+     * vide) pour un cours donné. Ici on teste le cas où aucun avis n'est
+     * présent et on s'attend à une liste vide.
+     */
     @Test
     @DisplayName("Récupération des avis pour un cours")
     void testGetAvis() {
@@ -297,6 +384,10 @@ public class CoursControllerTest {
         assertEquals(0, result.size());
     }
 
+    /**
+    * S'assure que `getAvis` ne retourne jamais `null` même si aucun
+    * avis n'existe pour le cours fourni.
+    */
     @Test
     @DisplayName("Récupération des avis retourne une liste non-null")
     void testGetAvis_notNull() {
