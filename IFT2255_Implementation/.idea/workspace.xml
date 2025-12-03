@@ -5,7 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/discord-bot-python/README_BOT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/discord-bot-python/api_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/discord-bot-python/commands/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/discord-bot-python/commands/avis_commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/discord-bot-python/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/discord-bot-python/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/discord-bot-python/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/bot/DiscordBot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/CoursRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/IRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/repository/Repository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Avis.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Cours.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Resultats.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/config/Routes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/controller/CoursController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Cours.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/Resultats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/Resultats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/CoursService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/config/RouteTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/config/RouteTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/controller/AvisControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/controller/AvisControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/controller/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/controller/ControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/controller/CoursControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/controller/CoursControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/model/AvisTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/model/AvisTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/model/CoursTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/model/CoursTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/model/ProfilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/model/ProfilTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/model/ResultatsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/model/ResultatsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/model/UserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/model/UserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/repository/CoursRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/AvisServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/AvisServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/CoursServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/example/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/example/service/UserServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/besoins/flux-principaux.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/besoins/flux-principaux.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/besoins/glossaire.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/besoins/glossaire.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/besoins/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/besoins/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/besoins/risques.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/besoins/risques.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/conception/architecture.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/conception/architecture.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/conception/modeles.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/conception/modeles.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/evaluation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/evaluation.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,38 +90,129 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in IFT2255_Implementation.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.All in IFT2255_Implementation.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withValidCriteria.executor": "Run",
+    "JUnit.CoursServiceTest.executor": "Run",
+    "JUnit.CoursServiceTest.testCheckEligibilityEligible.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursExistants.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="All in IFT2255_Implementation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+}]]></component>
+  <component name="RunManager" selected="JUnit.CoursServiceTest">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.projet.Main" />
       <module name="IFT2255_Implementation" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursControllerTest.testComparerCours_withInvalidCriteria" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.controller.CoursControllerTest" />
+      <option name="METHOD_NAME" value="testComparerCours_withInvalidCriteria" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursControllerTest.testComparerCours_withValidCriteria" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.controller.CoursControllerTest" />
+      <option name="METHOD_NAME" value="testComparerCours_withValidCriteria" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.service" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursServiceTest.testComparerCoursExistants" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.service" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
+      <option name="METHOD_NAME" value="testComparerCoursExistants" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.All in IFT2255_Implementation" />
+        <item itemvalue="JUnit.CoursServiceTest" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria" />
+        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withValidCriteria" />
+        <item itemvalue="JUnit.CoursServiceTest.testComparerCoursExistants" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="" />
@@ -85,6 +220,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1763857614668</updated>
+      <workItem from="1764728101716" duration="3603000" />
     </task>
     <task id="LOCAL-00001" summary="Ajouts des classes de tests avec une methode vide.">
       <option name="closed" value="true" />
@@ -120,6 +256,9 @@
     </task>
     <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajouts des classes de tests avec une methode vide." />

@@ -6,7 +6,7 @@ title: Conception - Architecture
 
 ## Vue d’ensemble
 
-- Description du type d’architecture retenue (ex. : monolithique, microservices, REST...)
+- Nous avons choisi l'architecture REST. 
 - Raisons du choix
 
 ## Composants principaux
@@ -19,8 +19,12 @@ title: Conception - Architecture
 
 ## Communication entre composants
 
-- Mécanismes d’échange : appels HTTP, WebSocket, messages, etc.
-- Format des données : JSON, XML, etc.
+- Mécanismes d’échange : appels HTTP.
+- Format des données : JSON entre notre plateforme et Planifium;
+
 
 ## Diagramme d’architecture (Modèle C4)
 
+![Niveau 1 du modèle C4](../images/image_diagrammec4_niveau1.jpg) *Diagramme pour le niveau 1 du modèle C4*.
+
+![Niveau 2 du modèle C4](../images/diagrammec4_niveau2.jpg) *Diagramme pour le niveau 1 du modèle C4*.
