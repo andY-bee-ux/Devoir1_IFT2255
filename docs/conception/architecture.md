@@ -29,4 +29,4 @@ title: Conception - Architecture
 
 ![Niveau 2 du modèle C4](../images/diagrammec4_niveau2.jpg) *Diagramme pour le niveau 2 du modèle C4*.
 
-![Niveau 3 du modèle C4](../images/modelec4_niveau3.jpg) *Diagramme pour le niveau 3 du modèle C4*.
+![Niveau 3 du modèle C4](../images/modeleC4_niveau3.jpg) *Diagramme pour le niveau 3 du modèle C4*.
