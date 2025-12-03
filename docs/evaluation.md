@@ -39,7 +39,9 @@ L'oracle des tests est donné ci-dessous:
                 "concomitant_courses", "udemWebsite", "requirement_text",
                 "available_terms", "available_periods"]} | Liste de cours comparés| Succès| Si les critères ainsi que les ids des cours sont valides, on s'attend à ce que la réponse ait un statut de succès (200), et à s'attend à avoir une liste.|
 | getCourseBy | Repository | param : "name", value : "programmation" | liste de cours(optionnel) non vide | Succes | Test d'intégration : Vérifier que la recherche par nom communique correctement avec l'API externe et retourne une liste. |
+
 | getCourseEligibility | courseId : "IFT2255", completed : ["IFT1025"] | Chainr Json valide contenant eligible | Succes | Test d'intégration : Vérifier que la requête POST vers l'API Planifium fonctionne et retourne un JSON structuré. |
+
 | checkEligibity | Service | id: "IFT2255", Réponse Repo simulée : HTML invalide | Message : "Une erreur est survenue..." | Echec | Test Unitaire : Vérifier que le service capture l'exception et ne plante pas (crash) si l'API externe renvoie des données corrompues. |
 
 - Résumé qualitatif :
