@@ -47,6 +47,7 @@ L'oracle des tests est donné ci-dessous:
   - 85 % de couverture de code
   - Temps de réponse moyen : 1.2s
 
+<!-- Non applicable pour l'instant
 ## Évaluation du système
 
-Cette section sera mise à jour lors de la dernière phase du projet.
+Cette section sera mise à jour lors de la dernière phase du projet. -->
