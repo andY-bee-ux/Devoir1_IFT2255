@@ -27,7 +27,7 @@ Ce glossaire définit les termes importants utilisés dans le projet, en particu
 | crédits | unité de mesure représentant la charge de travail associée a un cours dans un programme d'études.
 | gpa | Moyenne pondéréee des notes d'un étudiant, calculée sur une échelle 0 a 4.3.
 | plan de cours | Document qui présente les objectifs, le contenu, les méthodes d'évaluation et l'organisation d'un cours universitaire.
-| tableaux de bord? | Interface qui regroupe et affcihe des indicateurs clés pour suivre la progression ou la perfomance d'un étudiant ou d'un projet.
+| tableaux de bord | Interface qui regroupe et affcihe des indicateurs clés pour suivre la progression ou la perfomance d'un étudiant ou d'un projet.
 | TGDE | Technicien en gesttion des dossiers étudiants, personne qui acccompagne les étudiants dans la planification et le suivi administratif de leur parcours universitaire.
 | conseillers | Professionel universitaire qui guide les étudiants dans le choix de leurs cours, la planification de leur parcours et leur réussite académique.
 | session universitaire | Période déterminéee de l'année durant laquelle les cours du programme son offert, comme l'automne l'hiver ou l'été.
