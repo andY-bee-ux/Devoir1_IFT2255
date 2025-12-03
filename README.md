@@ -230,31 +230,29 @@ ou encore
 
 **Exemple de réponse JSON**: ( status 200)
 [
-    {
-        "id": "IFT1025",
-        "description": "Concepts avancés : classes, objets, héritage, interfaces, réutilisation, événements. Introduction aux structures de données et algorithmes : listes, arbres binaires, fichiers, recherche et tri. Notions d'analyse numérique : précision.",
-        "name": "Programmation 2",
-        "scheduledSemester": null,
-        "prerequisite_courses": [
-            "IFT1015",
-            "IFT1016"
-        ],
-        "equivalent_courses": [],
-        "concomitant_courses": [],
-        "udemWebsite": null,
-        "credits": 3.0,
-        "requirement_text": "prerequisite_courses :  IFT1015 ou IFT1016",
-        "available_terms": {
-            "autumn": true,
-            "winter": true,
-            "summer": true
-        },
-        "available_periods": {
-            "daytime": true,
-            "evening": false
-        },
-        "schedules": []
-    }
+  {
+    "id": "IFT1025",
+    "description": "Concepts avancés : classes, objets, héritage, interfaces, réutilisation, événements. Introduction aux structures de données et algorithmes : listes, arbres binaires, fichiers, recherche et tri. Notions d'analyse numérique : précision.",
+    "name": "Programmation 2",
+    "scheduledSemester": null,
+    "prerequisite_courses": ["IFT1015", "IFT1016"],
+    "equivalent_courses": [],
+    "concomitant_courses": [],
+    "udemWebsite": null,
+    "credits": 3.0,
+    "requirement_text": "prerequisite_courses : IFT1015 ou IFT1016",
+    "available_terms": {
+      "autumn": true,
+      "winter": true,
+      "summer": true
+    },
+    "available_periods": {
+      "daytime": true,
+      "evening": false
+    },
+    "schedules": []
+  }
 ]
+
 **Exemple de réponse JSON ( status 400)**:
 Cours pas trouvé. Veuillez reessayer. Pour rappel, les paramètres possibles sont id, name et description.
