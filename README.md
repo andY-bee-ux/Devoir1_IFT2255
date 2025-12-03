@@ -197,29 +197,25 @@ ou encore
 **Exemple de réponse JSON ( status 400)**:
 Requête invalide
 
-#### POST /cours/comparer
-Compare plusieurs cours selon des critères.
+#### POST /cours/eligibilite
+Vérifie l'éligibilité à un cours.
 
 **Format pour le body de la requête:**
 {
-  "cours": ["idCours1", "idCours2",...],
-  "criteres": ["critere1", "critere2",...]
+  "idCours": "id",
+  "listeCours": ["cours1", "cours2",...]
 }
 
 **Exemple de Body JSON attendu :**
 {
-  "cours": ["IFT1025", "IFT2255"],
-  "criteres": ["name", "credits"]
+  "idCours": "IFT2255",
+  "listeCours": ["IFT2015", "IFT1015"]
 }
-
 **Exemple de réponse JSON**: ( status 200)
-[
-  ["IFT1025","Introduction à l'informatique","3"],
-  ["IFT2255","Structures de données","3"]
-]
+"Vous êtes éligible à ce cours."
 
 **Exemple de réponse JSON ( status 400)**:
-La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours.
+Vous n'êtes pas éligible à ce cours. Il vous manque les prérequis suivants:...
 #### POST /cours/rechercher
 
 **Format pour le body de la requête:**
