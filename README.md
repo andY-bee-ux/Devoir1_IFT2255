@@ -104,6 +104,25 @@ Compare plusieurs cours selon des critères.
   ["IFT2255","Structures de données","3"]
 ]
 
+**Exemple de Body JSON attendu :**
+{
+    "cours":  ["IFT1215","ANG1933"],
+    "criteres": ["id","mode"]
+}
+
+**Exemple de réponse JSON**: ( status 200)
+[
+    [
+        "IFT1215",
+        "IFT1215",
+        "P"
+    ],
+    [
+        "ANG1933",
+        "ANG1933",
+        "AD, SD, MD"
+    ]
+]
 **Exemple de réponse JSON ( status 400)**:
 La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours.
 
@@ -125,19 +144,72 @@ Lors de l’appel à `/cours/comparer`, les **critères suivants** sont à consi
 | `requirement_text` | Exigences spécifiques |
 | `available_terms` | Termes disponibles |
 | `available_periods` | Périodes disponibles |
+| `mode` | Mode du cours ( P(présentiel), AD( à distance asynchrone) ou SD ( à distance synchrone)) |
 
 #### POST /cours/comparer/combinaison
 Compare des combinaisons de cours.
 
 **Format pour le body de la requête:**
 {
-  "cours": [["idCours1", "idCours2",...],["idCours1","idCours2",...],...]
+  "listeCours": [["idCours1", "idCours2",...],["idCours1","idCours2",...],...]
+  "session" : "A24"
 }
 
 **Exemple de Body JSON attendu :**
 {
-  "cours":[["IFT1025", "IFT2255"], ["IFT1015", "IFT2015"]],
-  
+    "listeCours": [["IFT1015", "IFT1025"], ["IFT1227"]],
+    "session": "A24" 
+}
+
+ou encore
+
+{
+    "listeCours": [["IFT1015", "IFT1025"], ["IFT1227"]],
+    "session": "" 
+}
+
+**Exemple de réponse JSON**: ( status 200)
+[
+    [
+        "Combinaison 1",
+        "Cours=[IFT1015, IFT1025]",
+        "Crédits=6",
+        "Prérequis=[IFT1015, IFT1016]",
+        "Concomitants=[]",
+        "Périodes communes=[daytime]",
+        "Sessions communes=[winter, autumn, summer]",
+        "Horaires=listeHoraires,
+        "Conflits=listeConflits"
+    ],
+    [
+        "Combinaison 2",
+        "Cours=[IFT1227]",
+        "Crédits=3",
+        "Prérequis=[IFT1065, IFT1215]",
+        "Concomitants=[]",
+        "Périodes communes=[daytime]",
+        "Sessions communes=[winter, autumn]",
+        "Horaires=[IFT1227 [A] [Ma] 10:30-12:29, IFT1227 [A] [Ma] 10:30-12:29, IFT1227 [A] [Je] 15:30-16:29, IFT1227 [A] [Je] 15:30-16:29, IFT1227 [A] [Ma] 10:30-12:29, IFT1227 [A] [Ma] 10:30-12:29, IFT1227 [A] [Ma] 09:30-12:29, IFT1227 [A101] [Je] 16:30-18:29, IFT1227 [A101] [Je] 16:30-18:29]",
+        "Conflits=[]"
+    ]
+]
+
+**Exemple de réponse JSON ( status 400)**:
+Requête invalide
+
+#### POST /cours/comparer
+Compare plusieurs cours selon des critères.
+
+**Format pour le body de la requête:**
+{
+  "cours": ["idCours1", "idCours2",...],
+  "criteres": ["critere1", "critere2",...]
+}
+
+**Exemple de Body JSON attendu :**
+{
+  "cours": ["IFT1025", "IFT2255"],
+  "criteres": ["name", "credits"]
 }
 
 **Exemple de réponse JSON**: ( status 200)
@@ -148,3 +220,59 @@ Compare des combinaisons de cours.
 
 **Exemple de réponse JSON ( status 400)**:
 La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours.
+#### POST /cours/rechercher
+
+**Format pour le body de la requête:**
+{
+    "param" : Param ,
+    "valeur" : "IFT1025",
+    "includeSchedule": "false",
+    "semester":  String
+}
+
+Les valeurs possibles de Param sont : id, name et description.
+
+**Exemple de Body JSON attendu :**
+{
+    "param" : "id",
+    "valeur" : "IFT1025",
+    "includeSchedule": "false",
+    "semester":  null
+}
+ou encore
+
+{
+    "param" : "id",
+    "valeur" : "IFT1025",
+    "includeSchedule": "true",
+    "semester":  "A24"
+}
+
+**Exemple de réponse JSON**: ( status 200)
+[
+  {
+    "id": "IFT1025",
+    "description": "Concepts avancés : classes, objets, héritage, interfaces, réutilisation, événements. Introduction aux structures de données et algorithmes : listes, arbres binaires, fichiers, recherche et tri. Notions d'analyse numérique : précision.",
+    "name": "Programmation 2",
+    "scheduledSemester": null,
+    "prerequisite_courses": ["IFT1015", "IFT1016"],
+    "equivalent_courses": [],
+    "concomitant_courses": [],
+    "udemWebsite": null,
+    "credits": 3.0,
+    "requirement_text": "prerequisite_courses : IFT1015 ou IFT1016",
+    "available_terms": {
+      "autumn": true,
+      "winter": true,
+      "summer": true
+    },
+    "available_periods": {
+      "daytime": true,
+      "evening": false
+    },
+    "schedules": []
+  }
+]
+
+**Exemple de réponse JSON ( status 400)**:
+Cours pas trouvé. Veuillez reessayer. Pour rappel, les paramètres possibles sont id, name et description.
