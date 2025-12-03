@@ -125,4 +125,4 @@ title: Analyse des besoins - Cas d'utilisation
 
 ## Diagramme
 
-![Diagramme des cas d'utilisation](../images/Use_Case_Diagram.jpg) *Diagramme de cas d'utilisation*
+![Diagramme des cas d'utilisation](../images/usecasediagramdevoir2.jpg) *Diagramme de cas d'utilisation*

@@ -1,5 +1,6 @@
 package org.projet.service;
 
+import org.projet.model.Cours;
 import org.projet.repository.CoursRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -147,23 +148,102 @@ class CoursServiceTest {
         assertEquals("Une erreur est survenue lors de la vérification d'éligibilité.", r);
     }
 
+    /**
+     * Test de comparerCombinaisonCours() avec une combinaison valide.
+     * Vérifie que la sortie contient bien la combinaision, les crédits et les horaires.
+     */
     @Test
-    @DisplayName("checkEligibility() : Gèreune réponse JSON invalide (ne plante pas)")
-    void testCheckEligibility_ProtectionContreJsonCorrompu() throws Exception {
-        //ARRANGE
-        when(mockRepo.getAllCoursesId())
-                .thenReturn(Optional.of(List.of("IFT2255")));
+    @DisplayName("comparerCombinaisonCours() : combinaison valide")
+    void testComparerCombinaisonCoursValide() throws Exception {
+        // Création d'un cours fictif
+        Cours c1 = new Cours();
+        c1.setId("IFT1025");
+        c1.setCredits(3);
 
-        // Le serveur renvoie du HTML d'erreur ou du texte vide au lieu du JSON
-        when(mockRepo.getCourseEligibility(anyString(), anyList()))
-                .thenReturn("<html><body>500 Internal Server Error</body></html>");
+        // Mock du repository
+        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(List.of("IFT1025")));
+        when(mockRepo.getCourseBy("id", "IFT1025", "true", null))
+                .thenReturn(Optional.of(List.of(c1)));
 
-        // ACT
-        String resultat = service.checkEligibility("IFT2255", List.of());
+        List<List<String>> combinaisons = List.of(List.of("IFT1025"));
+        List<List<String>> resultat = service.comparerCombinaisonCours(combinaisons, null);
 
-        // ASSERT
-        // On vérifie qu'on est bien tombé dans le catch
-        // et que l'utilisateur reçoit un message propre au lieu d'une "crash page".
-        assertEquals("Une erreur est survenue lors de la vérification d'éligibilité.", resultat);
+        assertNotNull(resultat);
+        assertEquals(1, resultat.size());
+        assertTrue(resultat.get(0).get(1).contains("IFT1025"));
+        //System.out.println(resultat.get(0).get(2));
+        assertTrue(resultat.get(0).get(2).contains("3")); // crédits
     }
+
+    /**
+     * Test de comparerCombinaisonCours() avec un ID de cours invalide.
+     * Doit retourner null.
+     */
+    @Test
+    @DisplayName("comparerCombinaisonCours() : cours invalide")
+    void testComparerCombinaisonCoursCoursInvalide() throws Exception {
+        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(List.of("IFT1025")));
+
+        List<List<String>> combinaisons = List.of(List.of("ANDYCHLOE"));
+        List<List<String>> resultat = service.comparerCombinaisonCours(combinaisons, null);
+
+        assertNull(resultat);
+    }
+
+    /**
+     * Test de comparerCombinaisonCours() avec plusieurs cours et vérification des conflits.
+     */
+    @Test
+    @DisplayName("comparerCombinaisonCours() : plusieurs cours avec conflit")
+    void testComparerCombinaisonCoursConflit() throws Exception {
+        Cours c1 = new Cours();
+        c1.setId("IFT1025");
+        c1.setCredits(3);
+
+        Cours.Schedule schedule1 = new Cours.Schedule();
+        schedule1.setSemester("H2025");
+        Cours.Section section1 = new Cours.Section();
+        section1.setName("A");
+        Cours.Volet volet1 = new Cours.Volet();
+        Cours.Activity act1 = new Cours.Activity();
+        act1.setDays(List.of("LUN"));
+        act1.setStart_time("08:00");
+        act1.setEnd_time("10:00");
+        volet1.setActivities(List.of(act1));
+        section1.setVolets(List.of(volet1));
+        schedule1.setSections(List.of(section1));
+        c1.setSchedules(List.of(schedule1));
+
+        Cours c2 = new Cours();
+        c2.setId("IFT2255");
+        c2.setCredits(3);
+
+        Cours.Schedule schedule2 = new Cours.Schedule();
+        schedule2.setSemester("H2025");
+        Cours.Section section2 = new Cours.Section();
+        section2.setName("B");
+        Cours.Volet volet2 = new Cours.Volet();
+        Cours.Activity act2 = new Cours.Activity();
+        act2.setDays(List.of("LUN"));
+        act2.setStart_time("09:00");
+        act2.setEnd_time("11:00");
+        volet2.setActivities(List.of(act2));
+        section2.setVolets(List.of(volet2));
+        schedule2.setSections(List.of(section2));
+        c2.setSchedules(List.of(schedule2));
+
+        when(mockRepo.getAllCoursesId()).thenReturn(Optional.of(List.of("IFT1025", "IFT2255")));
+        when(mockRepo.getCourseBy("id", "IFT1025", "true", null)).thenReturn(Optional.of(List.of(c1)));
+        when(mockRepo.getCourseBy("id", "IFT2255", "true", null)).thenReturn(Optional.of(List.of(c2)));
+
+        List<List<String>> combinaisons = List.of(List.of("IFT1025", "IFT2255"));
+        List<List<String>> resultat = service.comparerCombinaisonCours(combinaisons, "H2025");
+
+        assertNotNull(resultat);
+        assertEquals(1, resultat.size());
+
+        String conflits = resultat.get(0).get(resultat.get(0).size() - 1);
+        assertTrue(conflits.contains("CONFLIT")); // Il doit détecter un conflit
+    }
+
 }

@@ -120,6 +120,9 @@ public class CoursRepository implements IRepository {
 
     /**
      * Cette méthode permet de récupérer tous les ids de Cours de Planifium.
+     * Nous n'avions pas trouvé de routes permettant de récupérer directement tous les ids de Cours,
+     * du coup on passe par une route qui permet d'avoir tous les cours par programmes, ce qui
+     * prend malheureusement beaucoup de temps.
      * @return String contenant tous les cours de Planifium ( de l'Udem par ricochet).
      * @throws Exception
      */
