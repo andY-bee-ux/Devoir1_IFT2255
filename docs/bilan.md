@@ -1,5 +1,4 @@
-<!--Non applicable pour l'instant-->
-<!--
+
 ---
 title: Bilan de projet
 ---
@@ -37,4 +36,4 @@ title: Bilan de projet
 - Ajouter des fonctionnalités secondaires
 - Améliorer l’ergonomie du front-end
 - Prévoir une phase de test utilisateur plus poussée
--->
+
