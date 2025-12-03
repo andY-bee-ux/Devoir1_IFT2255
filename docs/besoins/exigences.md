@@ -69,15 +69,17 @@ Ce sont celles qu’on doit absolument inclure dans la première version pour qu
 | **EF8** | L'utilisateur peut comparer des cours |
 
 
+
 ## Types d'utilisateurs
 
 | Type d’utilisateur | Description | Exemples de fonctionnalités accessibles |
 |--------------------|-------------|------------------------------------------|
-| Utilisateur invité | Accès limité, pas d’authentification | Consultation des ressources |
-| Utilisateur authentifié | Compte personnel, fonctions principales | Réservation, historique |
-| Administrateur | Droits étendus, gestion des ressources | Création/suppression de ressources, gestion des utilisateurs |
+| **Étudiant** | Utilisateur principal du système, cherchant à faire des choix de cours éclairés. | Recherche de cours, consultation des détails, comparaison de cours, consultation de résultats académiques, d’avis, personnalisation selon le profil. |
+| **Bot Discord** | Agent automatisé chargé de transmettre les avis étudiants collectés sur Discord. | Soumission d’avis, envoi automatisé des données d’opinion vers l’API. |
+| **Administrateur** | Responsable technique de la cohérence et de la mise à jour des données. | Importation des résultats académiques, gestion du stockage, configuration du système. |
 
 <!--
+
 ## Infrastructures
 
 Informations sur l’environnement d’exécution cible, les outils ou plateformes nécessaires.
