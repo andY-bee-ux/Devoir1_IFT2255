@@ -19,3 +19,6 @@ NB : La classe Form ici peut par exemple correspondre à Context, dans le sens o
 - Soumettre avis :
 
 ![Diagramme de séquence lié au CU "Soumettre avis"](../images/seqDiagramme_soumettreavis.jpg)
+
+- Rechercher cours :
+![Diagramme de séquence lié au CU "Rechercher cours"](../images/rechercher_cours_seq.jpg)
