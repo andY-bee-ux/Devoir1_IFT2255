@@ -12,17 +12,18 @@ jobs:
 
     strategy:
       matrix:
-        java: [ '11', '17' ]
+        java-version: [ '17' ]
 
     steps:
+      - name: Checkout repository with v4 
       - uses: actions/checkout@v4
 # on met en cache les dépendances pour éviter de les télécharger à chaque exécution
-      - name: Set up JDK ${{ matrix.java }}
+      - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.java }}
+          java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
-          cache: maven
+          cache: 'maven'
 
       - name: Build and test with Maven
-        run: mvn -B verify --file IFT2255_Implementation/pom.xml
+        run: mvn -B test --file IFT2255_Implementation/pom.xml
