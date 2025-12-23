@@ -1,4 +1,6 @@
 package org.example.service;
+import org.example.model.Cours;
+import org.example.model.Resultats;
 
 import org.example.repository.CoursRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -162,5 +164,103 @@ class CoursServiceTest {
         // et que l'utilisateur reçoit un message propre au lieu d'une "crash page".
         assertEquals("Une erreur est survenue lors de la vérification d'éligibilité.", resultat);
     }
+
+    
+    
+
+@Test
+@DisplayName("difficulteCours() retourne le bon message pour un cours ")    
+void testDifficulteCours() {      
+        
+        // ARRANGE
+        CoursService service = CoursService.getInstance();
+        Resultats coursDifficile = new Resultats("MAT1400");
+
+        // ACT
+        String message = service.difficulteCours(coursDifficile);
+
+        // ASSERT
+        assertEquals("Le cours Calcul 1 est considéré comme difficile avec un score de 1.55/5.", message);
+
 }
+
+@Test
+@DisplayName("difficulteCours() retourne le bon message pour un cours facile")    
+void testDifficulteCoursFacile() {      
+        
+        // ARRANGE
+        CoursService service = CoursService.getInstance();
+        Resultats coursFacile = new Resultats("ANG1933");
+
+        // ACT
+        String message = service.difficulteCours(coursFacile);
+
+        // ASSERT
+        assertEquals("Le cours Expression orale académique et professionnelle est considéré comme facile avec un score de 4.79/5", message);
+}
+
+@Test
+@DisplayName("populariteCours() retourne le bon message pour un cours populaire")    
+void testPopulariteCoursPopulaire() {      
+        
+        // ARRANGE
+        CoursService service = CoursService.getInstance();
+        Resultats coursPopulaire = new Resultats("IFT1015");
+
+        // ACT
+        String message = service.populariteCours(coursPopulaire);
+
+        // ASSERT
+        assertEquals("Le cours Programmation 1 est très populaire avec 658 participants.", message);
+}
+
+@Test
+@DisplayName("populariteCours() retourne le bon message pour un cours absent des résultats")    
+void testPopulariteCoursPeuPopulaire() {      
+        // ARRANGE
+        CoursService service = CoursService.getInstance();
+        Resultats coursPeuPopulaire = new Resultats("ART1001");
+
+        // ACT
+        String message = service.populariteCours(coursPeuPopulaire);
+
+        // ASSERT
+        assertEquals("Le cours demandé est absent des résultats. Veuillez vérifier le sigle.", message);
+}
+
+@Test
+@DisplayName("comparerDifficulte() retourne le bon message pour deux cours")
+void testCompareDifficulteCours() {      
+        
+        // ARRANGE
+        CoursService service = CoursService.getInstance();
+        Resultats cours1 = new Resultats("IFT1015"); 
+        Resultats cours2 = new Resultats("MAT1400"); 
+
+        // ACT
+        String message = service.comparerDifficulte(cours1, cours2);
+
+        // ASSERT
+        assertEquals("Le cours Programmation 1 est considéré comme plus facile que Calcul 1 avec un score de 2.29/5 contre 1.55/5.", message);
+}
+
+@Test
+@DisplayName("comparerPopularite() retourne le bon message pour deux cours")    
+void testComparePopulariteCours() {      
+        
+        // ARRANGE
+        CoursService service = CoursService.getInstance();
+        Resultats cours1 = new Resultats("IFT1015"); 
+        Resultats cours2 = new Resultats("ANG1933"); 
+
+        // ACT
+        String message = service.comparerPopularite(cours1, cours2);
+
+        // ASSERT
+        assertEquals("Le cours Programmation 1 est plus populaire que Expression orale académique et professionnelle avec 658 participants contre 5.", message);
+
+}
+}                 
+
+
 
