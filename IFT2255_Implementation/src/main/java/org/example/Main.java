@@ -12,6 +12,9 @@ public class Main {
         app.post("/cours/rechercher", coursController::rechercherCours);
         app.post("/cours/eligibilite",coursController::checkEligibility);
         app.post("/cours/comparer/combinaison", coursController::comparerCombinaisonCours);
+        app.post("/cours/difficulte", coursController::difficulteCours);
+        app.post("/cours/popularite", coursController::populariteCours);
+        app.post("/cours/comparer/stats", coursController::comparerDeuxCours);
         app.post("/avis", ctx -> {
             String body = ctx.body();
             System.out.println("Avis reçu: " + body);
