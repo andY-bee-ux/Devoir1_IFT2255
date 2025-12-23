@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajout des methodes pour Voir les cours offerts dans un programme, Voir les cours offerts pour un trimestre donné et Voir l'horaire d'un cours pour un trimestre donné dans le CoursService.java">
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Code fix pour les tests.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/projet/service/CoursService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/projet/service/CoursService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/projet/repository/CoursRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/projet/repository/CoursRepositoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/projet/service/CoursServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/projet/service/CoursServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,51 +52,98 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "JUnit.All in IFT2255_Implementation.executor": "Run",
-    "JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria.executor": "Run",
-    "JUnit.CoursControllerTest.testComparerCours_withValidCriteria.executor": "Run",
-    "JUnit.CoursRepositoryTest.executor": "Run",
-    "JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025.executor": "Run",
-    "JUnit.CoursServiceHttpTest.executor": "Run",
-    "JUnit.CoursServiceTest.executor": "Run",
-    "JUnit.CoursServiceTest.isCourseAvailable_reflection_trueFalse.executor": "Run",
-    "JUnit.CoursServiceTest.testCheckEligibilityEligible.executor": "Run",
-    "JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor": "Run",
-    "JUnit.CoursServiceTest.testComparerCoursExistants.executor": "Run",
-    "JUnit.CoursServiceTest.testFetchSchedule_CourseAvailable.executor": "Run",
-    "JUnit.CoursServiceTest.testFetchSchedule_CourseNotAvailable.executor": "Run",
-    "JUnit.CoursServiceTest.testFetchSchedule_IOException.executor": "Run",
-    "JUnit.CoursServiceTest.testGetCourseBySemester_NoCoursesAvailable.executor": "Run",
-    "JUnit.CoursServiceTest.testGetCourseBySemester_Success.executor": "Run",
-    "JUnit.CoursServiceTest.testGetCourseSchedule_CourseNotAvailable.executor": "Run",
-    "JUnit.CoursServiceTest.testGetCourseSchedule_Success.executor": "Run",
-    "JUnit.CoursServiceTest.testGetCoursesForAProgram_IOException.executor": "Run",
-    "JUnit.CoursServiceTest.testGetCoursesForAProgram_NoCourses.executor": "Run",
-    "JUnit.CoursServiceTest.testGetCoursesForAProgram_Success.executor": "Run",
-    "JUnit.CoursServiceTest.testIsCourseAvailable_ReturnsFalse.executor": "Run",
-    "JUnit.CoursServiceTest.testIsCourseAvailable_ReturnsTrue.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "cours-trimestres-programmes",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in IFT2255_Implementation.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursControllerTest.testComparerCours_withValidCriteria.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceHttpTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.isCourseAvailable_reflection_trueFalse.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testCheckEligibilityEligible.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testComparerCoursExistants.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testFetchSchedule_CourseAvailable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testFetchSchedule_CourseNotAvailable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testFetchSchedule_IOException.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testGetCourseBySemester_NoCoursesAvailable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testGetCourseBySemester_Success.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testGetCourseSchedule_CourseNotAvailable.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testGetCourseSchedule_Success.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testGetCoursesForAProgram_IOException.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testGetCoursesForAProgram_NoCourses.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testGetCoursesForAProgram_Success.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testIsCourseAvailable_ReturnsFalse.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CoursServiceTest.testIsCourseAvailable_ReturnsTrue.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;cours-trimestres-programmes&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="JUnit.CoursServiceTest.testGetCourseBySemester_NoCoursesAvailable">
+}</component>
+  <component name="RunManager" selected="JUnit.CoursServiceTest">
+    <configuration name="CoursServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.projet.service" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursServiceTest.testFetchSchedule_CourseAvailable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.projet.service" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
+      <option name="METHOD_NAME" value="testFetchSchedule_CourseAvailable" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursServiceTest.testFetchSchedule_CourseNotAvailable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.projet.service" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
+      <option name="METHOD_NAME" value="testFetchSchedule_CourseNotAvailable" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CoursServiceTest.testGetCourseBySemester_NoCoursesAvailable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="IFT2255_Implementation" />
       <extension name="coverage">
@@ -132,61 +176,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CoursServiceTest.testGetCoursesForAProgram_IOException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="IFT2255_Implementation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.projet.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.projet.service" />
-      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
-      <option name="METHOD_NAME" value="testGetCoursesForAProgram_IOException" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CoursServiceTest.testGetCoursesForAProgram_NoCourses" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="IFT2255_Implementation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.projet.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.projet.service" />
-      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
-      <option name="METHOD_NAME" value="testGetCoursesForAProgram_NoCourses" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CoursServiceTest.testGetCoursesForAProgram_Success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="IFT2255_Implementation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.projet.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.projet.service" />
-      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
-      <option name="METHOD_NAME" value="testGetCoursesForAProgram_Success" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CoursServiceTest" />
+        <item itemvalue="JUnit.CoursServiceTest.testFetchSchedule_CourseAvailable" />
+        <item itemvalue="JUnit.CoursServiceTest.testFetchSchedule_CourseNotAvailable" />
         <item itemvalue="JUnit.CoursServiceTest.testGetCourseBySemester_NoCoursesAvailable" />
         <item itemvalue="JUnit.CoursServiceTest.testGetCourseBySemester_Success" />
-        <item itemvalue="JUnit.CoursServiceTest.testGetCoursesForAProgram_IOException" />
-        <item itemvalue="JUnit.CoursServiceTest.testGetCoursesForAProgram_NoCourses" />
-        <item itemvalue="JUnit.CoursServiceTest.testGetCoursesForAProgram_Success" />
       </list>
     </recent_temporary>
   </component>
@@ -263,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766463081720</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Tests pour les fonctionnalités : Voir les cours offerts dans un programme, Voir les cours offerts pour un trimestre donné et Voir l'horaire d'un cours pour un trimestre donné.">
+      <option name="closed" value="true" />
+      <created>1766468329815</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1766468329815</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -277,7 +281,9 @@
     <MESSAGE value="Ajout des routes pour Voir les cours offerts dans un programme, Voir les cours offerts pour un trimestre donné et Voir l'horaire d'un cours pour un trimestre donné." />
     <MESSAGE value="Ajout des methodes pour Voir les cours offerts dans un programme, Voir les cours offerts pour un trimestre donné et Voir l'horaire d'un cours pour un trimestre donné dans le CoursController.java" />
     <MESSAGE value="Ajout des methodes pour Voir les cours offerts dans un programme, Voir les cours offerts pour un trimestre donné et Voir l'horaire d'un cours pour un trimestre donné dans le CoursService.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout des methodes pour Voir les cours offerts dans un programme, Voir les cours offerts pour un trimestre donné et Voir l'horaire d'un cours pour un trimestre donné dans le CoursService.java" />
+    <MESSAGE value="Tests pour les fonctionnalités : Voir les cours offerts dans un programme, Voir les cours offerts pour un trimestre donné et Voir l'horaire d'un cours pour un trimestre donné." />
+    <MESSAGE value="Code fix pour les tests." />
+    <option name="LAST_COMMIT_MESSAGE" value="Code fix pour les tests." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
