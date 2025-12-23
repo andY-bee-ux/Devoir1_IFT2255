@@ -490,8 +490,7 @@ public class CoursService {
      * @param listeCours
      * @return
      */
-
-    public String checkEligibility(String idCours, List<String> listeCours) {
+     public String checkEligibility(String idCours, List<String> listeCours) {
 
 
         if (!validateIdCours(idCours)) {
@@ -553,12 +552,12 @@ public Resultats getResultats(String sigleCours) {
 
 
 /**
-     * Évalue la difficulté d'un cours en fonction de son score moyen.
-     * Les seuils sont : >= 4.0 (facile), >= 2.5 (moyenne), < 2.5 (difficile).
-     *
-     * @param resultats L'objet contenant les données du cours à analyser.
-     * @return Un message décrivant la difficulté ou un message d'erreur si le cours est absent.
-     */
+* Évalue la difficulté d'un cours en fonction de son score moyen.
+* Les seuils sont : >= 4.0 (facile), >= 2.5 (moyenne), < 2.5 (difficile).
+*
+* @param resultats L'objet contenant les données du cours à analyser.
+* @return Un message décrivant la difficulté ou un message d'erreur si le cours est absent.
+*/
 public String difficulteCours(Resultats resultats) {
     if (!resultats.isCoursPresent()) {
         return "Le cours demandé est absent des résultats. Veuillez vérifier le sigle.";
@@ -573,12 +572,12 @@ public String difficulteCours(Resultats resultats) {
     }}
 
 /**
-     * Évalue la popularité d'un cours en fonction du nombre de participants.
-     * Les seuils sont : >= 200 (très populaire), >= 100 (modérément populaire), < 100 (peu populaire).
-     *
-     * @param resultats L'objet contenant les données du cours à analyser.
-     * @return Un message décrivant la popularité ou un message d'erreur si le cours est absent.
-     */
+* Évalue la popularité d'un cours en fonction du nombre de participants.
+* Les seuils sont : >= 200 (très populaire), >= 100 (modérément populaire), < 100 (peu populaire).
+*
+* @param resultats L'objet contenant les données du cours à analyser.
+* @return Un message décrivant la popularité ou un message d'erreur si le cours est absent.
+*/
 public String populariteCours(Resultats resultats) {
     if (!resultats.isCoursPresent()) {
         return "Le cours demandé est absent des résultats. Veuillez vérifier le sigle.";
@@ -596,12 +595,12 @@ public String populariteCours(Resultats resultats) {
 
 
 /**
-     * Compare le nombre de participants entre deux cours pour déterminer le plus populaire.
-     *
-     * @param res1 Les résultats du premier cours.
-     * @param res2 Les résultats du deuxième cours.
-     * @return Un message comparatif indiquant quel cours a le plus de participants.
-     */
+* Compare le nombre de participants entre deux cours pour déterminer le plus populaire.
+*
+* @param res1 Les résultats du premier cours.
+* @param res2 Les résultats du deuxième cours.
+* @return Un message comparatif indiquant quel cours a le plus de participants.
+*/
 public String comparerPopularite(Resultats res1, Resultats res2) {
     if (!res1.isCoursPresent() || !res2.isCoursPresent()) {
         return "L'un des cours demandés est absent des résultats. Veuillez vérifier les sigles.";
