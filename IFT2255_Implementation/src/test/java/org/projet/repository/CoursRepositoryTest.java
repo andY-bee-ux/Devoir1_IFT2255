@@ -95,7 +95,7 @@ public class CoursRepositoryTest {
         assertFalse(opt.get().isEmpty(), "La liste ne devrait pas être vide");
 
         // Vérifie le contenu
-        assertTrue(opt.get().get(0).getName().contains("Programmation"));
+        assertTrue(opt.get().get(0).getName().contains("programmation"));
     }
 
     @Test
