@@ -1,6 +1,8 @@
 package org.projet.controller;
 
 import io.javalin.http.Context;
+
+import org.projet.exception.HoraireException;
 import org.projet.model.Avis;
 import org.projet.model.Cours;
 import org.projet.service.CoursService;
@@ -124,4 +126,70 @@ public class CoursController {
         public String session;
     }
 
+   
+    
+
+    /**
+     * Requête utilisée pour vérifier l’éligibilité d’un étudiant à un cours,
+     * en tenant compte des cours complétés et du cycle d’études.
+     */
+    public static class RequeteEligibiliteNew{
+        public String idCours;
+        public List<String> listeCours;
+        public Integer cycle;
+    }
+
+    /**
+     * Cette méthode vérifie l’éligibilité d’un étudiant à un cours donné.
+     * Le controller délègue la logique métier au {@code CoursService} et
+     * retourne un message indiquant si l’étudiant est éligible ou non.
+     *
+     * @param ctx contexte HTTP Javalin contenant la requête JSON
+     */
+    public void checkEligibilityNew(Context ctx){
+        RequeteEligibiliteNew req = ctx.bodyAsClass(RequeteEligibiliteNew.class);
+        String resultat = coursService.checkEligibilityNew(req.idCours,req.listeCours, req.cycle);
+        ctx.json(resultat);
+    }
+
+   
+    
+    /**
+     * Requête utilisée pour générer les horaires possibles d’un ensemble de cours.
+     */
+    public static class RequeteHoraire {
+        public List<String> idCours;
+        public String session;
+        public Boolean sections;
+        public Map<String, Map<String, String>> choix; 
+    }
+
+    /**
+     * Cette méthode génère toutes les combinaisons d’horaires possibles pour un ensemble de cours.
+     * Si l’option {@code sections} est activée, seuls les horaires correspondant
+     * aux sections choisies sont retournés.
+     *
+     * @param ctx contexte HTTP Javalin contenant la requête JSON
+     */
+    public void genererHoraire(Context ctx) {
+        try {
+            RequeteHoraire req = ctx.bodyAsClass(RequeteHoraire.class);
+
+            Map<String, Map<String, Map<String, List<List<String>>>>> horaires =
+                    coursService.genererEnsembleHoraire(req.idCours, req.session);
+
+            if (Boolean.TRUE.equals(req.sections)) {
+                ctx.json(coursService.appliquerChoix(horaires, req.choix));
+            } else {
+                ctx.json(horaires);
+            }
+
+        } catch (HoraireException e) {
+            ctx.status(400);
+            ctx.json(e.getMessage());
+        } catch (Exception e) {
+            ctx.status(500);
+            ctx.json("Erreur interne du serveur.");
+        }
+    }   
 }
