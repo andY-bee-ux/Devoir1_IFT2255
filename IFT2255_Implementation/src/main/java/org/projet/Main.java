@@ -18,5 +18,8 @@ public class Main {
             ctx.result("Avis reçu avec succès");
             
         });
+        app.get("/cours-programme/{id}",coursController::getCoursesForAProgram);
+        app.get("/programme/courseBySemester/{id}/{session}",coursController::getCourseBySemester);
+        app.get("/cours/horaires/{id}/{session}",coursController::getCourseSchedule);
     }
 }
