@@ -3,6 +3,7 @@ package org.example.controller;
 import io.javalin.http.Context;
 import org.example.model.Avis;
 import org.example.model.Cours;
+import org.example.model.Resultats;
 import org.example.service.CoursService;
 
 import java.util.*;
@@ -124,4 +125,71 @@ public class CoursController {
         public String session;
     }
 
+/**
+* Analyse la difficulté du cours envoyé via JSON.
+ * @param ctx Contexte Javalin.
+ */
+public void difficulteCours(Context ctx) {
+        RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
+        Resultats res = coursService.getResultats(req.sigle);
+        String difficulte = coursService.difficulteCours(res);
+        ctx.json(difficulte);
+    }  
+
+
+/**
+* Analyse la popularité du cours envoyé via JSON.
+* @param ctx Contexte Javalin.
+ */  
+public void populariteCours(Context ctx) {
+        RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
+        Resultats res = coursService.getResultats(req.sigle);
+        String popularite = coursService.populariteCours(res);
+        ctx.json(popularite);
+    }  
+
+    /**
+     * Cette classe permet de parser le json du body de la requête difficulte ou popularite. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteUnCours{
+        public String sigle;
+    }    
+
+       
+/**
+ * Cette méthode permet de comparer les statistiques de deux cours.
+ * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
+ */ 
+public void comparerDeuxCours(Context ctx) {
+        RequeteDeuxCours req = ctx.bodyAsClass(RequeteDeuxCours.class);
+        
+        Resultats res1 = coursService.getResultats(req.sigle1);
+        Resultats res2 = coursService.getResultats(req.sigle2);
+        
+    
+        Map<String, String> reponses = new HashMap<>();
+        reponses.put("popularite", coursService.comparerPopularite(res1, res2));
+        reponses.put("difficulte", coursService.comparerDifficulte(res1, res2));
+        
+        ctx.json(reponses);
+    }  
+
+
+/**
+ * Cette classe permet de parser le json du body de la requête comparaisonStats. La classe est interne donc
+ * on peut déclarer les attributs publics.
+ */    
+public static class RequeteDeuxCours{
+        public String sigle1;
+        public String sigle2;
+    }
+
+/**
+ * Cette classe permet de parser le json du body de la requête stats. La classe est interne donc
+ * on peut déclarer les attributs publics.
+ */
+public static class RequeteStats {
+        public String sigle;
+}    
 }
