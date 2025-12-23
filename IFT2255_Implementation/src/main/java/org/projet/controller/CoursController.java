@@ -85,6 +85,60 @@ public class CoursController {
         ctx.status(200);
         ctx.json(resultat);
     }
+
+    /**
+     * Cette methode permet d'obtenir les cours offerts dans un programme donne.
+     * @param ctx ID du programme.
+     **/
+    public void getCoursesForAProgram(Context ctx){
+        String id = ctx.pathParam("id");
+        List<String> details = coursService.getCoursesForAProgram(id);
+
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error", "Les paramètres fournis sont invalides ou le programme n'existe pas."));
+            return;
+        }
+
+        ctx.status(200).json(details);
+    }
+
+    /**
+     * Cette methode permet d'obtenir la liste des cours disponible pour un trimestre donnee dans un programme.
+     * @param ctx ID du programme dans lequel il faut effectuer la recherche et
+     *            du trimestre pour laquelle on effectue la recherche.
+     **/
+    public void getCourseBySemester(Context ctx){
+        String id = ctx.pathParam("id");
+        String session = ctx.pathParam("session");
+
+        List<String> details = coursService.getCourseBySemester(session,id);
+
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error","Les paramètres fournis sont invalides ou le programme n'existe pas ou le cours n'existe pas."));
+            return;
+        }
+
+        ctx.status(200).json(details);
+    }
+
+    /**
+     * Cette methode permet d'obtenir l'horaire d'un cours pour un trimestre donné.
+     * @param ctx ID du cours
+     *                 et le trimestre pour lequel on désire obtenir l'horaire.
+     **/
+    public void getCourseSchedule(Context ctx){
+        String courseID  = ctx.pathParam("id"); //ID du cours.
+        String session = ctx.pathParam("session");  //Trimestre pour lequel on effectue la recherche.
+
+        Map<String,Map<String,Object>> details = coursService.getCourseScheduleMap(courseID,session);
+
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error","Les paramètres fournis sont invalides ou le programme n'existe pas ou le cours n'existe pas."));
+            return;
+        }
+        ctx.status(200).json(details);
+    }
+
     /**
      * Cette classe permet de parser le json du body de la requête comparaison. La classe est interne donc
      * on peut déclarer les attributs publics.
