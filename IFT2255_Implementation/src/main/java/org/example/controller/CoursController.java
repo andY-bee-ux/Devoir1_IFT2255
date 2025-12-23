@@ -191,5 +191,20 @@ public static class RequeteDeuxCours{
  */
 public static class RequeteStats {
         public String sigle;
-}    
+}   
+
+public static class RequeteResultats {
+        public String sigle;
+}
+
+/**
+ * Récupère et renvoie les résultats d'un cours au format JSON.
+ * @param ctx Le contexte de la requête HTTP.
+ */
+public void voirResultats(Context ctx) {
+        RequeteResultats req = ctx.bodyAsClass(RequeteResultats.class);
+        Resultats res = coursService.getResultats(req.sigle);
+        String message = res.voirResultats();
+        ctx.json(message);
+    }
 }
