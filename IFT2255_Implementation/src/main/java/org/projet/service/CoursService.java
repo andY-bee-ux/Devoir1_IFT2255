@@ -2,6 +2,8 @@ package org.projet.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.projet.exception.HoraireException;
 import org.projet.model.Cours;
 import org.projet.repository.CoursRepository;
 
@@ -587,6 +589,502 @@ public class CoursService {
 
 
     }
+
+    
+
+    /**
+     * Cette méthode permet d'extraire la partie numérique d’un identifiant de cours.
+     * Par exemple, pour {@code "IFT2255"}, la méthode retourne {@code 2255}.
+     * Si l’identifiant est invalide ou ne contient aucun chiffre,
+     * la méthode retourne {@code -1}.
+     *
+     * @param idCours identifiant du cours
+     * @return le numéro du cours ou {@code -1} si l’extraction échoue
+     */
+
+    private int extractCourseNumber(String idCours) {
+        if (idCours == null) return -1;
+
+        String digits = idCours.replaceAll("\\D+", "");
+        if (digits.isBlank()) return -1;
+
+        try {
+            return Integer.parseInt(digits);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Cette méthode vérifie l’éligibilité d’un étudiant à un cours donné.
+     * @param idCours identifiant du cours
+     * @param listeCours cours complétés
+     * @param cycle cycle d’études de l’étudiant
+     * @return message d’éligibilité
+     */
+    public String checkEligibilityNew(String idCours, List<String> listeCours, Integer cycle) {
+
+        if (!validateIdCours(idCours)) {
+            return "L'id du cours est invalide";
+        }
+
+        if (listeCours == null) {
+            return "La liste des cours complétés est invalide";
+        }
+
+        boolean allValid = listeCours.stream()
+                .allMatch(this::validateIdCours);
+
+        if (!allValid) {
+            return "Il y a des cours complétés invalides";
+        }
+
+        if (cycle == null) {
+            return "Le cycle doit être fourni";
+        }
+        if (cycle < 1 || cycle > 4) {
+            return "Le cycle fourni est invalide";
+        }
+
+        int courseNumber = extractCourseNumber(idCours);
+        if (courseNumber == -1) {
+            return "Impossible de déterminer le niveau du cours";
+        }
+
+        // La règle c'est qu'un étudiant de 1er cycle ne peut pas prendre un cours 6000+
+        if (cycle == 1 && courseNumber >= 6000) {
+            return "Ce cours est un cours de cycles supérieurs. Les étudiants de 1er cycle ne peuvent y être admissibles que dans des cas particuliers (ex. cheminement Honor).";
+        }
+        // PS: On n'impose pas de restriction pour les autres cycles vu que par exemple un étudiant de 2e cycle peut prendre des cours de 1er cycle et
+        // nous n'avons pas d'information précise sur le cycle lié à un cours donné. 
+
+
+        try {
+            String responseBody =
+                    coursRepository.getCourseEligibility(idCours, listeCours);
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(responseBody);
+
+            if (root.get("eligible").asBoolean()) {
+                return "Vous êtes éligible à ce cours!";
+            }
+
+            JsonNode prerequisManquants = root.get("missing_prerequisites");
+            List<String> coursManquants = new ArrayList<>();
+
+            for (JsonNode item : prerequisManquants) {
+                coursManquants.add(item.asText());
+            }
+
+            return "Vous n'êtes pas éligible à ce cours. Il vous manque les prerequis suivants : "
+                    + String.join(", ", coursManquants);
+
+        } catch (Exception e) {
+            return "Une erreur est survenue lors de la vérification d'éligibilité.";
+        }
+    }
+    
+
+    /**
+     * Cette méthode génère toutes les combinaisons d’horaires possibles pour un ensemble de cours
+     * donné, pour une session spécifique.
+     * La structure retournée est organisée comme suit :
+     * cours -> type de volet (TH/démo) -> section -> liste de blocs horaires.
+     * Les horaires d’examens (intra, final) sont ignorés et les doublons
+     * d’activités sont éliminés.
+     *
+     * @param idCours liste des identifiants de cours sélectionnés
+     * @param session session académique visée (ex. Automne, Hiver)
+     * @return une structure représentant tous les horaires possibles
+     * @throws HoraireException si les paramètres sont invalides ou si un cours
+     *         ne peut pas être récupéré
+     */
+    public Map<String, Map<String, Map<String, List<List<String>>>>> genererEnsembleHoraire(
+            List<String> idCours,
+            String session
+    ) {
+
+        if (idCours == null || idCours.isEmpty()) {
+            throw new HoraireException("La liste des cours est vide ou inexistante.");
+        }
+
+        if (idCours.size() > 6) {
+            throw new HoraireException(
+                "Un ensemble de cours ne peut pas contenir plus de 6 cours."
+            );
+        }
+
+        if (session == null || session.isBlank()) {
+            throw new HoraireException("La session doit être spécifiée.");
+        }
+
+        // structure finale: cours -> volet (TH/démo) -> section -> blocs horaires
+        Map<String, Map<String, Map<String, List<List<String>>>>> resultat = new HashMap<>();
+        // pour éviter les doublons d'activités (un horaire peut apparaître plusieurs fois dans l'API)
+        Set<String> seen = new HashSet<>();
+
+        // on parcourt chaque cours demandé
+        for (String id : idCours) {
+
+            if (!validateIdCours(id)) {
+                throw new HoraireException("Identifiant de cours invalide : " + id);
+            }
+
+            Optional<List<Cours>> opt;
+            try {
+                opt = coursRepository.getCourseBy("id", id, "true", null);
+            } catch (Exception e) {
+                throw new HoraireException(
+                    "Erreur lors de la récupération du cours " + id
+                );
+            }
+
+            if (opt.isEmpty()) {
+                throw new HoraireException(
+                    "Le cours " + id + " n’a pas pu être récupéré."
+                );
+            }
+
+            Cours cours = opt.get().get(0);
+            if (cours.getSchedules() == null) continue;
+
+            resultat.putIfAbsent(cours.getId(), new HashMap<>());
+
+            // on parcourt les hoaraires pour trouver ceux de la session demandée
+            for (Cours.Schedule s : cours.getSchedules()) {
+
+                if (!s.getSemester().equalsIgnoreCase(session)) continue;
+                if (s.getSections() == null) continue;
+
+                for (Cours.Section section : s.getSections()) {
+                    if (section.getVolets() == null) continue;
+
+                    String sectionName = section.getName();
+
+                    for (Cours.Volet volet : section.getVolets()) {
+
+                        String rawVoletName = volet.getName();
+                        if (rawVoletName == null) continue;
+                        
+                        // on ignore les horaires d'examens vu que le but est d'afficher un horaire hebdomadaire pour un ensemble de cours
+                        String lower = rawVoletName.toLowerCase();
+                        if (lower.contains("intra") || lower.contains("final")) continue;
+
+                        String voletKey = lower.equals("th") ? "TH" : "TP";
+
+                        resultat.get(cours.getId())
+                                .putIfAbsent(voletKey, new HashMap<>());
+
+                        resultat.get(cours.getId())
+                                .get(voletKey)
+                                .putIfAbsent(sectionName, new ArrayList<>());
+
+                        if (volet.getActivities() == null) continue;
+
+                        for (Cours.Activity act : volet.getActivities()) {
+
+                            String key = cours.getId() + "|" +
+                                        voletKey + "|" +
+                                        sectionName + "|" +
+                                        act.getDays() + "|" +
+                                        act.getStart_time() + "-" + act.getEnd_time();
+
+                            if (seen.contains(key)) continue;
+                            seen.add(key);
+
+                            // ajout du bloc horaire [jours, heures]
+                            List<String> bloc = new ArrayList<>();
+                            bloc.add(act.getDays().toString());
+                            bloc.add(act.getStart_time() + "-" + act.getEnd_time());
+
+                            resultat.get(cours.getId())
+                                    .get(voletKey)
+                                    .get(sectionName)
+                                    .add(bloc);
+                        }
+                    }
+                }
+            }
+        }
+
+        return resultat;
+    }
+
+    
+    /**
+     * Cette méthode permet d'appliquer les choix de sections (théorie et démonstration) effectués par l’utilisateur
+     * à un ensemble d’horaires générés.
+     * 
+     * La méthode valide la cohérence des choix fournis, construit l’horaire
+     * final correspondant et détecte les conflits horaires éventuels.
+     * En cas d’erreurs multiples, celles-ci sont regroupées et retournées
+     * à l’utilisateur.
+     *
+     * @param horaires ensemble des horaires possibles par cours
+     * @param choix choix de sections effectués par l’utilisateur
+     * @return un {@code ResultatHoraire} contenant l’horaire final et les conflits
+     * @throws HoraireException si les choix sont invalides ou incohérents
+     */
+   public ResultatHoraire appliquerChoix(
+            Map<String, Map<String, Map<String, List<List<String>>>>> horaires,
+            Map<String, Map<String, String>> choix) {
+
+        if (horaires == null || choix == null) {
+            throw new HoraireException("Requête invalide.");
+        }
+
+        Map<String, List<List<String>>> resultat = new HashMap<>();
+        List<String> erreurs = new ArrayList<>();
+
+        // on vérifie qu'il n'y pas de choix fournis pour des cours non demandés 
+        for (String coursId : choix.keySet()) {
+            if (!horaires.containsKey(coursId)) {
+                erreurs.add(
+                    "Choix fourni pour un cours non sélectionné : " + coursId
+                );
+            }
+        }
+
+        // validation des choix pour chaque cours
+        for (String coursId : horaires.keySet()) {
+
+            if (!choix.containsKey(coursId)) {
+                erreurs.add(
+                    "Cours " + coursId +
+                    " : aucun choix de sections n’a été fourni."
+                );
+                continue;
+            }
+
+            Map<String, Map<String, List<List<String>>>> volets =
+                    horaires.get(coursId);
+
+            Map<String, String> choixCours = choix.get(coursId);
+
+            String sectionTH = choixCours.get("TH");
+            String sectionTP = choixCours.get("TP");
+
+            // une section de théorie est OBLIGATOIRE
+            if (sectionTH == null) {
+                erreurs.add(
+                    "Cours " + coursId +
+                    " : aucune section de théorie (TH) n’a été choisie."
+                );
+                continue;
+            }
+
+            // validation de la section de théorie
+            if (!volets.containsKey("TH")
+                    || !volets.get("TH").containsKey(sectionTH)) {
+                erreurs.add(
+                    "Cours " + coursId +
+                    " : la section de théorie " + sectionTH + " n’existe pas."
+                );
+                continue;
+            }
+
+            // validation des horaires de la section de théorie
+            if (volets.get("TH").get(sectionTH).isEmpty()) {
+                erreurs.add(
+                    "Cours " + coursId +
+                    " : la section " + sectionTH + " ne comporte aucun horaire."
+                );
+                continue;
+            }
+
+            List<List<String>> blocs = new ArrayList<>();
+            blocs.addAll(volets.get("TH").get(sectionTH));
+
+            // validation de la section de TP (si applicable)
+            boolean hasTP = volets.containsKey("TP") && !volets.get("TP").isEmpty();
+
+            // si le cours a des démos, un choix est obligatoire
+            if (hasTP && sectionTP == null) {
+                erreurs.add(
+                    "Cours " + coursId +
+                    " : des séances de démonstration sont offertes, un choix de TP est obligatoire."
+                );
+                continue;
+            }
+
+            if (sectionTP != null) {
+
+                // validation de la section de TP
+                if (!volets.containsKey("TP")
+                        || !volets.get("TP").containsKey(sectionTP)) {
+                    erreurs.add(
+                        "Cours " + coursId +
+                        " : la section de TP " + sectionTP + " n’existe pas."
+                    );
+                    continue;
+                }
+
+                // validation de la correspondance TH/groupe de démo
+                if (!sectionTP.startsWith(sectionTH)) {
+                    erreurs.add(
+                        "Cours " + coursId +
+                        " : le TP " + sectionTP +
+                        " ne correspond pas à la section théorique " + sectionTH + "."
+                    );
+                    continue;
+                }
+
+                blocs.addAll(volets.get("TP").get(sectionTP));
+            }
+
+            resultat.put(coursId, blocs);
+        }
+
+        // liste des erreurs rencontrées pour que l'utilisateur puisse voir partout où il y'a eu un problème
+        if (!erreurs.isEmpty()) {
+            throw new HoraireException(String.join("\n", erreurs));
+        }
+
+        // Détection des conflits horaires
+        List<ConflitHoraireGroupe> conflits = detecterConflits(resultat);
+
+        return new ResultatHoraire(resultat, conflits);
+    }
+
+
+    
+    /**
+     * Cette classe représente le résultat final d’une génération d’horaire.
+     * Contient l’horaire retenu pour chaque cours ainsi que la liste
+     * des conflits horaires détectés.
+     */
+    public class ResultatHoraire {
+        public Map<String, List<List<String>>> horaire;
+        public List<ConflitHoraireGroupe> conflits;
+
+        public ResultatHoraire(
+                Map<String, List<List<String>>> horaire,
+                List<ConflitHoraireGroupe> conflits
+        ) {
+            this.horaire = horaire;
+            this.conflits = conflits;
+        }
+    }
+
+    /**
+     * Cette classe représente un conflit horaire entre plusieurs cours
+     * sur un même jour et un même intervalle de temps.
+     */
+    public class ConflitHoraireGroupe {
+        public String jour;
+        public String intervalle;
+        public Set<String> cours;
+
+        public ConflitHoraireGroupe(String jour, String intervalle) {
+            this.jour = jour;
+            this.intervalle = intervalle;
+            this.cours = new HashSet<>();
+        }
+    }
+
+
+    
+    /**
+     * Cette méthode détecte les conflits horaires dans un horaire final.
+     * Deux activités sont en conflit si elles ont lieu le même jour
+     * et que leurs intervalles horaires se chevauchent.
+     *
+     * @param horaireFinal horaire final par cours
+     * @return une liste de groupes de conflits horaires
+     */
+    private List<ConflitHoraireGroupe> detecterConflits(
+        Map<String, List<List<String>>> horaireFinal) {
+
+    class Bloc {
+        String cours;
+        String jour;
+        int debut;
+        int fin;
+    }
+
+    List<Bloc> blocs = new ArrayList<>();
+
+    // on extrait tous les blocs horaires
+    for (String coursId : horaireFinal.keySet()) {
+        for (List<String> b : horaireFinal.get(coursId)) {
+
+            String jour = b.get(0)
+                    .replace("[", "")
+                    .replace("]", "");
+
+            String[] heures = b.get(1).split("-");
+
+            Bloc bloc = new Bloc();
+            bloc.cours = coursId;
+            bloc.jour = jour;
+            bloc.debut = toMinutes(heures[0]);
+            bloc.fin = toMinutes(heures[1]);
+
+            blocs.add(bloc);
+        }
+    }
+
+    // détection des conflits
+    Map<String, ConflitHoraireGroupe> groupes = new HashMap<>();
+
+    for (int i = 0; i < blocs.size(); i++) {
+        for (int j = i + 1; j < blocs.size(); j++) {
+
+            Bloc a = blocs.get(i);
+            Bloc b = blocs.get(j);
+
+            if (a.cours.equals(b.cours)) continue;
+            if (!a.jour.equals(b.jour)) continue;
+
+            boolean chevauchement =
+                    a.debut < b.fin && b.debut < a.fin;
+
+            if (chevauchement) {
+
+                int debut = Math.max(a.debut, b.debut);
+                int fin = Math.min(a.fin, b.fin);
+
+                String intervalle =
+                        format(debut) + "-" + format(fin);
+
+                String key = a.jour + "|" + intervalle;
+
+                groupes.putIfAbsent(
+                        key,
+                        new ConflitHoraireGroupe(a.jour, intervalle)
+                );
+
+                groupes.get(key).cours.add(a.cours);
+                groupes.get(key).cours.add(b.cours);
+            }
+        }
+    }
+
+    return new ArrayList<>(groupes.values());
+}
+    /**
+     * Cette méthode permet de convertir une heure au format {@code HH:mm} en minutes.
+     *
+     * @param time heure sous forme de chaîne
+     * @return le nombre de minutes correspondantes
+     */
+    private int toMinutes(String time) {
+        String[] parts = time.split(":");
+        return Integer.parseInt(parts[0]) * 60
+            + Integer.parseInt(parts[1]);
+    }
+    /**
+     * Cette méthode permet de convertir un nombre de minutes en une heure
+     * formatée {@code HH:mm}.
+     *
+     * @param minutes nombre de minutes
+     * @return l’heure formatée
+     */
+    private String format(int minutes) {
+        return String.format("%02d:%02d", minutes / 60, minutes % 60);
+    }
+
 
 }
 
