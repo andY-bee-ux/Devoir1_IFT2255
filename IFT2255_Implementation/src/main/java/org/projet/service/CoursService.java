@@ -3,13 +3,23 @@ package org.projet.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.jetbrains.annotations.NotNull;
 import org.projet.exception.HoraireException;
 import org.projet.model.Cours;
+import org.projet.model.Resultats;
 import org.projet.repository.CoursRepository;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.net.URL;
 
 /**
  * Cette classe permet de gérer la logique métier associée à la manipulation des cours.
@@ -65,7 +75,7 @@ public class CoursService {
      * @return un booléen indiquant si l'id est valide ou non
      */
 
-    private boolean validateIdCours(String id) {
+    protected boolean validateIdCours(String id) {
         try {
             //  Si le cache est vide, on va chercher les données une seule fois
             if (cacheCoursIds.isEmpty()) {
@@ -1085,6 +1095,402 @@ public class CoursService {
         return String.format("%02d:%02d", minutes / 60, minutes % 60);
     }
 
+
+    /**
+     * Cette methode permet d'obtenir les cours offerts dans un programme donne.
+     * @param programID ID du programme.
+     * @return Une liste contenant les ID des cours offerts pour un programme.
+     **/
+    public List<String> getCoursesForAProgram(String programID){
+        List<String> listeCours = new ArrayList<>();
+        String BASE_URL = "https://planifium-api.onrender.com/api/v1/programs";
+        Map<String, String> params = Map.of(
+                "programs_list", programID
+        );
+        URI uri  = getStringBuilder(BASE_URL,params);
+        try{
+            HttpURLConnection connection = (HttpURLConnection) new URL(uri.toString()).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            JsonNode json = mapper.readTree(response.toString());
+            for(int i = 0; i < json.size(); i++){
+                JsonNode courses = json.get(i).get("courses");
+
+                if (courses != null) {
+                    for (JsonNode c : courses) {
+                        listeCours.add(c.asText());
+                    }
+                } else {
+                    System.out.println("Aucun cours pour le programme " + programID +" .");
+                }
+            }
+        }catch (IOException e) {
+            System.out.println("Erreur lors de la récupération des requêtes : " + e.getMessage());
+        }
+        return listeCours;
+    }
+
+    /**
+     * Cette methode permet d'obtenir la liste des cours disponible pour un trimestre donnee dans un programme.
+     * @param programID ID du programme dans lequel il faut effectuer la recherche.
+     * @param semester Il s'agit du trimestre pour laquelle on effectue la recherche.
+     * @return Une liste contenant les ID des cours offerts pour le trimestre.
+     **/
+    public List<String> getCourseBySemester(String semester, String programID){
+        return getCoursesForAProgram(programID)
+                .parallelStream()
+                .filter(id -> isCourseAvailable(id, semester))
+                .toList();
+    }
+
+
+    /**
+     * Cette methode permet d'obtenir l'horaire d'un cours pour un trimestre donné (structure interne).
+     * @param courseID ID du cours.
+     * @param semester trimestre pour lequel on désire obtenir l'horaire
+     * @return Une map contenant les détails structurés par section.
+     **/
+    public Map<String,Map<String,Object>> getCourseScheduleMap(String courseID, String semester){
+        Map<String,Map<String,Object>> courses = new HashMap<>();
+
+        Optional<JsonNode> scheduleOpt = fetchSchedule(courseID, semester);
+        if (scheduleOpt.isEmpty()) {
+            System.out.println("Cours non disponible");
+            return courses;
+        }
+
+        JsonNode jsonNode = scheduleOpt.get();
+        for(JsonNode sections : jsonNode.get("sections")){
+            Map<String,Object> details = new HashMap<>();
+            StringBuilder profs = new StringBuilder();
+            if(sections.get("teachers").isArray() && !sections.get("teachers").isEmpty()){
+                for(JsonNode teachers : sections.get("teachers")){
+                    profs.append(teachers.asText()).append("; ");
+                }
+                details.put("Professeur(s) :", profs.toString());
+            }else{
+                details.put("Professeur(s) :", "À communiquer");
+            }
+            details.put("Capacité:",sections.get("capacity").asText());
+            int places = Integer.parseInt(sections.get("capacity").asText()) - Integer.parseInt(sections.get("number_inscription").asText());
+            details.put("Places restantes :", String.valueOf(places));
+            int increment = 1;
+            for(JsonNode volets : sections.get("volets")){
+                Map<String,Object> volets_activities = new HashMap<>();
+                volets_activities.put("Volets : ",volets.get("name").asText());
+                int count = 1;
+                for (JsonNode activites : volets.get("activities")){
+                    Map<String,Object> horaires = new HashMap<>();
+                    StringBuilder jours = new StringBuilder();
+                    if(activites.get("days").isArray() && !activites.get("days").isEmpty()){
+                        for(JsonNode days : activites.get("days")){
+                            switch (days.asText()){
+                                case "Lu":
+                                    jours.append("Lundi ; ");
+                                    break;
+                                case "Ma":
+                                    jours.append("Mardi ; ");
+                                    break;
+                                case "Me" :
+                                    jours.append("Mercredi ; ");
+                                    break;
+                                case "Je" :
+                                    jours.append("Jeudi ; ");
+                                    break;
+                                case "Ve" :
+                                    jours.append("Vendredi ; ");
+                                    break;
+                                case "Sa" :
+                                    jours.append("Samedi ; ");
+                                    break;
+                                case "Di" :
+                                    jours.append("Dimanche ; ");
+                                    break;
+                                default:
+                                    jours.append(days.asText());
+
+                            }
+                        }
+                        horaires.put("Jours :",  jours.toString());
+                    }else{
+                        horaires.put("Jours :", "");
+                    }
+                    horaires.put("Heures : ",activites.get("start_time").asText() + " - " + activites.get("end_time").asText());
+                    horaires.put("Date de debut : ", activites.get("start_date").asText());
+                    horaires.put("Date de fin : ", activites.get("end_date").asText());
+                    horaires.put("Salle : ",activites.get("room").asText() + " " + activites.get("pavillon_name").asText());
+                    horaires.put("Campus : ", activites.get("campus").asText());
+                    horaires.put("Mode d'enseignement : ", activites.get("mode").asText());
+                    volets_activities.put("Horaire (" + count + ") :", horaires);
+                    count++;
+                }
+                volets_activities.put("Volets : ", volets.get("name").asText());
+                details.put("Volet ("+ increment+") :", volets_activities);
+                increment++;
+            }
+            courses.put("Section : "+sections.get("name").asText(),details);
+        }
+        return courses;
+    }
+
+    /**
+     * Cette methode permet d'obtenir une sortie formatée (lisible) de l'horaire d'un cours.
+     * @param courseID ID du cours.
+     * @param semester trimestre pour lequel on désire obtenir l'horaire
+     * @return Une liste de chaînes formatées décrivant les sections et horaires.
+     **/
+    public List<String> getCourseSchedule(String courseID, String semester){
+        Map<String,Map<String,Object>> raw = getCourseScheduleMap(courseID, semester);
+        List<String> formatted = new ArrayList<>();
+        for (Map.Entry<String, Map<String,Object>> entry : raw.entrySet()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(entry.getKey()); // Section : A
+            Map<String,Object> details = entry.getValue();
+            // Professeurs
+            Object prof = details.get("Professeur(s) :");
+            if (prof != null) {
+                sb.append("\nProfesseur(s) : ").append(prof.toString());
+            }
+            // Places restantes
+            Object places = details.get("Places restantes :");
+            if (places != null) {
+                sb.append("\nPlaces restantes : ").append(places.toString());
+            }
+            // Parcourir les volets et horaires
+            for (String k : details.keySet()) {
+                if (k.startsWith("Volet (")) {
+                    Object vo = details.get(k);
+                    if (vo instanceof Map) {
+                        @SuppressWarnings("unchecked")
+                        Map<String,Object> vmap = (Map<String,Object>) vo;
+                        for (Map.Entry<String,Object> vk : vmap.entrySet()) {
+                            if (vk.getKey().startsWith("Horaire")) {
+                                Object h = vk.getValue();
+                                if (h instanceof Map) {
+                                    @SuppressWarnings("unchecked")
+                                    Map<String,Object> hmap = (Map<String,Object>) h;
+                                    Object jours = hmap.get("Jours :");
+                                    if (jours != null) sb.append("\n").append(jours.toString());
+                                    Object heures = hmap.get("Heures : ");
+                                    if (heures != null) sb.append(heures.toString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            formatted.add(sb.toString());
+        }
+        return formatted;
+    }
+
+    /**
+     *  Cette methode forme des URL en prenant en compte des paramètres de recherche.
+     * @param BASE_URL URL de base sur lequel il faudra appliquer des paramètres.
+     * @param params Paramètres qui doivent être ajouté a l'URL pour effectuer une recherche optimal.
+     * @return Un URI valide.
+     **/
+    @NotNull
+    private static URI getStringBuilder(String BASE_URL,Map<String, String> params) {
+        // Allow overriding the Planifium base host for testing (e.g., local HTTP server)
+        String override = System.getProperty("planifium.base");
+        if (override != null && !override.isBlank()) {
+            try {
+                URI orig = URI.create(BASE_URL);
+                URI over = URI.create(override);
+                String combined = over.toString().replaceAll("/+$", "") + orig.getPath();
+                BASE_URL = combined;
+            } catch (Exception ignored) {
+                // if parsing fails, fall back to the provided BASE_URL
+            }
+        }
+
+        StringBuilder sb = new StringBuilder(BASE_URL);
+        if (params != null && !params.isEmpty()) {
+            sb.append("?");
+            params.forEach((key, value) -> {
+                sb.append(URLEncoder.encode(key, StandardCharsets.UTF_8))
+                        .append("=")
+                        .append(URLEncoder.encode(value, StandardCharsets.UTF_8))
+                        .append("&");
+            });
+            sb.deleteCharAt(sb.length() - 1); // remove trailing &
+        }
+        return URI.create(sb.toString());
+    }
+
+    /**
+     * Cette methode permet de verifier si un cours est disponible pour un trimestre donné.
+     * @param id ID du cours.
+     * @param semester Trimestre pour lequel on desire verifier la disponibilité d'un cours.
+     * @return Un booléen qui est vrai si le cours est disponible et faux si le cours est indisponible.
+     **/
+    private boolean isCourseAvailable(String id, String semester){
+        return fetchSchedule(id, semester).isPresent();
+    }
+
+    /**
+     * Cette methode retourne le contenu pour un cours disponible pour un trimestre donné.
+     * @param courseID ID du cours.
+     * @param semester Trimestre pour lequel on desire verifier la disponibilité d'un cours.
+     * @return Un Optional qui est vide si le cours est indisponible, sinon il retourne le contenu JsonNode.
+     **/
+    private Optional<JsonNode> fetchSchedule(String courseID, String semester){
+        String baseUrl = "https://planifium-api.onrender.com/api/v1/schedules";
+        Map<String, String> params = Map.of(
+                "courses_list", "[\"" + courseID + "\"]",
+                "min_semester", semester
+        );
+
+        URI uri = getStringBuilder(baseUrl, params);
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
+            ObjectMapper mapper = new ObjectMapper();;
+            JsonNode json = mapper.readTree(connection.getInputStream());
+
+            if (json.isArray()) {
+                for (JsonNode node : json) {
+                    if (semester.equals(node.get("semester").asText())) {
+                        return Optional.of(node);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erreur API schedules : " + e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+    /**
+ * Récupère les données de performance et de participation pour un cours spécifique.
+ * Cette méthode initialise un nouvel objet Resultats, ce qui déclenche 
+ * la recherche et l'extraction des données depuis le fichier CSV historique.
+ *
+ * @param sigle Le code unique du cours (ex: "IFT1015") à rechercher dans la base de données.
+ * @return Une instance de {@link Resultats} contenant les statistiques du cours, 
+ * ou un objet avec des valeurs par défaut si le cours n'est pas trouvé.
+ */    
+public Resultats getResultats(String sigleCours) {
+    return new Resultats(sigleCours);
+}    
+
+
+
+/**
+     * Évalue la difficulté d'un cours en fonction de son score moyen.
+     * Les seuils sont : >= 4.0 (facile), >= 2.5 (moyenne), < 2.5 (difficile).
+     *
+     * @param resultats L'objet contenant les données du cours à analyser.
+     * @return Un message décrivant la difficulté ou un message d'erreur si le cours est absent.
+     */
+public String difficulteCours(Resultats resultats) {
+    if (!resultats.isCoursPresent()) {
+        return "Le cours demandé est absent des résultats. Veuillez vérifier le sigle.";
+    }
+    double score = resultats.getScore();
+    if (score >= 4.0) {
+        return "Le cours " + resultats.getNom() + " est considéré comme facile avec un score de " + score + "/5";
+    } else if (score >= 2.5) {
+        return "Le cours " + resultats.getNom() + " est considéré comme de difficulté moyenne avec un score de " + score + "/5";
+    } else {
+        return "Le cours " + resultats.getNom() + " est considéré comme difficile avec un score de " + score + "/5.";
+    }}
+
+/**
+     * Évalue la popularité d'un cours en fonction du nombre de participants.
+     * Les seuils sont : >= 200 (très populaire), >= 100 (modérément populaire), < 100 (peu populaire).
+     *
+     * @param resultats L'objet contenant les données du cours à analyser.
+     * @return Un message décrivant la popularité ou un message d'erreur si le cours est absent.
+     */
+public String populariteCours(Resultats resultats) {
+    if (!resultats.isCoursPresent()) {
+        return "Le cours demandé est absent des résultats. Veuillez vérifier le sigle.";
+    }
+    int participants = resultats.getParticipants();
+    if (participants >= 200) {
+        return "Le cours " + resultats.getNom() + " est très populaire avec " + participants + " participants.";
+    } else if (participants >= 100) {
+        return "Le cours " + resultats.getNom() + " est modérément populaire avec " + participants + " participants.";
+    } else {
+        return "Le cours " + resultats.getNom() + " est peu populaire avec seulement " + participants + " participants.";
+    }
+
+}
+
+
+/**
+     * Compare le nombre de participants entre deux cours pour déterminer le plus populaire.
+     *
+     * @param res1 Les résultats du premier cours.
+     * @param res2 Les résultats du deuxième cours.
+     * @return Un message comparatif indiquant quel cours a le plus de participants.
+     */
+public String comparerPopularite(Resultats res1, Resultats res2) {
+    if (!res1.isCoursPresent() || !res2.isCoursPresent()) {
+        return "L'un des cours demandés est absent des résultats. Veuillez vérifier les sigles.";
+    }
+    int participants1 = res1.getParticipants();
+    int participants2 = res2.getParticipants();
+
+    if (participants1 > participants2) {
+        return "Le cours " + res1.getNom() + " est plus populaire que " + res2.getNom() +
+                " avec " + participants1 + " participants contre " + participants2 + ".";
+    } else if (participants1 < participants2) {
+        return "Le cours " + res2.getNom() + " est plus populaire que " + res1.getNom() +
+                " avec " + participants2 + " participants contre " + participants1 + ".";
+    } else {
+        return "Les deux cours ont la même popularité avec " + participants1 + " participants chacun.";
+    }
+
+}
+
+
+/**
+     * Compare les scores de deux cours pour déterminer lequel est le plus facile.
+     * Un score plus élevé indique un cours plus facile selon les critères établis.
+     *
+     * @param res1 Les résultats du premier cours.
+     * @param res2 Les résultats du deuxième cours.
+     * @return Un message comparatif indiquant la difficulté relative des deux cours.
+     */
+public String comparerDifficulte(Resultats res1, Resultats res2) {
+    if (!res1.isCoursPresent() || !res2.isCoursPresent()) {
+        return "L'un des cours demandés est absent des résultats. Veuillez vérifier les sigles.";
+    }
+    double score1 = res1.getScore();
+    double score2 = res2.getScore();
+
+    if (score1 > score2) {
+        return "Le cours " + res1.getNom() + " est considéré comme plus facile que " + res2.getNom() +
+                " avec un score de " + score1 + "/5 contre " + score2 + "/5.";
+    } else if (score1 < score2) {
+        return "Le cours " + res2.getNom() + " est considéré comme plus facile que " + res1.getNom() +
+                " avec un score de " + score2 + "/5 contre " + score1 + "/5.";
+    } else {
+        return "Les deux cours ont la même difficulté avec un score de " + score1 + "/5 chacun.";
+    }
+
+
+}
 
 }
 

@@ -1,17 +1,43 @@
 package org.projet.model;
 
 public class Avis {
-    private int id;     //Id associe a l'avis.
-    private String contenu;     //Contenu de l'avis.
-    private int idAuteur;       //Id de la personne ayant poster l'avis
-    private int noteDifficulte;     //Notes attibue pour la difficulte du cours
-    private Cours coursAssocie;     //Cours associe a l'avis.
-    private int noteQualite;        //Note attibue pour la qualite du cours
-    private boolean valide;         //Permet de verifier si un avis est conforme aux standart (suit le format...)
-    private int noteChargeTravail;     //
+    //private int id;     //Id associe a l'avis (necessaire?)
+    private String commentaire;
+    //private int idAuteur;
+    private int noteDifficulte;
+    private String sigleCours;
+    private int noteQualite;
+    private boolean valide;
+    private int noteChargeTravail;
+    private String nomProfesseur;
 
-    //Constructeur à faire.
     public Avis(){}
+
+    public Avis( String sigleCours, String nomProfesseur, int noteQualite, int noteDifficulte, String commentaire, boolean valide) {
+        this.commentaire = commentaire;
+        this.noteDifficulte = noteDifficulte;
+        this.sigleCours = sigleCours;
+        this.noteQualite = noteQualite;
+        this.valide = valide;
+        this.noteChargeTravail = noteChargeTravail;
+        this.nomProfesseur = nomProfesseur;
+    }
+
+    public String getSigleCours() {
+        return sigleCours;
+    }
+
+    public void setSigleCours(String sigleCours) {
+        this.sigleCours = sigleCours;
+    }
+
+    public String getNomProfesseur() {
+        return nomProfesseur;
+    }
+
+    public void setNomProfesseur(String nomProfesseur) {
+        this.nomProfesseur = nomProfesseur;
+    }
 
     //Getters et Setters.
     public void setNoteQualite(int noteQualite) {
@@ -22,12 +48,12 @@ public class Avis {
         this.noteDifficulte = noteDifficulte;
     }
 
-    public void setIdAuteur(int idAuteur) {
-        this.idAuteur = idAuteur;
-    }
+//    public void setIdAuteur(int idAuteur) {
+//        this.idAuteur = idAuteur;
+//    }
 
-    public String getContenu() {
-        return contenu;
+    public String getCommentaire() {
+        return commentaire;
     }
 
     public int getNoteDifficulte() {
@@ -38,29 +64,29 @@ public class Avis {
         return noteQualite;
     }
 
-    public int getId() {
-        return id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setNoteChargeTravail(int noteChargeTravail) {
+//        this.noteChargeTravail = noteChargeTravail;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
-    public void setNoteChargeTravail(int noteChargeTravail) {
-        this.noteChargeTravail = noteChargeTravail;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setContenu(String contenu) {
-        this.contenu = contenu;
+    public void setCommentaire(String commentaire) {
+        this.commentaire = commentaire;
     }
 
     public int getNoteChargeTravail() {
         return noteChargeTravail;
     }
 
-    public int getIdAuteur() {
-        return idAuteur;
-    }
+//    public int getIdAuteur() {
+//        return idAuteur;
+//    }
 
     public boolean isValide() {
         return valide;
@@ -70,11 +96,11 @@ public class Avis {
         this.valide = valide;
     }
 
-    public Cours getCoursAssocie() {
-        return coursAssocie;
-    }
-
-    public void setCoursAssocie(Cours coursAssocie) {
-        this.coursAssocie = coursAssocie;
-    }
+//    public Cours getCoursAssocie() {
+//        return coursAssocie;
+//    }
+//
+//    public void setCoursAssocie(Cours coursAssocie) {
+//        this.coursAssocie = coursAssocie;
+//    }
 }

@@ -5,6 +5,7 @@ import io.javalin.http.Context;
 import org.projet.exception.HoraireException;
 import org.projet.model.Avis;
 import org.projet.model.Cours;
+import org.projet.model.Resultats;
 import org.projet.service.CoursService;
 
 import java.util.*;
@@ -192,4 +193,143 @@ public class CoursController {
             ctx.json("Erreur interne du serveur.");
         }
     }   
+
+
+    /**
+     * Cette methode permet d'obtenir les cours offerts dans un programme donne.
+     * @param ctx ID du programme.
+     **/
+    public void getCoursesForAProgram(Context ctx){
+        String id = ctx.pathParam("id");
+        List<String> details = coursService.getCoursesForAProgram(id);
+
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error", "Les paramètres fournis sont invalides ou le programme n'existe pas."));
+            return;
+        }
+
+        ctx.status(200).json(details);
+    }
+
+    /**
+     * Cette methode permet d'obtenir la liste des cours disponible pour un trimestre donnee dans un programme.
+     * @param ctx ID du programme dans lequel il faut effectuer la recherche et
+     *            du trimestre pour laquelle on effectue la recherche.
+     **/
+    public void getCourseBySemester(Context ctx){
+        String id = ctx.pathParam("id");
+        String session = ctx.pathParam("session");
+
+        List<String> details = coursService.getCourseBySemester(session,id);
+
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error","Les paramètres fournis sont invalides ou le programme n'existe pas ou le cours n'existe pas."));
+            return;
+        }
+
+        ctx.status(200).json(details);
+    }
+
+    /**
+     * Cette methode permet d'obtenir l'horaire d'un cours pour un trimestre donné.
+     * @param ctx ID du cours
+     * et le trimestre pour lequel on désire obtenir l'horaire.
+     **/
+    public void getCourseSchedule(Context ctx){
+        String courseID  = ctx.pathParam("id"); //ID du cours.
+        String session = ctx.pathParam("session");  //Trimestre pour lequel on effectue la recherche.
+
+        Map<String,Map<String,Object>> details = coursService.getCourseScheduleMap(courseID,session);
+
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error","Les paramètres fournis sont invalides ou le programme n'existe pas ou le cours n'existe pas."));
+            return;
+        }
+        ctx.status(200).json(details);
+    }
+
+    /**
+* Analyse la difficulté du cours envoyé via JSON.
+ * @param ctx Contexte Javalin.
+ */
+public void difficulteCours(Context ctx) {
+        RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
+        Resultats res = coursService.getResultats(req.sigle);
+        String difficulte = coursService.difficulteCours(res);
+        ctx.json(difficulte);
+    }  
+
+
+/**
+* Analyse la popularité du cours envoyé via JSON.
+* @param ctx Contexte Javalin.
+ */  
+public void populariteCours(Context ctx) {
+        RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
+        Resultats res = coursService.getResultats(req.sigle);
+        String popularite = coursService.populariteCours(res);
+        ctx.json(popularite);
+    }  
+
+    /**
+     * Cette classe permet de parser le json du body de la requête difficulte ou popularite. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteUnCours{
+        public String sigle;
+    }    
+
+       
+/**
+ * Cette méthode permet de comparer les statistiques de deux cours.
+ * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
+ */ 
+public void comparerDeuxCours(Context ctx) {
+        RequeteDeuxCours req = ctx.bodyAsClass(RequeteDeuxCours.class);
+        
+        Resultats res1 = coursService.getResultats(req.sigle1);
+        Resultats res2 = coursService.getResultats(req.sigle2);
+        
+    
+        Map<String, String> reponses = new HashMap<>();
+        reponses.put("popularite", coursService.comparerPopularite(res1, res2));
+        reponses.put("difficulte", coursService.comparerDifficulte(res1, res2));
+        
+        ctx.json(reponses);
+    }  
+
+
+/**
+ * Cette classe permet de parser le json du body de la requête comparaisonStats. La classe est interne donc
+ * on peut déclarer les attributs publics.
+ */    
+public static class RequeteDeuxCours{
+        public String sigle1;
+        public String sigle2;
+    }
+
+/**
+ * Cette classe permet de parser le json du body de la requête stats. La classe est interne donc
+ * on peut déclarer les attributs publics.
+ */
+public static class RequeteStats {
+        public String sigle;
+}    
+
+
+
+public static class RequeteResultats {
+        public String sigle;
+}
+
+/**
+ * Récupère et renvoie les résultats d'un cours au format JSON.
+ * @param ctx Le contexte de la requête HTTP.
+ */
+public void voirResultats(Context ctx) {
+        RequeteResultats req = ctx.bodyAsClass(RequeteResultats.class);
+        Resultats res = coursService.getResultats(req.sigle);
+        String message = res.voirResultats();
+        ctx.json(message);
+    }
 }
