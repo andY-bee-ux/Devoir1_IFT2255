@@ -15,9 +15,10 @@ jobs:
         java-version: [ '17' ]
 
     steps:
-      - name: Checkout repository with v4 
-      - uses: actions/checkout@v4
-# on met en cache les dépendances pour éviter de les télécharger à chaque exécution
+      - name: Checkout repository with v4
+        uses: actions/checkout@v4
+
+      # on met en cache les dépendances pour éviter de les télécharger à chaque exécution
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4
         with:
