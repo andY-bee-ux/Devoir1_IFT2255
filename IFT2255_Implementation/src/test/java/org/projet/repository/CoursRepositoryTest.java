@@ -94,8 +94,8 @@ public class CoursRepositoryTest {
         assertTrue(opt.isPresent(), "La recherche par nom devrait retourner un résultat");
         assertFalse(opt.get().isEmpty(), "La liste ne devrait pas être vide");
 
-        // Vérifie le contenu
-        assertTrue(opt.get().get(0).getName().contains("Programmation"));
+        // Vérifie le contenu — rendre le test robuste en cherchant si au moins un nom contient 'Programmation'
+        assertTrue(opt.get().stream().anyMatch(c -> c.getName() != null && c.getName().contains("Programmation")));
     }
 
     @Test

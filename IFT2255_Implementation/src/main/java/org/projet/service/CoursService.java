@@ -806,6 +806,19 @@ public class CoursService {
      **/
     @NotNull
     private static URI getStringBuilder(String BASE_URL,Map<String, String> params) {
+        // Allow overriding the Planifium base host for testing (e.g., local HTTP server)
+        String override = System.getProperty("planifium.base");
+        if (override != null && !override.isBlank()) {
+            try {
+                URI orig = URI.create(BASE_URL);
+                URI over = URI.create(override);
+                String combined = over.toString().replaceAll("/+$", "") + orig.getPath();
+                BASE_URL = combined;
+            } catch (Exception ignored) {
+                // if parsing fails, fall back to the provided BASE_URL
+            }
+        }
+
         StringBuilder sb = new StringBuilder(BASE_URL);
         if (params != null && !params.isEmpty()) {
             sb.append("?");
