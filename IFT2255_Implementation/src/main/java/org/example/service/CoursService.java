@@ -3,6 +3,7 @@ package org.example.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Cours;
+import org.example.model.Resultats;
 import org.example.repository.CoursRepository;
 
 import java.time.LocalTime;
@@ -536,6 +537,118 @@ public class CoursService {
 
     }
 
+/**
+ * Récupère les données de performance et de participation pour un cours spécifique.
+ * Cette méthode initialise un nouvel objet Resultats, ce qui déclenche 
+ * la recherche et l'extraction des données depuis le fichier CSV historique.
+ *
+ * @param sigle Le code unique du cours (ex: "IFT1015") à rechercher dans la base de données.
+ * @return Une instance de {@link Resultats} contenant les statistiques du cours, 
+ * ou un objet avec des valeurs par défaut si le cours n'est pas trouvé.
+ */    
+public Resultats getResultats(String sigleCours) {
+    return new Resultats(sigleCours);
+}    
+
+
+
+/**
+     * Évalue la difficulté d'un cours en fonction de son score moyen.
+     * Les seuils sont : >= 4.0 (facile), >= 2.5 (moyenne), < 2.5 (difficile).
+     *
+     * @param resultats L'objet contenant les données du cours à analyser.
+     * @return Un message décrivant la difficulté ou un message d'erreur si le cours est absent.
+     */
+public String difficulteCours(Resultats resultats) {
+    if (!resultats.isCoursPresent()) {
+        return "Le cours demandé est absent des résultats. Veuillez vérifier le sigle.";
+    }
+    double score = resultats.getScore();
+    if (score >= 4.0) {
+        return "Le cours " + resultats.getNom() + " est considéré comme facile avec un score de " + score + "/5";
+    } else if (score >= 2.5) {
+        return "Le cours " + resultats.getNom() + " est considéré comme de difficulté moyenne avec un score de " + score + "/5";
+    } else {
+        return "Le cours " + resultats.getNom() + " est considéré comme difficile avec un score de " + score + "/5.";
+    }}
+
+/**
+     * Évalue la popularité d'un cours en fonction du nombre de participants.
+     * Les seuils sont : >= 200 (très populaire), >= 100 (modérément populaire), < 100 (peu populaire).
+     *
+     * @param resultats L'objet contenant les données du cours à analyser.
+     * @return Un message décrivant la popularité ou un message d'erreur si le cours est absent.
+     */
+public String populariteCours(Resultats resultats) {
+    if (!resultats.isCoursPresent()) {
+        return "Le cours demandé est absent des résultats. Veuillez vérifier le sigle.";
+    }
+    int participants = resultats.getParticipants();
+    if (participants >= 200) {
+        return "Le cours " + resultats.getNom() + " est très populaire avec " + participants + " participants.";
+    } else if (participants >= 100) {
+        return "Le cours " + resultats.getNom() + " est modérément populaire avec " + participants + " participants.";
+    } else {
+        return "Le cours " + resultats.getNom() + " est peu populaire avec seulement " + participants + " participants.";
+    }
+
+}
+
+
+/**
+     * Compare le nombre de participants entre deux cours pour déterminer le plus populaire.
+     *
+     * @param res1 Les résultats du premier cours.
+     * @param res2 Les résultats du deuxième cours.
+     * @return Un message comparatif indiquant quel cours a le plus de participants.
+     */
+public String comparerPopularite(Resultats res1, Resultats res2) {
+    if (!res1.isCoursPresent() || !res2.isCoursPresent()) {
+        return "L'un des cours demandés est absent des résultats. Veuillez vérifier les sigles.";
+    }
+    int participants1 = res1.getParticipants();
+    int participants2 = res2.getParticipants();
+
+    if (participants1 > participants2) {
+        return "Le cours " + res1.getNom() + " est plus populaire que " + res2.getNom() +
+                " avec " + participants1 + " participants contre " + participants2 + ".";
+    } else if (participants1 < participants2) {
+        return "Le cours " + res2.getNom() + " est plus populaire que " + res1.getNom() +
+                " avec " + participants2 + " participants contre " + participants1 + ".";
+    } else {
+        return "Les deux cours ont la même popularité avec " + participants1 + " participants chacun.";
+    }
+
+}
+
+
+/**
+     * Compare les scores de deux cours pour déterminer lequel est le plus facile.
+     * Un score plus élevé indique un cours plus facile selon les critères établis.
+     *
+     * @param res1 Les résultats du premier cours.
+     * @param res2 Les résultats du deuxième cours.
+     * @return Un message comparatif indiquant la difficulté relative des deux cours.
+     */
+public String comparerDifficulte(Resultats res1, Resultats res2) {
+    if (!res1.isCoursPresent() || !res2.isCoursPresent()) {
+        return "L'un des cours demandés est absent des résultats. Veuillez vérifier les sigles.";
+    }
+    double score1 = res1.getScore();
+    double score2 = res2.getScore();
+
+    if (score1 > score2) {
+        return "Le cours " + res1.getNom() + " est considéré comme plus facile que " + res2.getNom() +
+                " avec un score de " + score1 + "/5 contre " + score2 + "/5.";
+    } else if (score1 < score2) {
+        return "Le cours " + res2.getNom() + " est considéré comme plus facile que " + res1.getNom() +
+                " avec un score de " + score2 + "/5 contre " + score1 + "/5.";
+    } else {
+        return "Les deux cours ont la même difficulté avec un score de " + score1 + "/5 chacun.";
+    }
+
+
+}
 }
 
 
