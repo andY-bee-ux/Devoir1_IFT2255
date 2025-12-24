@@ -81,7 +81,7 @@ public class CoursController {
      RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
         List<List<String>> resultat = coursService.comparerCombinaisonCours(req.listeCours, req.session);
         if (resultat == null) {
-            ctx.status(400);
+            // ctx.status(400);
             ctx.json("Requête invalide");
             return;
         }
@@ -186,7 +186,7 @@ public class CoursController {
             }
 
         } catch (HoraireException e) {
-            ctx.status(400);
+            // ctx.status(400);
             ctx.json(e.getMessage());
         } catch (Exception e) {
             ctx.status(500);
