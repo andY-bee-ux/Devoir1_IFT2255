@@ -20,10 +20,7 @@ public class CoursController {
 
     public List<Avis> getAvis(Cours cours){return new ArrayList<>();}
 
-    // A faire
-    public List<String> comparerCombinaisonCours(int[] idCours) {
-        return new ArrayList<>();}
-
+   
 
 
     public void checkEligibility(Context ctx){
@@ -79,14 +76,26 @@ public class CoursController {
      */
     public void comparerCombinaisonCours(Context ctx){
      RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
-        List<List<String>> resultat = coursService.comparerCombinaisonCours(req.listeCours, req.session);
-        if (resultat == null) {
-            // ctx.status(400);
-            ctx.json("Requête invalide");
-            return;
+        // List<List<String>> resultat = coursService.comparerCombinaisonCours(req.listeCours, req.session);
+        // if (resultat == null) {
+        //     // ctx.status(400);
+        //     ctx.json("Requête invalide");
+        //     return;
+        // }
+        // ctx.status(200);
+        // ctx.json(resultat);
+
+         try {
+            List<List<String>> resultat =
+                    coursService.comparerCombinaisonCours(req.listeCours, req.session);
+
+            ctx.status(200);
+            ctx.json(resultat);
+
+        } catch (RuntimeException e) {
+            ctx.status(200);
+            ctx.json(new ArrayList<>());
         }
-        ctx.status(200);
-        ctx.json(resultat);
     }
     /**
      * Cette classe permet de parser le json du body de la requête comparaison. La classe est interne donc
