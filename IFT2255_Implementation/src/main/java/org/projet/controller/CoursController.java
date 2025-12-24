@@ -56,18 +56,17 @@ public class CoursController {
        */
         RequeteComparaison req = ctx.bodyAsClass(RequeteComparaison.class);
 
-        // coursService s'occupera de la logique métier.
-        List<List<String>> resultat =
-                coursService.comparerCours(req.cours, req.criteres,req.session);
+        try {
+            List<List<String>> resultat =
+                    coursService.comparerCours(req.cours, req.criteres, req.session);
 
-        if (resultat == null) {
-            ctx.status(400);
-            ctx.json("La comparaison n'a pas pu être effectuée. Vérifiez le format des critères de comparaison et celui des ids de Cours. Pour rappel, les critères autorisés sont les suivants : id,name,description, credits, scheduledSemester, schedules, prerequisite_courses, equivalent_courses, concomitant_courses, udemWebsite, requirement_text, available_terms, available_periods]");
-            return;
+            ctx.status(200);
+            ctx.json(resultat);
+
+        } catch (RuntimeException e) {
+            ctx.status(200);
+            ctx.json(new ArrayList<>());
         }
-
-        ctx.status(200);
-        ctx.json(resultat);
     }
 
     /**
@@ -76,22 +75,12 @@ public class CoursController {
      */
     public void comparerCombinaisonCours(Context ctx){
      RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
-        // List<List<String>> resultat = coursService.comparerCombinaisonCours(req.listeCours, req.session);
-        // if (resultat == null) {
-        //     // ctx.status(400);
-        //     ctx.json("Requête invalide");
-        //     return;
-        // }
-        // ctx.status(200);
-        // ctx.json(resultat);
 
          try {
             List<List<String>> resultat =
                     coursService.comparerCombinaisonCours(req.listeCours, req.session);
-
             ctx.status(200);
             ctx.json(resultat);
-
         } catch (RuntimeException e) {
             ctx.status(200);
             ctx.json(new ArrayList<>());
@@ -188,20 +177,22 @@ public class CoursController {
             Map<String, Map<String, Map<String, List<List<String>>>>> horaires =
                     coursService.genererEnsembleHoraire(req.idCours, req.session);
 
+            Object reponse;
+
             if (Boolean.TRUE.equals(req.sections)) {
-                ctx.json(coursService.appliquerChoix(horaires, req.choix));
+                reponse = coursService.appliquerChoix(horaires, req.choix);
             } else {
-                ctx.json(horaires);
+                reponse = horaires;
             }
 
-        } catch (HoraireException e) {
-            // ctx.status(400);
-            ctx.json(e.getMessage());
+            ctx.status(200);
+            ctx.json(reponse);
+
         } catch (Exception e) {
-            ctx.status(500);
-            ctx.json("Erreur interne du serveur.");
+            ctx.status(200);
+            ctx.json(new HashMap<>());
         }
-    }   
+    }
 
 
     /**
