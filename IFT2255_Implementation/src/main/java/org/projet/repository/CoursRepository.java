@@ -4,7 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.projet.model.Cours;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -178,6 +183,43 @@ public class CoursRepository implements IRepository {
     }
 
     /**
+     * Cette methode retourne une liste qui contient des clés valeurs avec l'id des programmes et le nom.
+     * @return Une liste clés valeurs avec l'id des programmes et le nom.
+     **/
+    public List<Map<String,String>> getAllPrograms() {
+        List<Map<String,String>> programmes = new ArrayList<>();
+        String BASE_URL = "https://planifium-api.onrender.com/api/v1/programs";
+        try{
+            HttpURLConnection connection = (HttpURLConnection) new URL(BASE_URL).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            JsonNode json = mapper.readTree(response.toString());
+            for(JsonNode program : json) {
+                Map<String,String> map = new HashMap<>();
+                map.put("id",program.get("id").asText());
+                map.put("name",program.get("name").asText());
+                programmes.add(map);
+            }
+        }catch (IOException e) {
+            System.out.println("Erreur lors de la récupération des requêtes : " + e.getMessage());
+        }
+        return programmes;
+    }
+
+    /**
      * Cette méthode permet de récupérer le body response de la requête Planifium permet de vérifier
      * l'éligibilité à un cours.
      * @param courseId id du cours
@@ -218,8 +260,7 @@ public class CoursRepository implements IRepository {
 
         }
 
-
-    }
+}
 
 
 

@@ -1095,6 +1095,33 @@ public class CoursService {
         return String.format("%02d:%02d", minutes / 60, minutes % 60);
     }
 
+    /**
+     * Cette methode retourne une liste de nom de programme qui contienne le {@code nom} fournis en parametre
+     * @param nom Nom de programme que l'utilisateur utilise pour sa recherche.
+     * @return une liste de proposition de programme qui correspond à la recherche de l'utilisateur.
+     **/
+    public List<String> foundProgramms(String nom){
+        List<String> propositions = new ArrayList<>();
+        List<Map<String, String>> programs = this.coursRepository.getAllPrograms();
+        for(Map<String, String> program : programs) {
+            if (program.get("name").contains(nom)) propositions.add(program.get("name"));
+        }
+        return propositions;
+    }
+
+    /**
+     * Cette methode retourne un id de programme lorsqu'on lui passe le nom en parametre.
+     * @param nom Nom du programme.
+     * @return L'id du programme.
+     **/
+    public String foundProgrammId(String nom){
+        String programmId = "";
+        List<Map<String, String>> programs = this.coursRepository.getAllPrograms();
+        for(Map<String, String> program : programs) {
+            if (program.get("name").equals(nom)) programmId = program.get("id");
+        }
+        return programmId;
+    }
 
     /**
      * Cette methode permet d'obtenir les cours offerts dans un programme donne.
@@ -1384,7 +1411,7 @@ public class CoursService {
  * Cette méthode initialise un nouvel objet Resultats, ce qui déclenche 
  * la recherche et l'extraction des données depuis le fichier CSV historique.
  *
- * @param sigle Le code unique du cours (ex: "IFT1015") à rechercher dans la base de données.
+ * @param sigleCours Le code unique du cours (ex: "IFT1015") à rechercher dans la base de données.
  * @return Une instance de {@link Resultats} contenant les statistiques du cours, 
  * ou un objet avec des valeurs par défaut si le cours n'est pas trouvé.
  */    
