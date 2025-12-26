@@ -69,23 +69,107 @@ public class CoursController {
         }
     }
 
-    /**
-     * Cette méthode permet de comparer des ensembles de cours.
-     * @param ctx
-     */
-    public void comparerCombinaisonCours(Context ctx){
-     RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
 
-         try {
-            List<List<String>> resultat =
-                    coursService.comparerCombinaisonCours(req.listeCours, req.session);
+    /**
+     * Cette méthode permet d’analyser la difficulté globale de plusieurs combinaisons de cours.
+     * La difficulté est estimée à partir des résultats académiques agrégés
+     * (moyenne des scores des cours composant chaque combinaison).
+     *
+     * @param ctx le contexte javalin contenant la requête HTTP de l'utilisateur.
+     */
+    public void difficulteCombinaisonCours(Context ctx) {
+        RequeteComparaisonCombinaison req =
+                ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
+
+        try {
+            List<String> resultats =
+                    coursService.difficulteCombinaisonCours(req.listeCours);
+
             ctx.status(200);
-            ctx.json(resultat);
+            ctx.json(resultats);
+
         } catch (RuntimeException e) {
             ctx.status(200);
             ctx.json(new ArrayList<>());
         }
     }
+
+    /**
+     * Cette méthode permet d’analyser la popularité globale de plusieurs combinaisons de cours.
+     * La popularité est estimée à partir du nombre total de participants
+     * des cours composant chaque combinaison.
+     *
+     * @param ctx le contexte javalin contenant la requête HTTP de l'utilisateur.
+     */
+    public void populariteCombinaisonCours(Context ctx) {
+        RequeteComparaisonCombinaison req =
+                ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
+
+        try {
+            List<String> resultats =
+                    coursService.populariteCombinaisonCours(req.listeCours);
+
+            ctx.status(200);
+            ctx.json(resultats);
+
+        } catch (RuntimeException e) {
+            ctx.status(200);
+            ctx.json(new ArrayList<>());
+        }
+    }
+
+    /**
+     * Cette méthode permet de comparer plusieurs combinaisons de cours
+     * selon leurs statistiques agrégées.
+     * La comparaison porte à la fois sur la difficulté globale
+     * et la popularité globale de chaque combinaison.
+     *
+     * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur
+     *            ainsi que la réponse retournée.
+     */
+    public void comparerCombinaisonStats(Context ctx) {
+        RequeteComparaisonCombinaison req =
+                ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
+
+        try {
+            List<Map<String, String>> resultats =
+                    coursService.comparerCombinaisonStats(req.listeCours);
+
+            ctx.status(200);
+            ctx.json(resultats);
+
+        } catch (RuntimeException e) {
+            ctx.status(200);
+            ctx.json(new ArrayList<>());
+        }
+    }
+
+    /**
+     * Cette méthode permet de comparer plusieurs combinaisons de cours
+     * uniquement à partir des informations issues du catalogue.
+     * Les critères considérés incluent notamment les crédits,
+     * les périodes communes, les sessions communes et les prérequis.
+     *
+     * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur
+     *            ainsi que la réponse retournée.
+     */
+    public void comparerCombinaisonCatalogue(Context ctx) {
+        RequeteComparaisonCombinaison req =
+                ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
+
+        try {
+            List<List<String>> resultat =
+                    coursService.comparerCombinaisonCatalogue(req.listeCours);
+
+            ctx.status(200);
+            ctx.json(resultat);
+
+        } catch (RuntimeException e) {
+            ctx.status(200);
+            ctx.json(new ArrayList<>());
+        }
+    }
+
     /**
      * Cette classe permet de parser le json du body de la requête comparaison. La classe est interne donc
      * on peut déclarer les attributs publics.
@@ -122,7 +206,6 @@ public class CoursController {
      */
     public static class RequeteComparaisonCombinaison{
         public List<List<String>> listeCours;
-        public String session;
     }
 
    

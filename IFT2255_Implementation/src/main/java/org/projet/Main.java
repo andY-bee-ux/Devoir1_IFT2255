@@ -53,7 +53,19 @@ public class Main {
         app.post("/horaire", coursController::genererHoraire);
 
         // #11 Comparer des combinaisons de cours 
-        app.post("/cours/comparer/combinaison", coursController::comparerCombinaisonCours);
+        
+        // #11.1 Avec les résultats agrégés
+        // #11.1.1 Difficulté globale des combinaisons
+        app.post("/cours/combinaison/difficulte",coursController::difficulteCombinaisonCours);
+
+        // #11.1.2 Popularité globale des combinaisons
+        app.post("/cours/combinaison/popularite",coursController::populariteCombinaisonCours);
+
+        // #11.1.3 Difficulté + popularité (stats agrégées)
+        app.post("/cours/combinaison/comparer/stats",coursController::comparerCombinaisonStats);
+
+        // #11.2 Avec le catalogue seul
+        app.post("/cours/combinaison/comparer",coursController::comparerCombinaisonCatalogue);
 
 
     }

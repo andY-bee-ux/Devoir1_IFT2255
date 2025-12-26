@@ -262,16 +262,169 @@ public class CoursService {
 
     }
 
-    /**
+    
+ /**
+ * Analyse la difficulté globale de plusieurs combinaisons de cours.
+ * La difficulté est estimée à partir de la moyenne des scores
+ * des cours composant chaque combinaison.
+ *
+ * @param listeDeListesDeCours liste des combinaisons de cours
+ * @return une liste de messages décrivant la difficulté de chaque combinaison
+ */
+public List<String> difficulteCombinaisonCours(List<List<String>> listeDeListesDeCours) {
+
+    List<String> out = new ArrayList<>();
+    int index = 1;
+
+    for (List<String> combinaison : listeDeListesDeCours) {
+
+        double sommeScores = 0.0;
+        int nb = 0;
+
+        for (String sigle : combinaison) {
+            Resultats r = getResultats(sigle);
+            if (r.isCoursPresent()) {
+                sommeScores += r.getScore();
+                nb++;
+            }
+        }
+
+        if (nb == 0) {
+            out.add("Combinaison " + index + " : aucun cours valide dans les résultats.");
+        } else {
+            double scoreMoyen = Math.round((sommeScores / nb) * 100.0) / 100.0;
+            out.add(
+                "Combinaison " + index +
+                " : difficulté " +
+                (scoreMoyen >= 4.0 ? "faible" :
+                scoreMoyen >= 2.5 ? "moyenne" : "élevée") +
+                " (score moyen = " + scoreMoyen + "/5)"
+            );
+        }
+
+        index++;
+    }
+
+    return out;
+}
+
+/**
+ * Analyse la popularité globale de plusieurs combinaisons de cours.
+ * La popularité est estimée à partir du nombre total de participants
+ * des cours composant chaque combinaison.
+ *
+ * @param listeDeListesDeCours liste des combinaisons de cours
+ * @return une liste de messages décrivant la popularité de chaque combinaison
+ */
+public List<String> populariteCombinaisonCours(List<List<String>> listeDeListesDeCours) {
+
+    List<String> out = new ArrayList<>();
+    int index = 1;
+
+    for (List<String> combinaison : listeDeListesDeCours) {
+
+        int total = 0;
+        int nb = 0;
+
+        for (String sigle : combinaison) {
+            Resultats r = getResultats(sigle);
+            if (r.isCoursPresent()) {
+                total += r.getParticipants();
+                nb++;
+            }
+        }
+
+        if (nb == 0) {
+            out.add("Combinaison " + index + " : aucun cours valide dans les résultats.");
+        } else {
+            out.add(
+                "Combinaison " + index +
+                " : popularité " +
+                (total >= 200 ? "élevée" :
+                total >= 100 ? "moyenne" : "faible") +
+                " (" + total + " participants)"
+            );
+        }
+
+        index++;
+    }
+
+    return out;
+}
+
+
+
+/**
+ * Compare plusieurs combinaisons de cours selon leurs statistiques agrégées.
+ * La comparaison porte à la fois sur la difficulté et la popularité globales.
+ *
+ * @param listeDeListesDeCours liste des combinaisons de cours
+ * @return une liste de maps contenant les comparaisons pour chaque combinaison
+ */
+public List<Map<String, String>> comparerCombinaisonStats(
+        List<List<String>> listeDeListesDeCours
+) {
+
+    List<Map<String, String>> resultat = new ArrayList<>();
+    int index = 1;
+
+    for (List<String> combinaison : listeDeListesDeCours) {
+
+        double sommeScores = 0.0;
+        int totalParticipants = 0;
+        int nbCoursValides = 0;
+
+        for (String sigle : combinaison) {
+            Resultats res = getResultats(sigle);
+            if (res.isCoursPresent()) {
+                sommeScores += res.getScore();
+                totalParticipants += res.getParticipants();
+                nbCoursValides++;
+            }
+        }
+
+        Map<String, String> ligne = new HashMap<>();
+        ligne.put("combinaison", "Combinaison " + index);
+        ligne.put("cours", combinaison.toString());
+
+        if (nbCoursValides == 0) {
+            ligne.put("difficulte", "Aucune donnée disponible");
+            ligne.put("popularite", "Aucune donnée disponible");
+        } else {
+            double scoreMoyen =
+        Math.round((sommeScores / nbCoursValides) * 100.0) / 100.0;
+
+            ligne.put(
+                "difficulte",
+                (scoreMoyen >= 4.0 ? "faible" :
+                scoreMoyen >= 2.5 ? "moyenne" : "élevée")
+                + " (score moyen = " + scoreMoyen + "/5)"
+            );
+
+            ligne.put(
+                "popularite",
+                (totalParticipants >= 200 ? "élevée" :
+                totalParticipants >= 100 ? "moyenne" : "faible")
+                + " (" + totalParticipants + " participants)"
+            );
+
+        }
+
+        resultat.add(ligne);
+        index++;
+    }
+
+    return resultat;
+}
+
+/**
      * Cette méthode permet de comparer des ensembles de cours.
      * @param listeDeListesDeCours liste des ensembles de cours qu'on veut comparer.
      * @return un tableau contenant les comparaisons des ensembles de cours donnés.
      */
 
     public List<List<String>> comparerCombinaisonCours(
-            List<List<String>> listeDeListesDeCours,
-            String sessionChoisie
-    ) {
+            List<List<String>> listeDeListesDeCours) {
 
         List<List<String>> resultat = new ArrayList<>();
         int index = 1;
@@ -307,8 +460,7 @@ public class CoursService {
             Map<String, Boolean> periodesCommunes = null;
             Map<String, Boolean> sessionsCommunes = null;
 
-            // horaires pour la session choisie
-            List<ActivityInfo> activities = new ArrayList<>();
+
 
             for (Cours c : coursCombinaison) {
 
@@ -350,36 +502,9 @@ public class CoursService {
                     }
                 }
 
-                // EXTRACTION DE L'HORAIRE POUR LA SESSION CHOISIE
-                if (c.getSchedules() != null) {
-                    for (Cours.Schedule s : c.getSchedules()) {
-
-                        if (!s.getSemester().equalsIgnoreCase(sessionChoisie))
-                            continue; // Ignore les autres sessions
-
-                        if (s.getSections() == null) continue;
-
-                        for (Cours.Section section : s.getSections()) {
-                            if (section.getVolets() == null) continue;
-                            for (Cours.Volet volet : section.getVolets()) {
-                                if (volet.getActivities() == null) continue;
-                                for (Cours.Activity act : volet.getActivities()) {
-                                    activities.add(new ActivityInfo(
-                                            c.getId(),
-                                            section.getName(),
-                                            act.getDays(),
-                                            act.getStart_time(),
-                                            act.getEnd_time()
-                                    ));
-                                }
-                            }
-                        }
-                    }
-                }
             }
 
-            // ---- DÉTECTION DES CONFLITS
-            List<String> conflits = detectConflits(activities);
+          
 
             // ---- Construction de la ligne
             List<String> ligne = new ArrayList<>();
@@ -392,8 +517,6 @@ public class CoursService {
                     (periodesCommunes == null ? "[]" : periodesCommunes.keySet()));
             ligne.add("Sessions communes=" +
                     (sessionsCommunes == null ? "[]" : sessionsCommunes.keySet()));
-            ligne.add("Horaires=" + activities);
-            ligne.add("Conflits=" + conflits);
 
             resultat.add(ligne);
             index++;
@@ -426,38 +549,20 @@ public class CoursService {
         }
     }
 
-    /**
-     * Cette méthode permet de détecter des conflits horaires pour une liste d'activités données.
-     * @param acts liste d'activités
-     * @return la liste des conflits.
-     */
-    private List<String> detectConflits(List<ActivityInfo> acts) {
-        List<String> conflits = new ArrayList<>();
 
-        for (int i = 0; i < acts.size(); i++) {
-            ActivityInfo a = acts.get(i);
-            for (int j = i + 1; j < acts.size(); j++) {
-                ActivityInfo b = acts.get(j);
+/**
+ * Compare plusieurs combinaisons de cours uniquement
+ * à partir des informations issues du catalogue.
+ *
+ * @param listeDeListesDeCours liste des combinaisons de cours
+ * @return un tableau de comparaison basé sur le catalogue
+ */
+public List<List<String>> comparerCombinaisonCatalogue(
+        List<List<String>> listeDeListesDeCours
+) {
+    return comparerCombinaisonCours(listeDeListesDeCours);
+}
 
-                // Ignore si c'est le même cours
-                if (a.coursId.equals(b.coursId)) continue;
-
-                // Vérifie si mêmes jours
-                boolean memeJour = a.days.stream().anyMatch(b.days::contains);
-                if (!memeJour) continue;
-
-                // Compare les heures
-                if (overlap(a.start, a.end, b.start, b.end)) {
-                    conflits.add(a + " CONFLIT AVEC " + b);
-                }
-            }
-        }
-        return conflits;
-    }
-
-    private boolean overlap(String s1, String e1, String s2, String e2) {
-        return s1.compareTo(e2) < 0 && s2.compareTo(e1) < 0;
-    }
 
 
 

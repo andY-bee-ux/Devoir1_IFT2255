@@ -204,64 +204,6 @@ public class CoursControllerTest {
         verify(ctx).json(any());
     }
 
-    //Tests pour comparerCombinaisonCours
-
-    @Test
-    @DisplayName("Comparaison de combinaisons de cours valides")
-    void testComparerCombinaisonCours_valid() {
-        CoursController controller = new CoursController();
-        Context ctx = mock(Context.class);
-        CoursController.RequeteComparaisonCombinaison req = new CoursController.RequeteComparaisonCombinaison();
-        req.listeCours = List.of(
-                List.of("IFT1025", "IFT1030"),
-                List.of("IFT2255", "IFT2000")
-        );
-        req.session = "FALL";
-
-        when(ctx.bodyAsClass(CoursController.RequeteComparaisonCombinaison.class)).thenReturn(req);
-
-        controller.comparerCombinaisonCours(ctx);
-
-        verify(ctx).status(anyInt());
-        verify(ctx).json(any());
-    }
-
-    @Test
-    @DisplayName("Comparaison de combinaisons avec cours invalide")
-    void testComparerCombinaisonCours_invalidCourseId() {
-        CoursController controller = new CoursController();
-        Context ctx = mock(Context.class);
-        CoursController.RequeteComparaisonCombinaison req = new CoursController.RequeteComparaisonCombinaison();
-        req.listeCours = List.of(
-                List.of("INVALID1", "INVALID2")
-        );
-        req.session = "FALL";
-
-        when(ctx.bodyAsClass(CoursController.RequeteComparaisonCombinaison.class)).thenReturn(req);
-
-        controller.comparerCombinaisonCours(ctx);
-
-        verify(ctx).status(400);
-        verify(ctx).json("Requête invalide");
-    }
-
-    @Test
-    @DisplayName("Comparaison de combinaisons avec une seule combinaison")
-    void testComparerCombinaisonCours_singleCombination() {
-        CoursController controller = new CoursController();
-        Context ctx = mock(Context.class);
-        CoursController.RequeteComparaisonCombinaison req = new CoursController.RequeteComparaisonCombinaison();
-        req.listeCours = List.of(
-                List.of("IFT1025", "IFT1030", "IFT2255")
-        );
-        req.session = "WINTER";
-
-        when(ctx.bodyAsClass(CoursController.RequeteComparaisonCombinaison.class)).thenReturn(req);
-
-        controller.comparerCombinaisonCours(ctx);
-
-        verify(ctx).status(anyInt());
-    }
 
     //Tests pour getAvis
 
