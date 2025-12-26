@@ -33,6 +33,11 @@ public class CoursRepository implements IRepository {
         return instance;
     }
 
+    private boolean isSigleComplet(String value) {
+    // Ex: IFT1025, MAT1600, IFT2255, etc. 
+        return value != null && value.matches("^[A-Z]{3}\\d{4}$");
+    }
+
     /**
      * Cette méthode permet de récupérer un Cours de la source de données utilisée.
      * @param param paramètre de la recherche ( id, nom, ou description)
@@ -43,85 +48,99 @@ public class CoursRepository implements IRepository {
      * @throws Exception
      */
     public Optional<List<Cours>> getCourseBy(
-            String param,
-            String value,
-            String includeScheduleBool,
-            String semester
-    ) throws Exception {
+        String param,
+        String value,
+        String includeScheduleBool,
+        String semester
+) throws Exception {
 
-        // URL de base commune aux trois requêtes possibles.
-        StringBuilder uri = new StringBuilder("https://planifium-api.onrender.com/api/v1/courses");
+    // URL de base commune aux trois requêtes possibles.
+    StringBuilder uri = new StringBuilder("https://planifium-api.onrender.com/api/v1/courses");
 
-        // Cas 1 : recherche par id → /courses/{id}
-        if (param.equalsIgnoreCase("id")) {
+    boolean isIdExact = false;
+
+    // Cas 1 : recherche par id → /courses/{id}
+    if (param.equalsIgnoreCase("id")) {
+
+        if (isSigleComplet(value)) {
+            // Sigle complet => /courses/{id}
             uri.append("/").append(value);
+            isIdExact = true;
         } else {
-            // Cas 2 : query → /courses?name=xxx ou ?description=xxx etc.
+            // Sigle partiel => /courses?sigle={id}
             uri.append("?")
-                    .append(param)
+                    .append("sigle")
                     .append("=")
-                    // afin d'encoder les caractères spéciaux car si non ça ne fonctionne pas.
-                    // Malgré l'encodage, cela ne fonctionne pas si l'expression recherchée contient des accents.
                     .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
         }
 
-        // Booleen qui permettra de savoir si on a déjà un query dans la liste de queries afin de commencer par un ?.
-        boolean hasQuery = uri.toString().contains("?");
-
-        // Ajouter include_schedule=true si demandé ( si non ce sera null)
-        if ("true".equalsIgnoreCase(includeScheduleBool)) {
-            uri.append(hasQuery ? "&" : "?");
-            uri.append("include_schedule=true");
-            hasQuery = true;
-        }
-
-        // Ajouter le semester si demandé
-        if (semester != null && !semester.isEmpty() && includeScheduleBool == "true") {
-            uri.append(hasQuery ? "&" : "?");
-            uri.append("schedule_semester=").append(URLEncoder.encode(semester, StandardCharsets.UTF_8));
-        }else  if(semester != null && !semester.isEmpty() && includeScheduleBool == "false" ){
-            return Optional.empty();
-        }
-
-        // Construire la requête
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(uri.toString()))
-                .build();
-
-        HttpClient httpClient = HttpClient.newBuilder()
-                .followRedirects(HttpClient.Redirect.ALWAYS)
-                .build();
-
-        HttpResponse<String> response =
-                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-       // si la requête n'a pas abouti, on retourne un Optional.empty.
-        if (response.statusCode() != 200) {
-            return Optional.empty();
-        }
-
-        // Parsing JSON
-        ObjectMapper mapper = new ObjectMapper();
-        List<Cours> coursList;
-        // on traite ce cas séparemment car la recherche par id ne retourne qu'un cours.
-        if (param.equalsIgnoreCase("id")) {
-            Cours cours = mapper.readValue(response.body(), Cours.class);
-            coursList = List.of(cours);
-        }
-
-        /* La recherche par nom ne devrait aussi retourner qu'un cours mais il y a des exemples
-            pour lesquels ça en retourne plusieurs ( Programmation 1 -> IFT1016 et IFT1015),
-            aussi on peut aussi rechercher par mot-clé pour le nom ( par exemple Programmation).
-         */
-
-        else {
-            coursList = mapper.readValue(
-                    response.body(),
-                    mapper.getTypeFactory().constructCollectionType(List.class, Cours.class)
-            );
-        }
-
-        return Optional.of(coursList);
+    } else {
+        // Cas 2 : query → /courses?name=xxx ou ?description=xxx etc.
+        uri.append("?")
+                .append(param)
+                .append("=")
+                // afin d'encoder les caractères spéciaux car si non ça ne fonctionne pas.
+                // Malgré l'encodage, cela ne fonctionne pas si l'expression recherchée contient des accents.
+                .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
     }
+
+    // Booleen qui permettra de savoir si on a déjà un query dans la liste de queries afin de commencer par un ?.
+    boolean hasQuery = uri.toString().contains("?");
+
+    // Ajouter include_schedule=true si demandé ( si non ce sera null)
+    if ("true".equalsIgnoreCase(includeScheduleBool)) {
+        uri.append(hasQuery ? "&" : "?");
+        uri.append("include_schedule=true");
+        hasQuery = true;
+    }
+
+    // Ajouter le semester si demandé
+    if (semester != null && !semester.isEmpty() && "true".equalsIgnoreCase(includeScheduleBool)) {
+        uri.append(hasQuery ? "&" : "?");
+        uri.append("schedule_semester=").append(URLEncoder.encode(semester, StandardCharsets.UTF_8));
+    } else if (semester != null && !semester.isEmpty() && "false".equalsIgnoreCase(includeScheduleBool)) {
+        return Optional.empty();
+    }
+
+    // Construire la requête
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI(uri.toString()))
+            .build();
+
+    HttpClient httpClient = HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.ALWAYS)
+            .build();
+
+    HttpResponse<String> response =
+            httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    // si la requête n'a pas abouti, on retourne un Optional.empty.
+    if (response.statusCode() != 200) {
+        return Optional.empty();
+    }
+
+    // Parsing JSON
+    ObjectMapper mapper = new ObjectMapper();
+    List<Cours> coursList;
+    // on traite ce cas séparemment car la recherche par id ne retourne qu'un cours.
+    if (isIdExact) {
+        Cours cours = mapper.readValue(response.body(), Cours.class);
+        coursList = List.of(cours);
+    }
+
+    /* La recherche par nom ne devrait aussi retourner qu'un cours mais il y a des exemples
+        pour lesquels ça en retourne plusieurs ( Programmation 1 -> IFT1016 et IFT1015),
+        aussi on peut aussi rechercher par mot-clé pour le nom ( par exemple Programmation).
+     */
+
+    else {
+        coursList = mapper.readValue(
+                response.body(),
+                mapper.getTypeFactory().constructCollectionType(List.class, Cours.class)
+        );
+    }
+
+    return Optional.of(coursList);
+}
 
     /**
      * Cette méthode permet de récupérer tous les ids de Cours de Planifium.
