@@ -4,14 +4,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.projet.model.Avis;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 public class AvisService {
-
     private static AvisService instance;
+    private final File fichier = new File("Avis.json");
     private final ObjectMapper mapper = new ObjectMapper();
     private List<Avis> avisStockes;
 
@@ -19,27 +20,21 @@ public class AvisService {
      * Cette méthode permet de charger le fichier JSON des avis ( Avis.json) lors de l'utilisation de l'instance
      * de AvisService.
      */
-    private AvisService() {
+    private AvisService(){
+        // Si le fichier existe, on le récupère et on stocke le contenu dans avisStockes.
 
-        avisStockes = new ArrayList<>();
-
-        InputStream is = getClass()
-                .getClassLoader()
-                .getResourceAsStream("Avis.json");
-
-        if (is == null) {
-            avisStockes = new ArrayList<>();
-        } else {
+        if(fichier.exists()) {
             try {
-                avisStockes = mapper.readValue(
-                        is,
-                        new TypeReference<List<Avis>>() {}
-                );
+                avisStockes = mapper.readValue(fichier, new TypeReference<List<Avis>>() {});
             } catch (IOException e) {
                 System.out.println("Erreur lecture fichier avis.json, initialisation vide");
                 e.printStackTrace();
                 avisStockes = new ArrayList<>();
             }
+        }
+        // Si le fichier n'existe pas, on initialise une liste vide ( on entrera plus jamais dans ce cas vu que le fichier existe déjà).
+        else {
+            avisStockes = new ArrayList<>();
         }
     }
 
@@ -47,11 +42,12 @@ public class AvisService {
      * Cette méthode permet de récupérer l'instance de AvisService dans le cadre du patron de création Singleton.
      * @return l'instance de AvisService.
      */
-    public static AvisService getInstance() {
-        if (instance == null) {
-            instance = new AvisService();
+    public static AvisService getInstance(){
+        if(instance == null){
+            instance =  new AvisService();
         }
         return instance;
+
     }
 
     /**
@@ -68,10 +64,12 @@ public class AvisService {
                              int noteDifficulte, int noteQualite,
                              String commentaire) {
 
+        // Si id de cours n'existe pas, erreur.
         if (!CoursService.getInstance().validateIdCours(sigle)) {
             throw new IllegalArgumentException("Cours inexistant");
         }
-
+        // On ne devrait pas faire confiance à une entité externe, donc même si le bot se charge de cette vérification,
+        // on la refait à nouveau.
         if (noteDifficulte < 1 || noteDifficulte > 5) {
             throw new IllegalArgumentException("Note difficulté invalide");
         }
@@ -79,11 +77,16 @@ public class AvisService {
         if (noteQualite < 1 || noteQualite > 5) {
             throw new IllegalArgumentException("Note qualité invalide");
         }
-
+        // S'il y a pas de commentaire, erreur.
         if (commentaire == null || commentaire.trim().isEmpty()) {
             throw new IllegalArgumentException("Commentaire vide");
         }
+
+//        if (commentaire.length() > 500) {
+//            throw new IllegalArgumentException("Commentaire trop long");
+//        }
     }
+
 
     /**
      * Cette méthode permet d'enregistrer l'avis localement.
@@ -93,10 +96,12 @@ public class AvisService {
      * @param noteQualite note de la qualité.
      * @param commentaire  commentaire subjectif.
      */
+
     public void enregistrerAvis(String sigle, String prof,
                                 int noteDifficulte, int noteQualite,
                                 String commentaire) {
-        try {
+        try{
+            // Si l'avis est valide, on le stocke en local.
             this.validateAvis(sigle, prof, noteDifficulte, noteQualite, commentaire);
             Avis avis = new Avis(
                     sigle,
@@ -108,7 +113,9 @@ public class AvisService {
             );
 
             avisStockes.add(avis);
-        } catch (Exception e) {
+            // on l'ajoute au fichier JSON ( amélioration possible car ici on override tout, pas pratique si on a 100000 avis).
+            mapper.writeValue(fichier, avisStockes);
+        } catch(Exception e){
             System.out.println("Erreur enregistrer avis");
         }
     }
@@ -118,17 +125,32 @@ public class AvisService {
      * @param sigle  sigle du cours
      * @return  retourne la liste d'avis associée au cours donné.
      */
-    public List<Avis> getAvisParCours(String sigle) {
-
+    public List<Avis> getAvisParCours(String sigle)  {
+        // le id du cours doit être valide avant la recherche.
         if (!CoursService.getInstance().validateIdCours(sigle)) {
             throw new IllegalArgumentException("Cours inexistant");
         }
 
+        // on parcourt avisStockes à la recherche d'avis ayant pour id de cours ce cours.
         List<Avis> avisCours = new ArrayList<>();
         for (Avis avis : avisStockes) {
-            if (avis.getSigleCours().equals(sigle)) {
+            if(avis.getSigleCours().equals(sigle)){
                 avisCours.add(avis);
             }
+        }
+        return avisCours;
+
+    }
+
+    /**
+     * Cette méthode permet de récupérer tous les avis stockés.
+     * @return la liste de tous les avis.
+     */
+    public List<Avis> getAllAvis(){
+        List<Avis> avisCours = new ArrayList<>();
+        for (Avis avis : avisStockes) {
+                avisCours.add(avis);
+
         }
         return avisCours;
     }
