@@ -486,11 +486,14 @@ public class CoursService {
         // Transformation en upper case si param == id ( pour ne pas générer d'erreur si l'utilisateur saisit ift1015 par exemple)
         if (param.equalsIgnoreCase("id") && value != null) {
             value = value.toUpperCase();
-            // Vérifier la validité de l'ID
-            if (!this.validateIdCours(value)) {
-                System.out.println("L'id de cours est invalide. Veuillez saisir un id valide ( Ex: IFT1025)");
-                return Optional.empty();
-            }
+
+            // On valide si ça ressemble à un sigle complet
+            if (value.matches("^[A-Z]{3}\\d{4}$")) {
+                if (!this.validateIdCours(value)) {
+                    System.out.println("L'id de cours est invalide. Veuillez saisir un id valide ( Ex: IFT1025)");
+                    return Optional.empty();
+                }
+    }
         }
 
         // Vérification includeSchedule vs session
