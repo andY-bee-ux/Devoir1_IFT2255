@@ -25,6 +25,10 @@ public class ApiService {
 
     private final String baseUrl = "http://172.17.0.1:7070/cours/rechercher/";
 
+    public ObjectMapper getMapper() {
+        return mapper;
+    }
+
     /**
      * Cette méthode permet de récupérer les cours pour un programme donné.
      * @param programmeId identifiant du programme
@@ -121,6 +125,98 @@ public class ApiService {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return List.of();
+        }
+    }
+
+
+
+    /**
+     * Cette méthode permet de retourner la liste de tous les avis.
+     * @return la liste de tous les avis
+     */
+
+    public List<Avis> getAllAvis(){
+        try {
+            // URL correcte : sans /rechercher
+            String url = "http://172.17.0.1:7070/cours" +"/avis";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                return mapper.readValue(response.body(), new TypeReference<List<Avis>>() {});
+            } else {
+                System.out.println("Erreur API  : " + response.statusCode());
+                return List.of();
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    /**
+     * Récupère la liste des cours offerts pour un programme et un semestre donnés.
+     * @param programmeId id du programme
+     * @param session ex: H2024, A2024
+     * @return liste des sigles de cours
+     */
+    public List<String> getCoursesBySemester(String programmeId, String session) {
+        try {
+            String url = "http://172.17.0.1:7070/programme/courseBySemester/" + programmeId + "/" + session;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                return mapper.readValue(response.body(), new TypeReference<List<String>>() {});
+            } else {
+                System.out.println("Erreur API getCoursesBySemester : " + response.statusCode());
+                return List.of();
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+    /**
+     * Récupère l'horaire détaillé d'un cours pour une session donnée
+     * @param sigle sigle du cours
+     * @param session ex: H2024, A2024
+     * @return Map représentant l’horaire (sections, volets, dates, etc.)
+     */
+    public Map<String, Object> getCourseSchedule(String sigle, String session) {
+        try {
+            String url = "http://172.17.0.1:7070/cours/horaires/" + sigle + "/" + session;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                // On parse le JSON en Map pour être flexible
+                return mapper.readValue(response.body(), new TypeReference<Map<String, Object>>() {});
+            } else {
+                System.out.println("Erreur API getCourseSchedule : " + response.statusCode());
+                return Map.of();
+            }
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return Map.of();
         }
     }
 

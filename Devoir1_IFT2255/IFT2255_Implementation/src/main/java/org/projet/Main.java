@@ -33,6 +33,8 @@ public class Main {
 
         // #8 Soumettre un avis pour un cours 
         app.post("/avis", avisController::soumettreAvis);
+        // get all avis
+        app.get("/cours/avis", avisController::getAllAvis);
 
         // #9 Comparer des cours
         

@@ -2,7 +2,9 @@ package client.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.text.Text;
 import org.projet.model.*;
 import client.service.ApiService;
 import javafx.scene.control.*;
@@ -35,16 +37,37 @@ public class ClientController {
     private VBox criteresBox; // checkboxes critères
     private TextField sessionField;
     private Label messageResultatAcademique = new Label();
+    private ListView<List<String>> listeCombinaisons;
 
     private TableView<ObservableList<String>> tableComparaison;
     private final ApiService coursService = new ApiService();
     private final String[] CRITERES = {
-            "id", "name", "description", "credits", "scheduledSemester",
+            "id", "name", "description", "credits", "scheduledSemester", "schedules",
             "prerequisite_courses", "equivalent_courses", "concomitant_courses",
             "mode", "available_terms", "available_periods", "udemWebsite",
             "popularité officielle", "difficulté officielle", "difficulté inofficielle", "charge de travail inofficielle"
     };
 
+    private static final String[] COLONNES_COMBINAISON = {
+            "Combinaison",
+            "Cours",
+            "Crédits",
+            "Prérequis",
+            "Concomitants",
+            "Périodes communes",
+            "Sessions communes",
+            "Horaires",
+            "Conflits"
+    };
+
+
+    private TextField champSession = new TextField();
+
+    public TextField getChampSession() {
+        return champSession;
+    }
+
+    public Label getMessageLabel(){ return messageLabel;}
 
     /**
      * Cette méthode permet d'initialiser le ClientController() avec l'interface de recherche.
@@ -117,6 +140,7 @@ public class ClientController {
      */
     public void rechercher() {
         String texte = champRecherche.getText().trim();
+        String sessionTexte = champSession.getText().trim();
         listeResultats.getItems().clear();
         messageLabel.setText(""); // reset message
 
@@ -126,22 +150,35 @@ public class ClientController {
         }
 
         String param;
-        // La recherche vers notre API prend un paramètre et on a donc besoin que l'utilisateur
-        // spécifie ce dernier.
         switch (typeRecherche.getValue()) {
             case "ID": param = "id"; break;
             case "Mot-clé": param = "description"; break;
             default: param = "name"; break;
         }
 
-        List<Cours> resultats = coursService.rechercherCours(param, texte, "true", "A24");
+        boolean includeSchedule = !sessionTexte.isEmpty();
+        String session = includeSchedule ? sessionTexte : null;
 
-        if (resultats.isEmpty()) {
-            messageLabel.setText("Aucun cours trouvé pour : " + texte);
-        } else {
-            listeResultats.getItems().addAll(resultats);
+        try {
+            List<Cours> resultats = coursService.rechercherCours(param, texte, String.valueOf(includeSchedule), session);
+
+
+
+                if (resultats.isEmpty()) {
+                    messageLabel.setText("Aucun cours trouvé pour : " + texte);
+                    listeResultats.getItems().clear();
+                } else {
+                    messageLabel.setText("");
+                    listeResultats.getItems().addAll(resultats);
+                }
+
+
+        } catch (Exception e) { // ou l'exception que ton service lève pour une 404
+            // Affiche le message d'erreur sur l'interface
+             messageLabel.setText("Erreur : cours introuvable ou session invalide.");
         }
     }
+
 
 
     /**
@@ -163,6 +200,7 @@ public class ClientController {
             // Récupérer les semestres disponibles
             List<String> semestres = cours.getSchedules().stream()
                     .map(Cours.Schedule::getSemester)
+                    .distinct() // garder seulement les valeurs uniques
                     .toList();
 
             Label labelChoix = new Label("Sélectionnez un semestre:");
@@ -181,7 +219,7 @@ public class ClientController {
                 String semestreChoisi = comboSemestre.getValue();
 
                 if (!semestres.contains(semestreChoisi)) {
-                    messageErreur.setText("⚠️ Le semestre sélectionné n'existe pas pour ce cours.");
+                    messageErreur.setText(" Le semestre sélectionné n'existe pas pour ce cours.");
                     return;
                 }
 
@@ -237,6 +275,43 @@ public class ClientController {
         stage.show();
     }
 
+    public void afficherAllAvis(){
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Avis enregistrés :");
+
+        VBox root = new VBox(10);
+        root.setStyle("-fx-padding: 10;");
+
+        List<Avis> avisList = coursService.getAllAvis();
+
+        if (avisList.isEmpty()) {
+            root.getChildren().add(new Label("Aucun avis disponible."));
+        } else {
+            for (Avis avis : avisList) {
+                VBox avisBox = new VBox(5);
+                avisBox.setStyle("-fx-border-color: gray; -fx-padding: 5; -fx-background-color: #f9f9f9;");
+
+                Label auteur = new Label("Professeur : " + avis.getNomProfesseur());
+                auteur.setStyle("-fx-font-weight: bold;");
+
+                Label texte = new Label(avis.getCommentaire());
+                texte.setWrapText(true);
+
+                Label note = new Label("Note Difficulté : " + avis.getNoteDifficulte());
+                Label note2 = new Label("Note Charge de Travail : " + avis.getNoteChargeTravail());
+
+                avisBox.getChildren().addAll(auteur, texte, note,note2);
+                root.getChildren().add(avisBox);
+            }
+        }
+
+        ScrollPane scroll = new ScrollPane(root);
+        scroll.setFitToWidth(true);
+        Scene scene = new Scene(scroll, 500, 400);
+        stage.setScene(scene);
+        stage.show();
+    }
     /**
      * Cette méthode permet d'afficher les avis relatifs à un cours.
      * @param cours cours dont on veut afficher les avis.
@@ -329,7 +404,7 @@ public class ClientController {
 
     /**
      * Cette méthode permet de gérer la logique derrière la requête pour voir les résultats académiques.
-     * @return
+     * @return l'interface pour les résultats académiques
      */
     public VBox afficherResultatsAcademiques() {
         VBox root = new VBox(10);
@@ -342,7 +417,7 @@ public class ClientController {
         champSigle.setPromptText("Entrez le sigle du cours (ex: IFT2255)");
 
         Button btnVoir = new Button("Voir les résultats");
-        btnVoir.setStyle("-fx-background-color: #3498db; -fx-text-fill: white;");
+        btnVoir.setStyle("-fx-background-color: #8B635C; -fx-text-fill: white;");
 
         TextArea zoneResultats = new TextArea();
         zoneResultats.setEditable(false);
@@ -366,7 +441,7 @@ public class ClientController {
 
     public VBox getVueComparaison() {
         if (comparaisonBox != null) return comparaisonBox;
-       // pour éviter que ça shrink
+
         VBox innerBox = new VBox(10);
         innerBox.setStyle("-fx-padding: 20;");
 
@@ -379,11 +454,10 @@ public class ClientController {
         comparaisonBox = new VBox();
         comparaisonBox.getChildren().add(scrollPane);
 
-
         Label title = new Label("Comparaison de cours");
         title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
 
-        // ------------------- Mode comparaison -------------------
+        // Mode comparaison de 2 cours
         ToggleGroup modeGroup = new ToggleGroup();
         RadioButton rbDeuxCours = new RadioButton("Comparer 2 cours");
         rbDeuxCours.setToggleGroup(modeGroup);
@@ -394,16 +468,17 @@ public class ClientController {
 
         HBox modeBox = new HBox(10, rbDeuxCours, rbEnsemblesCours);
 
-        // ------------------- Liste de cours -------------------
+        // Interface associée
+        VBox vueComparaisonCours = new VBox(10);
         listeCoursComparaison = new ListView<>();
         listeCoursComparaison.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listeCoursComparaison.setPrefHeight(120);
-        listeCoursComparaison.setEditable(true);
 
         TextField champAjouterCours = new TextField();
         champAjouterCours.setPromptText("Ajouter sigle de cours");
 
         Button btnAjouter = new Button("Ajouter");
+        btnAjouter.setStyle("-fx-background-color: #1C3144; -fx-text-fill: white;");
         btnAjouter.setOnAction(e -> {
             String sigle = champAjouterCours.getText().trim();
             if (!sigle.isEmpty() && !listeCoursComparaison.getItems().contains(sigle)) {
@@ -416,39 +491,20 @@ public class ClientController {
         btnSupprimer.setDisable(true);
         btnSupprimer.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white;");
 
-        listeCoursComparaison.getSelectionModel()
-                .selectedItemProperty()
-                .addListener((obs, oldVal, newVal) -> {
-                    btnSupprimer.setDisable(
-                            listeCoursComparaison.getSelectionModel().getSelectedItems().isEmpty()
-                    );
-                });
+        listeCoursComparaison.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            btnSupprimer.setDisable(listeCoursComparaison.getSelectionModel().getSelectedItems().isEmpty());
+        });
 
         btnSupprimer.setOnAction(e -> {
             ObservableList<String> selected = FXCollections.observableArrayList(
                     listeCoursComparaison.getSelectionModel().getSelectedItems()
             );
             if (!selected.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Supprimer des cours");
-                alert.setHeaderText(null);
-                alert.setContentText(
-                        selected.size() == 1
-                                ? "Supprimer le cours " + selected.get(0) + " ?"
-                                : "Supprimer les " + selected.size() + " cours sélectionnés ?"
-                );
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == ButtonType.OK) {
-                        listeCoursComparaison.getItems().removeAll(selected);
-                    }
-                });
+                listeCoursComparaison.getItems().removeAll(selected);
             }
         });
 
         HBox ajoutCoursBox = new HBox(10, champAjouterCours, btnAjouter, btnSupprimer);
-
-        Label infoSuppression = new Label("Sélectionnez un cours et cliquez sur Supprimer pour l’enlever.");
-        infoSuppression.setStyle("-fx-font-size: 11px; -fx-text-fill: #555;");
 
         criteresBox = new VBox(5);
         for (String crit : CRITERES) {
@@ -461,45 +517,106 @@ public class ClientController {
         sessionField = new TextField();
         sessionField.setPromptText("Session (optionnel)");
 
-        Button btnComparer = new Button("Comparer");
-        btnComparer.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
-        btnComparer.setOnAction(e -> {
-            if (rbDeuxCours.isSelected()) {
-                lancerComparaison();
-            } else {
-                lancerComparaisonCombinaisons();
-            }
-        });
+        Button btnComparerCours = new Button("Comparer");
+        btnComparerCours.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
+        btnComparerCours.setOnAction(e -> lancerComparaison());
 
-        // table qui contiendra le résultat
-        tableComparaison = new TableView<>();
-        tableComparaison.setPrefHeight(600);  // plus haute
-        tableComparaison.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY); // permet de ne pas shrinker les colonnes ( normalement)
-
-
-        messageResultatAcademique.setWrapText(true);
-        messageResultatAcademique.setStyle(
-                "-fx-padding: 8;" +
-                        "-fx-text-fill: #2c3e50;" +
-                        "-fx-font-style: italic;"
-        );
-
-        innerBox.getChildren().addAll(
-                title,
-                modeBox,
+        vueComparaisonCours.getChildren().addAll(
                 ajoutCoursBox,
-                infoSuppression,
                 listeCoursComparaison,
                 new Label("Critères à comparer:"),
                 scrollCriteres,
                 new Label("Session:"),
                 sessionField,
-                btnComparer,
+                btnComparerCours
+        );
+
+        // Interface comparer ensembles cours
+        VBox vueComparaisonEnsembles = new VBox(10);
+        VBox combinaisonsBox = new VBox(5);
+        List<ListView<String>> combinaisons = new ArrayList<>();
+
+        Button btnAjouterCombinaison = new Button("+ Ajouter une combinaison");
+        btnAjouterCombinaison.setOnAction(e -> {
+            ListView<String> lv = new ListView<>();
+            lv.setPrefHeight(80);
+            combinaisons.add(lv);
+
+            VBox bloc = new VBox(5, new Label("Combinaison " + combinaisons.size()), lv, creerAjoutCoursBox(lv));
+            combinaisonsBox.getChildren().add(bloc);
+        });
+
+        Button btnComparerEnsembles = new Button("Comparer ensembles");
+        btnComparerEnsembles.setStyle("-fx-background-color: #1C3144; -fx-text-fill: white;");
+        btnComparerEnsembles.setOnAction(e -> {
+            List<List<String>> ensembles = new ArrayList<>();
+            for (ListView<String> lv : combinaisons) {
+                if (!lv.getItems().isEmpty()) ensembles.add(new ArrayList<>(lv.getItems()));
+            }
+            if (ensembles.isEmpty()) {
+                messageLabel.setText("Veuillez ajouter au moins une combinaison.");
+                return;
+            }
+            String session = sessionField.getText().trim().isEmpty() ? null : sessionField.getText().trim();
+            try {
+                List<List<String>> resultat = coursService.comparerCombinaisonCoursApi(ensembles, session);
+                afficherTableResultats(resultat);
+            } catch (Exception ex) {
+                messageLabel.setText("Erreur lors de la comparaison : " + ex.getMessage());
+            }
+        });
+
+        vueComparaisonEnsembles.getChildren().addAll(btnAjouterCombinaison, combinaisonsBox, btnComparerEnsembles);
+        vueComparaisonEnsembles.setVisible(false);
+        vueComparaisonEnsembles.setManaged(false);
+
+        // ------------------- Table et message -------------------
+        tableComparaison = new TableView<>();
+        tableComparaison.setPrefHeight(600);
+        tableComparaison.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+
+        messageResultatAcademique.setWrapText(true);
+        messageResultatAcademique.setStyle("-fx-padding: 8;-fx-text-fill: #2c3e50;-fx-font-style: italic;");
+
+        // Listening to le toggle
+        modeGroup.selectedToggleProperty().addListener((obs, old, selected) -> {
+            boolean comparerDeuxCours = selected == rbDeuxCours;
+            vueComparaisonCours.setVisible(comparerDeuxCours);
+            vueComparaisonCours.setManaged(comparerDeuxCours);
+            vueComparaisonEnsembles.setVisible(!comparerDeuxCours);
+            vueComparaisonEnsembles.setManaged(!comparerDeuxCours);
+        });
+
+        innerBox.getChildren().addAll(
+                title,
+                modeBox,
+                vueComparaisonCours,
+                vueComparaisonEnsembles,
                 tableComparaison,
                 messageResultatAcademique
         );
 
         return comparaisonBox;
+    }
+
+    // Méthode utilitaire pour créer la zone d'ajout de cours dans une combinaison
+    private HBox creerAjoutCoursBox(ListView<String> lv) {
+        TextField champCours = new TextField();
+        champCours.setPromptText("Ajouter sigle de cours");
+        Button btnAjouter = new Button("Ajouter");
+        btnAjouter.setStyle("-fx-background-color: #1C3144; -fx-text-fill: white;");
+        btnAjouter.setOnAction(e -> {
+            String sigle = champCours.getText().trim();
+            if (!sigle.isEmpty() && !lv.getItems().contains(sigle)) {
+                lv.getItems().add(sigle);
+                champCours.clear();
+            }
+        });
+        Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.setOnAction(e -> {
+            lv.getItems().remove(lv.getSelectionModel().getSelectedItems());
+        });
+        return new HBox(5, champCours, btnAjouter, btnSupprimer);
     }
 
     /**
@@ -540,35 +657,71 @@ public class ClientController {
         tableComparaison.getColumns().clear();
         tableComparaison.getItems().clear();
 
-        if (resultat.isEmpty()) return;
+        if (resultat == null || resultat.isEmpty()) return;
 
-        int colonnes = resultat.get(0).size();
+        int nbColonnes = Math.min(COLONNES_COMBINAISON.length, resultat.get(0).size());
 
-        for (int i = 0; i < colonnes; i++) {
+        for (int i = 0; i < nbColonnes; i++) {
             final int idx = i;
-            TableColumn<ObservableList<String>, String> column = new TableColumn<>("Col " + (i+1));
-            column.setCellValueFactory(data -> {
+
+            TableColumn<ObservableList<String>, String> col = new TableColumn<>(COLONNES_COMBINAISON[i]);
+
+            col.setCellValueFactory(data -> {
                 ObservableList<String> row = data.getValue();
-                return new SimpleStringProperty(idx < row.size() ? row.get(idx) : "");
+                return new SimpleStringProperty(idx < row.size() ? nettoyerValeur(row.get(idx)) : "");
             });
-            tableComparaison.getColumns().add(column);
+
+            col.setMinWidth(160);
+
+            // Wrap text pour les cellules
+            col.setCellFactory(tc -> {
+                TableCell<ObservableList<String>, String> cell = new TableCell<>() {
+                    private final Text text = new Text();
+
+                    {
+                        text.wrappingWidthProperty().bind(tc.widthProperty().subtract(10)); // ajuster au padding
+                    }
+
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setGraphic(null);
+                        } else {
+                            text.setText(item);
+                            setGraphic(text);
+                        }
+                    }
+                };
+                return cell;
+            });
+
+            tableComparaison.getColumns().add(col);
         }
 
         ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
         for (List<String> row : resultat) {
             data.add(FXCollections.observableArrayList(row));
         }
+
         tableComparaison.setItems(data);
     }
 
-    // ------------------- Construire ensembles -------------------
+    private String nettoyerValeur(String valeur) {
+        if (valeur == null) return "";
+        int idx = valeur.indexOf('=');
+        return (idx > -1) ? valeur.substring(idx + 1) : valeur;
+    }
+
+    // Construis les ensembles
     private List<List<String>> obtenirEnsemblesSelectionnes() {
         List<List<String>> ensembles = new ArrayList<>();
-        for (String sigle : listeCoursComparaison.getItems()) {
-            ensembles.add(List.of(sigle)); // chaque cours devient un ensemble d’un seul cours
+        for (List<String> combinaison : listeCombinaisons.getItems()) {
+            ensembles.add(new ArrayList<>(combinaison)); // copie profonde de chaque combinaison
         }
         return ensembles;
     }
+
 
     private void lancerComparaison() {
 
@@ -600,14 +753,14 @@ public class ClientController {
                 if (criteresSelectionnes.contains("popularité officielle")) {
                     String popularite = root.has("popularite")
                             ? root.get("popularite").asText()
-                            : "Information non disponible";
+                            : "Information non disponible pour la popularité de ce cours.";
                     resultText.append("Popularité officielle : ").append(popularite).append("\n");
                 }
 
                 if (criteresSelectionnes.contains("difficulté officielle")) {
                     String difficulte = root.has("difficulte")
                             ? root.get("difficulte").asText()
-                            : "Information non disponible";
+                            : "Information non disponible pour la difficulté de ce cours.";
                     resultText.append("Difficulté officielle : ").append(difficulte).append("\n");
                 }
 
@@ -632,7 +785,7 @@ public class ClientController {
                 StringBuilder sb = new StringBuilder(" Difficulté inofficielle moyenne :\n");
                 for (int i = 0; i < diffAvis.size(); i++) {
                     sb
-                            //append(ids[i]).append(" : ")
+                            .append(ids[i]).append(" : ")
                             .append(String.join(": ", diffAvis.get(i)))
                             .append("\n");
                 }
@@ -677,22 +830,40 @@ public class ClientController {
         }
 
         tableComparaison.getColumns().clear();
+
+        /* Colonne Cours */
+        TableColumn<ObservableList<String>, String> colCours =
+                new TableColumn<>("Cours");
+        colCours.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().get(0))
+        );
+        tableComparaison.getColumns().add(colCours);
+
+        /* Colonnes critères */
         for (int i = 0; i < criteresTable.size(); i++) {
-            final int idx = i;
+            final int idx = i + 1; //  +1 à cause du sigle en position 0
+
             TableColumn<ObservableList<String>, String> column =
                     new TableColumn<>(criteresTable.get(i));
+
             column.setCellValueFactory(data -> {
                 ObservableList<String> row = data.getValue();
-                return new SimpleStringProperty(idx < row.size() ? row.get(idx) : "");
+                return new SimpleStringProperty(
+                        idx < row.size() ? row.get(idx) : ""
+                );
             });
+
             tableComparaison.getColumns().add(column);
         }
 
+        /* Données */
         ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
         for (List<String> row : resultat) {
-            data.add(FXCollections.observableArrayList(row.stream().limit(criteresTable.size()).toList()));
+            data.add(FXCollections.observableArrayList(row));
         }
+
         tableComparaison.setItems(data);
+
     }
 
 
@@ -723,7 +894,7 @@ public class ClientController {
         try {
             resultat = coursService.genererHoraire(idsCours, session, true, choix);
         } catch (Exception e) {
-            messageLabel.setText("Erreur lors de la récupération des horaires : " + e.getMessage());
+            messageLabel.setText("Erreur lors de la récupération des horaires : ");
             return;
         }
 
@@ -777,8 +948,29 @@ public class ClientController {
         stage.setScene(scene);
         stage.show();
     }
+    public void afficherCoursParTrimestre(String programmeId, String session) {
+        List<String> cours = coursService.getCoursesBySemester(programmeId, session);
+
+        if (cours.isEmpty()) {
+            System.out.println("Aucun cours trouvé pour " + session);
+        } else {
+            System.out.println("Cours offerts pour " + session + " : " + String.join(", ", cours));
+        }
+    }
+    public void afficherHoraireCours(String sigle, String session) {
+        Map<String, Object> horaire = coursService.getCourseSchedule(sigle, session);
+
+        if (horaire.isEmpty()) {
+            System.out.println("Aucun horaire trouvé pour " + sigle + " (" + session + ")");
+            return;
+        }
+
+    }
+
+
 
     // ---------------- Getters pour le Main ----------------
     public TextField getChampRecherche() { return champRecherche; }
     public ListView<Cours> getListeResultats() { return listeResultats; }
+    public TextField getSessionField() { return sessionField;}
 }

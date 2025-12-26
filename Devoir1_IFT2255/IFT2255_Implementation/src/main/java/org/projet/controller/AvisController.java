@@ -36,6 +36,29 @@ public class AvisController {
         }
     }
 
+    public void getAllAvis(Context ctx){
+        try{
+            List<Avis> avis = avisService.getAllAvis();
+            // Il est possible qu'il n'y ait pas d'avis pour ce cours.
+            if(avis == null || avis.isEmpty()) {
+                ctx.status(400).result("Erreur : avis inexistant");
+            }
+
+            ctx.status(200).json(avis);
+
+        }
+        // Le IllegalArgumentException se produit lorsque le sigle de cours est incorrect est incorrecte.
+        catch(IllegalArgumentException e) {
+            ctx.status(400).result("Erreur : sigle de cours invalide");
+        }
+        // Toute autre exception vient du côté serveur.
+        catch(Exception e) {
+            ctx.status(500).result("Erreur : " + e.getMessage());
+        }
+
+
+    }
+
     /**
      * Cette méthode permet de gérer les requêtes utilisateurs relatives à la récupération d'avis pour un cours.
      * @param ctx  la requête + notre réponse.

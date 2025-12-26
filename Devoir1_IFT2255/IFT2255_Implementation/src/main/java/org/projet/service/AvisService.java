@@ -141,4 +141,17 @@ public class AvisService {
         return avisCours;
 
     }
+
+    /**
+     * Cette méthode permet de récupérer tous les avis stockés.
+     * @return la liste de tous les avis.
+     */
+    public List<Avis> getAllAvis(){
+        List<Avis> avisCours = new ArrayList<>();
+        for (Avis avis : avisStockes) {
+                avisCours.add(avis);
+
+        }
+        return avisCours;
+    }
 }
