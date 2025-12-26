@@ -123,7 +123,17 @@ public class CoursRepository implements IRepository {
     List<Cours> coursList;
     // on traite ce cas séparemment car la recherche par id ne retourne qu'un cours.
     if (isIdExact) {
-        Cours cours = mapper.readValue(response.body(), Cours.class);
+        // Parse as JsonNode first to verify shape and presence of id field
+        JsonNode root = mapper.readTree(response.body());
+        if (!root.isObject() || !root.hasNonNull("id")) {
+            return Optional.empty();
+        }
+        String returnedId = root.path("id").asText(null);
+        if (returnedId == null || !returnedId.equalsIgnoreCase(value)) {
+            return Optional.empty();
+        }
+        // Safe to map to Cours now
+        Cours cours = mapper.treeToValue(root, Cours.class);
         coursList = List.of(cours);
     }
 
@@ -137,6 +147,9 @@ public class CoursRepository implements IRepository {
                 response.body(),
                 mapper.getTypeFactory().constructCollectionType(List.class, Cours.class)
         );
+        if (coursList == null || coursList.isEmpty()) {
+            return Optional.empty();
+        }
     }
 
     return Optional.of(coursList);

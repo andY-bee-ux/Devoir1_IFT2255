@@ -34,16 +34,20 @@ public class CoursController {
 
 
     public void rechercherCours(Context ctx){
-        RequeteRecherche req = ctx.bodyAsClass(RequeteRecherche.class);
-        Optional<List<Cours>> resultat = coursService.rechercherCours(req.param,req.valeur,req.includeSchedule,req.semester);
-        if(resultat.isPresent()){
-            ctx.status(200);
-            ctx.json(resultat.get());
-        }else{
+        try{
+            RequeteRecherche req = ctx.bodyAsClass(RequeteRecherche.class);
+            Optional<List<Cours>> resultat = coursService.rechercherCours(req.param,req.valeur,req.includeSchedule,req.semester);
+            if(resultat.isPresent()){
+                ctx.status(200);
+                ctx.json(resultat.get());
+            }else{
+                ctx.status(404);
+                ctx.json("Cours pas trouvé. Veuillez reessayer. Pour rappel, les paramètres possibles sont id, name et description.");
+            }
+        }catch (Exception e){
             ctx.status(404);
-            ctx.json("Cours pas trouvé. Veuillez reessayer. Pour rappel, les paramètres possibles sont id, name et description.");
+            ctx.json("Contexte invalide");
         }
-
     }
     /**
      * Cette méthode permet de traiter la requête de l'utilisateur relative à la comparaison de cours.
@@ -54,18 +58,27 @@ public class CoursController {
        /* cette ligne de code map le body de la requête avec un objet Java. Cela permet de
        récupérer la liste de cours et celle des critères.
        */
-        RequeteComparaison req = ctx.bodyAsClass(RequeteComparaison.class);
 
         try {
+            RequeteComparaison req = ctx.bodyAsClass(RequeteComparaison.class);
             List<List<String>> resultat =
                     coursService.comparerCours(req.cours, req.criteres, req.session);
+
+            if (resultat == null) {
+                ctx.status(400);
+                ctx.json("Requête invalide");
+                return;
+            }
 
             ctx.status(200);
             ctx.json(resultat);
 
         } catch (RuntimeException e) {
-            ctx.status(200);
-            ctx.json(new ArrayList<>());
+            ctx.status(400);
+            ctx.json("Requête invalide");
+        } catch (Exception e) {
+            ctx.status(404);
+            ctx.json("Contexte invalide");
         }
     }
 
@@ -89,9 +102,12 @@ public class CoursController {
             ctx.json(resultats);
 
         } catch (RuntimeException e) {
-            ctx.status(200);
-            ctx.json(new ArrayList<>());
-        }
+            ctx.status(400);
+            ctx.json("Requête invalide");
+        } catch (Exception e) {
+             ctx.status(404);
+             ctx.json("Contexte invalide");
+         }
     }
 
     /**
@@ -229,9 +245,14 @@ public class CoursController {
      * @param ctx contexte HTTP Javalin contenant la requête JSON
      */
     public void checkEligibilityNew(Context ctx){
-        RequeteEligibiliteNew req = ctx.bodyAsClass(RequeteEligibiliteNew.class);
-        String resultat = coursService.checkEligibilityNew(req.idCours,req.listeCours, req.cycle);
-        ctx.json(resultat);
+        try {
+            RequeteEligibiliteNew req = ctx.bodyAsClass(RequeteEligibiliteNew.class);
+            String resultat = coursService.checkEligibilityNew(req.idCours,req.listeCours, req.cycle);
+            ctx.json(resultat);
+        }catch (Exception e){
+            ctx.status(404);
+            ctx.json("Contexte invalide");
+        }
     }
 
    
@@ -336,10 +357,15 @@ public class CoursController {
  * @param ctx Contexte Javalin.
  */
 public void difficulteCours(Context ctx) {
+    try {
         RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
         Resultats res = coursService.getResultats(req.sigle);
         String difficulte = coursService.difficulteCours(res);
         ctx.json(difficulte);
+    }catch (Exception e) {
+        ctx.status(404);
+        ctx.json("Contexte invalide");
+    }
     }  
 
 
@@ -348,10 +374,15 @@ public void difficulteCours(Context ctx) {
 * @param ctx Contexte Javalin.
  */  
 public void populariteCours(Context ctx) {
+    try{
         RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
         Resultats res = coursService.getResultats(req.sigle);
         String popularite = coursService.populariteCours(res);
         ctx.json(popularite);
+    }catch (Exception e) {
+        ctx.status(404);
+        ctx.json("Contexte invalide");
+    }
     }  
 
     /**
@@ -368,17 +399,22 @@ public void populariteCours(Context ctx) {
  * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
  */ 
 public void comparerDeuxCours(Context ctx) {
+    try {
         RequeteDeuxCours req = ctx.bodyAsClass(RequeteDeuxCours.class);
-        
+
         Resultats res1 = coursService.getResultats(req.sigle1);
         Resultats res2 = coursService.getResultats(req.sigle2);
-        
-    
+
+
         Map<String, String> reponses = new HashMap<>();
         reponses.put("popularite", coursService.comparerPopularite(res1, res2));
         reponses.put("difficulte", coursService.comparerDifficulte(res1, res2));
-        
+
         ctx.json(reponses);
+    }catch (Exception e) {
+        ctx.status(404);
+        ctx.json("Contexte invalide");
+    }
     }  
 
 
@@ -410,9 +446,14 @@ public static class RequeteResultats {
  * @param ctx Le contexte de la requête HTTP.
  */
 public void voirResultats(Context ctx) {
+    try {
         RequeteResultats req = ctx.bodyAsClass(RequeteResultats.class);
         Resultats res = coursService.getResultats(req.sigle);
         String message = res.voirResultats();
         ctx.json(message);
+    }catch (Exception e) {
+        ctx.status(404);
+        ctx.json("Contexte invalide");
+    }
     }
 }

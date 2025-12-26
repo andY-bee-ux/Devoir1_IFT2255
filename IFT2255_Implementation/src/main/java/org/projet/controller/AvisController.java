@@ -17,7 +17,7 @@ public class AvisController {
     public void soumettreAvis(Context ctx) {
         try {
             RequeteAvis req = ctx.bodyAsClass(RequeteAvis.class);
-       // La méthode enregistrerAvis stocke ledit avis sur notre plateforme.
+            // La méthode enregistrerAvis stocke ledit avis sur notre plateforme.
             avisService.enregistrerAvis(
                     req.sigleCours.toUpperCase(),
                     req.professeur,
