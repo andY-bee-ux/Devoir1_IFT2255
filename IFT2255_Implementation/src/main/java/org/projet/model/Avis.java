@@ -1,106 +1,84 @@
 package org.projet.model;
 
+/**
+ * Cette classe permet de définir l'entité Avis.
+ */
 public class Avis {
-    //private int id;     //Id associe a l'avis (necessaire?)
+    //private int id;
     private String commentaire;
     //private int idAuteur;
     private int noteDifficulte;
     private String sigleCours;
-    private int noteQualite;
     private boolean valide;
     private int noteChargeTravail;
     private String nomProfesseur;
 
+    /**
+     * Constructeur vide.
+     */
     public Avis(){}
 
-    public Avis( String sigleCours, String nomProfesseur, int noteQualite, int noteDifficulte, String commentaire, boolean valide) {
+    /**
+     * Constructeur d'avis.
+     * @param sigleCours
+     * @param nomProfesseur
+     * @param noteCharge
+     * @param noteDifficulte
+     * @param commentaire
+     * @param valide
+     */
+    public Avis( String sigleCours, String nomProfesseur, int noteCharge, int noteDifficulte, String commentaire, boolean valide) {
         this.commentaire = commentaire;
         this.noteDifficulte = noteDifficulte;
         this.sigleCours = sigleCours;
-        this.noteQualite = noteQualite;
+        this.noteChargeTravail = noteCharge;
         this.valide = valide;
         this.noteChargeTravail = noteChargeTravail;
         this.nomProfesseur = nomProfesseur;
     }
 
+    /**
+     * Cette méthode permet de récupérer le sigle de cours.
+     * @return sigle de Cours.
+     */
     public String getSigleCours() {
+
         return sigleCours;
     }
 
-    public void setSigleCours(String sigleCours) {
-        this.sigleCours = sigleCours;
-    }
-
+    /**
+     * Cette méthode permet de récupérer le nom de professeur.
+     * @return le nom d'un professeur.
+     */
     public String getNomProfesseur() {
         return nomProfesseur;
     }
 
-    public void setNomProfesseur(String nomProfesseur) {
-        this.nomProfesseur = nomProfesseur;
-    }
-
-    //Getters et Setters.
-    public void setNoteQualite(int noteQualite) {
-        this.noteQualite = noteQualite;
-    }
-
-    public void setNoteDifficulte(int noteDifficulte) {
-        this.noteDifficulte = noteDifficulte;
-    }
-
-//    public void setIdAuteur(int idAuteur) {
-//        this.idAuteur = idAuteur;
-//    }
+    /**
+     * Cette méthode permet de récupérer le commentaire.
+     * @return le commentaire.
+     */
 
     public String getCommentaire() {
         return commentaire;
     }
 
+    /**
+     * Cette méthode permet de récupérer la note de difficulté.
+     * @return la note de difficulté.
+     */
+
     public int getNoteDifficulte() {
         return noteDifficulte;
     }
 
-    public int getNoteQualite() {
-        return noteQualite;
-    }
-
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setNoteChargeTravail(int noteChargeTravail) {
-//        this.noteChargeTravail = noteChargeTravail;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-
-    public void setCommentaire(String commentaire) {
-        this.commentaire = commentaire;
-    }
+    /**
+     * Cette méthode permet de récupérer la note de charge de travail.
+     * @return la note de charge de travail.
+     */
 
     public int getNoteChargeTravail() {
         return noteChargeTravail;
     }
-
-//    public int getIdAuteur() {
-//        return idAuteur;
-//    }
-
-    public boolean isValide() {
-        return valide;
-    }
-
-    public void setValide(boolean valide) {
-        this.valide = valide;
-    }
-
-//    public Cours getCoursAssocie() {
-//        return coursAssocie;
-//    }
-//
-//    public void setCoursAssocie(Cours coursAssocie) {
-//        this.coursAssocie = coursAssocie;
-//    }
+    
 }
