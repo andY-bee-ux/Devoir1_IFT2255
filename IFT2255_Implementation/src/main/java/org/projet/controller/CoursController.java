@@ -185,6 +185,41 @@ public class CoursController {
             ctx.json(new ArrayList<>());
         }
     }
+     /**
+     * Cette méthode permet de gérer la requête utilisateur pour la comparaison basée sur la difficulté pour les avis.
+     * @param ctx
+     */
+    public void comparerParDifficulteAvis(Context ctx){
+        RequeteComparaisonAvis req = ctx.bodyAsClass(RequeteComparaisonAvis.class);
+        try{
+            List<List<String>> resultat = coursService.comparerCoursParNoteDifficulteAvis(req.idsCours);
+            ctx.status(200);
+            ctx.json(resultat);
+        }catch(RuntimeException e){
+            ctx.status(400);
+            ctx.json("Des avis pour ces cours n'ont pas été trouvés.");
+        }
+    }
+
+    /**
+     * Cette méthode permet de gérer la requête utilisateur pour la comparaison basée sur la difficulté pour les avis.
+     * @param ctx
+     */
+    public void comparerParChargeAvis(Context ctx){
+        RequeteComparaisonAvis req = ctx.bodyAsClass(RequeteComparaisonAvis.class);
+        try{
+            List<List<String>> resultat = coursService.comparerCoursParChargeTravailAvis(req.idsCours);
+            ctx.status(200);
+            ctx.json(resultat);
+        }catch(RuntimeException e){
+            ctx.status(400);
+            ctx.json("Des avis pour ces cours n'ont pas été trouvés.");
+        }
+    }
+
+    public static class RequeteComparaisonAvis{
+        public String[] idsCours;
+    }
 
     /**
      * Cette classe permet de parser le json du body de la requête comparaison. La classe est interne donc
