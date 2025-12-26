@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../docs/images/usecasediagramdevoir2.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/projet/repository/CoursRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/projet/repository/CoursRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/projet/repository/CoursRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/projet/repository/CoursRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/projet/service/CoursServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/projet/service/CoursServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/besoins/cas-utilisation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/besoins/cas-utilisation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../docs/images/Use_Case_Diagram.jpg" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;musa223-ui&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/andY-bee-ux/Devoir1_IFT2255.git&quot;,
+    &quot;accountId&quot;: &quot;e3aaab5c-8036-4b45-814f-388d627e4904&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="35rA2WI4LHV5VNiRVK3AELs7ND0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.All in IFT2255_Implementation.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withValidCriteria.executor": "Run",
+    "JUnit.CoursRepositoryTest.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025.executor": "Run",
+    "JUnit.CoursServiceTest.executor": "Run",
+    "JUnit.CoursServiceTest.testCheckEligibilityEligible.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursExistants.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="JUnit.CoursRepositoryTest">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.projet.Main" />
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursControllerTest.testComparerCours_withInvalidCriteria" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.controller.CoursControllerTest" />
+      <option name="METHOD_NAME" value="testComparerCours_withInvalidCriteria" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.projet.repository" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.repository.CoursRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursRepositoryTest.testGetCoursByIdCoursIFT1025" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.projet.repository" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.repository.CoursRepositoryTest" />
+      <option name="METHOD_NAME" value="testGetCoursByIdCoursIFT1025" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CoursServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.projet.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.example.service" />
+      <option name="MAIN_CLASS_NAME" value="org.projet.service.CoursServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.CoursRepositoryTest" />
+        <item itemvalue="JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025" />
+        <item itemvalue="JUnit.CoursServiceTest" />
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="" />
+      <created>1763857614668</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763857614668</updated>
+      <workItem from="1764728101716" duration="7258000" />
+    </task>
+    <task id="LOCAL-00001" summary="Ajouts des classes de tests avec une methode vide.">
+      <option name="closed" value="true" />
+      <created>1763863793473</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763863793473</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Ajouts de codes dans les classes du fichier /model.">
+      <option name="closed" value="true" />
+      <created>1763904906763</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763904906763</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Ajout de codes dans les classes du fichiers /controller.">
+      <option name="closed" value="true" />
+      <created>1763906585088</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1763906585088</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Ajout de codes dans les classes du fichiers /service.">
+      <option name="closed" value="true" />
+      <created>1763908614115</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763908614115</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Ajouts des classes de tests avec une methode vide." />
+    <MESSAGE value="Ajouts de codes dans les classes du fichier /model." />
+    <MESSAGE value="Ajout de codes dans les classes du fichiers /controller." />
+    <MESSAGE value="Ajout de codes dans les classes du fichiers /service." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout de codes dans les classes du fichiers /service." />
+  </component>
+</project>
