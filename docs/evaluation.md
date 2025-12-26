@@ -71,6 +71,32 @@ L'oracle des tests est donné ci-dessous:
 | getCourseBy(name) | Repository | champ = "name" ; mot-clé = "Programmation" ; ignoreCase = "false" | Optional présent + liste non vide + premier élément contenant "Programmation" | Succès | La recherche par mot-clé doit retourner au moins un cours dont le nom contient le terme. |
 | getCourseEligibility | Repository | id = "IFT2255" ; complétés = ["IFT1025"] (POST vers API Planifium) | Chaîne JSON non nulle contenant le champ "eligible" | Succès | Teste la communication réelle avec l'API Planifium et la validité du JSON retourné. |
 
+### Fonctionnalité : Vérifier son éligibilité à un cours
+
+| Module | Entité | Entrée | Sortie attendue | Type | Description |
+|------|--------|--------|------------------|------|-------------|
+| checkEligibilityNew | Service | idCours = "IFT2255", coursComplétés = ["IFT1025"], cycle = null | "Le cycle doit être fourni" | Échec | Vérifie que la méthode rejette toute requête lorsque le cycle d’études n’est pas fourni. |
+| checkEligibilityNew | Service | idCours = "IFT2255", coursComplétés = ["IFT1025"], cycle = 5 | "Le cycle fourni est invalide" | Échec | Vérifie que la méthode valide les bornes autorisées pour le cycle d’études. |
+| checkEligibilityNew | Service | idCours = "IFT6010", coursComplétés = ["IFT2255"], cycle = 1 | Message indiquant que le cours est réservé aux cycles supérieurs | Échec | Un étudiant de premier cycle ne peut pas s’inscrire à un cours de niveau 6000+. |
+| checkEligibilityNew | Service | idCours = "TJ5035", coursComplétés = ["IFT1025"], cycle = 1 | "L'id du cours est invalide" | Échec | Vérifie que l’identifiant du cours est validé avant tout appel au repository. |
+| checkEligibilityNew | Service | idCours = "IFT2255", coursComplétés = ["TJOFF3334"], cycle = 1 | "Il y a des cours complétés invalides" | Échec | Vérifie que la méthode rejette une liste de cours complétés contenant des identifiants invalides. |
+| checkEligibilityNew | Service | idCours = "IFT2255", coursComplétés = ["IFT1025"], cycle = 1 | "Vous êtes éligible à ce cours!" | Succès | Cas nominal : tous les prérequis sont satisfaits, l’étudiant est éligible. |
+| checkEligibilityNew | Service | idCours = "IFT2255", coursComplétés = ["IFT1000"], cycle = 1 | "Vous n'êtes pas éligible à ce cours. Il vous manque les prerequis suivants : IFT1025" | Succès | Cas où l’étudiant n’est pas éligible en raison de prérequis manquants. |
+| checkEligibilityNew | Service | idCours = "IFT2255", coursComplétés = ["IFT1025"], cycle = 1 | "Une erreur est survenue lors de la vérification d'éligibilité." | Échec | Vérifie que les exceptions levées par le repository sont correctement capturées et gérées. |
+
+### Fonctionnalité : Créer un ensemble de cours (génération d’horaires et détection de conflits)
+
+| Module | Entité | Entrée | Sortie attendue | Type | Description |
+|------|--------|--------|------------------|------|-------------|
+| genererEnsembleHoraire | Service | listeCours = [], session = "A25" | Exception `"La liste des cours est vide ou inexistante."` | Échec | Vérifie que la méthode rejette une requête lorsque la liste de cours est vide. Aucun appel au repository ne doit être effectué. |
+| genererEnsembleHoraire | Service | listeCours = 7 IDs valides, session = "H26" | Exception contenant `"plus de 6 cours"` | Échec | Vérifie la règle métier limitant un ensemble de cours à un maximum de 6 cours. |
+| genererEnsembleHoraire | Service | listeCours = ["IFT2255"], session = "A25", repository retourne `Optional.empty()` | Exception `"Le cours IFT2255 n’a pas pu être récupéré."` | Échec | Vérifie que la méthode échoue si un cours valide ne peut pas être récupéré depuis le repository. |
+| genererEnsembleHoraire | Service | listeCours = ["IFT2255"], session = "A25", horaires = Intra + Final | Horaire vide pour le cours | Succès | Vérifie que les horaires d’examen (intra et final) sont ignorés lors de la génération de l’horaire. |
+| genererEnsembleHoraire | Service | listeCours = ["IFT2255"], session = "A25", activités dupliquées | Une seule activité conservée | Succès | Vérifie que les doublons d’activités horaires sont correctement éliminés. |
+| genererEnsembleHoraire | Service | listeCours = ["IFT2255"], session = "A25", activité valide | Structure d’horaire complète et non nulle | Succès | Cas nominal : un cours valide génère un horaire structuré contenant le volet, la section et les blocs horaires attendus. |
+| appliquerChoix | Service | horaires valides + choix cohérents | Horaire final sans conflits | Succès | Vérifie que l’application de choix valides produit un horaire final correct sans conflit détecté. |
+
+
 <!--
 - Résumé qualitatif :
   - Comportement attendu obtenu
