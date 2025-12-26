@@ -36,7 +36,7 @@ public class CoursService {
      * garantir que cette dernière n'ait qu'unen instance.
      **/
     private static CoursService instance;
-
+    private AvisService avisService = AvisService.getInstance();
     private CoursService() {
     }
 
