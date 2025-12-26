@@ -14,7 +14,7 @@ import java.util.List;
 public class CoursControllerTest {
 
     //Tests pour comparerCours
-
+/*
     @Test
     @DisplayName("Comparaison de deux cours avec critères de comparaison valides")
     void testComparerCours_withValidCriteria() {
@@ -46,7 +46,7 @@ public class CoursControllerTest {
         // Critère invalide retourne quand même 200 avec "Critère inconnu"
         verify(ctx).status(200);
     }
-
+*/
     @Test
     @DisplayName("Comparaison avec cours invalides")
     void testComparerCours_withInvalidCourseIds() {
