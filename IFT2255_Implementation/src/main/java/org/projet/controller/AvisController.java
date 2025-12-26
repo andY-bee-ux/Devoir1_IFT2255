@@ -17,12 +17,12 @@ public class AvisController {
     public void soumettreAvis(Context ctx) {
         try {
             RequeteAvis req = ctx.bodyAsClass(RequeteAvis.class);
-            // La méthode enregistrerAvis stocke ledit avis sur notre plateforme.
+       // La méthode enregistrerAvis stocke ledit avis sur notre plateforme.
             avisService.enregistrerAvis(
                     req.sigleCours.toUpperCase(),
                     req.professeur,
                     req.noteDifficulte,
-                    req.noteQualite,
+                    req.noteCharge,
                     req.commentaire
             );
         // Si tout se passe bien, on affiche un message de succès.
@@ -34,6 +34,34 @@ public class AvisController {
         } catch (Exception e) {
             ctx.status(500).result("Erreur serveur : " + e.getMessage());
         }
+    }
+
+    /**
+    * Cette méthode permet de gérer la requête relative à la récupération de tous les avis
+    * enregistrés sur la plateforme.
+    */
+    
+    public void getAllAvis(Context ctx){
+        try{
+            List<Avis> avis = avisService.getAllAvis();
+            // Il est possible qu'il n'y ait pas d'avis pour ce cours.
+            if(avis == null || avis.isEmpty()) {
+                ctx.status(400).result("Erreur : avis inexistant");
+            }
+
+            ctx.status(200).json(avis);
+
+        }
+        // Le IllegalArgumentException se produit lorsque le sigle de cours est incorrect est incorrecte.
+        catch(IllegalArgumentException e) {
+            ctx.status(400).result("Erreur : sigle de cours invalide");
+        }
+        // Toute autre exception vient du côté serveur.
+        catch(Exception e) {
+            ctx.status(500).result("Erreur : " + e.getMessage());
+        }
+
+
     }
 
     /**
@@ -72,12 +100,14 @@ public class AvisController {
 
     }
 
-    // Classe interne pour parser le JSON du formulaire
+    /**
+    * Cette classe interne permet de parser le corps de la requête pour les avis.
+    */
     public static class RequeteAvis {
         public String sigleCours;
         public String professeur;
         public int noteDifficulte;
-        public int noteQualite;
+        public int noteCharge;
         public String commentaire;
     }
 }
