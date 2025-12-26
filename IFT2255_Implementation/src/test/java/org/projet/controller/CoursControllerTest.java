@@ -17,37 +17,55 @@ public class CoursControllerTest {
 
     @Test
     @DisplayName("Comparaison de deux cours avec critères de comparaison valides")
-    void testComparerCours_withValidCriteria() {
-        CoursController controller = new CoursController();
-        Context ctx = mock(Context.class);
+void testComparerCours_withValidCriteria() {
+    CoursService coursService = mock(CoursService.class);
+    CoursController controller = new CoursController(coursService);
+    Context ctx = mock(Context.class);
 
-        CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
-        req.cours = new String[]{"IFT1025", "IFT1015"};
-        req.criteres = new String[]{"name", "credits"};
-        req.session ="A24";
+    CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
+    req.cours = new String[]{"IFT1025", "IFT1015"};
+    req.criteres = new String[]{"name", "credits"};
+    req.session = "A24";
 
-        when(ctx.bodyAsClass(CoursController.RequeteComparaison.class)).thenReturn(req);
+    when(ctx.bodyAsClass(CoursController.RequeteComparaison.class))
+            .thenReturn(req);
 
-        controller.comparerCours(ctx);
+    when(coursService.comparerCours(
+            any(), any(), any()))
+            .thenReturn(List.of(List.of("IFT1025", "IFT1015")));
 
-        verify(ctx).status(200);
-        verify(ctx).json(any(List.class));
-    }
+    controller.comparerCours(ctx);
+
+    verify(ctx).status(200);
+    verify(ctx).json(any(List.class));
+}
+
 
     @Test
     @DisplayName("Comparaison de cours avec critères invalides")
-    void testComparerCours_withInvalidCriteria() {
-        CoursController controller = new CoursController();
-        Context ctx = mock(Context.class);
-        CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
-        req.cours = new String[]{"IFT1025", "IFT1015"};
-        req.criteres = new String[]{"nom", "credits"};
-        req.session ="A24";
-        when(ctx.bodyAsClass(CoursController.RequeteComparaison.class)).thenReturn(req);
-        controller.comparerCours(ctx);
-        // Critère invalide retourne quand même 200 avec "Critère inconnu"
-        verify(ctx).status(400);
-    }
+void testComparerCours_withInvalidCriteria() {
+    CoursService coursService = mock(CoursService.class);
+    CoursController controller = new CoursController(coursService);
+    Context ctx = mock(Context.class);
+
+    CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
+    req.cours = new String[]{"IFT1025", "IFT1015"};
+    req.criteres = new String[]{"nom", "credits"};
+    req.session = "A24";
+
+    when(ctx.bodyAsClass(CoursController.RequeteComparaison.class))
+            .thenReturn(req);
+
+    when(coursService.comparerCours(
+            any(), any(), any()))
+            .thenReturn(null);
+
+    controller.comparerCours(ctx);
+
+    verify(ctx).status(400);
+    verify(ctx).json("Requête invalide");
+}
+
 
     @Test
     @DisplayName("Comparaison avec cours invalides")
