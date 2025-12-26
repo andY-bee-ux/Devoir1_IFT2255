@@ -14,7 +14,7 @@ import java.util.List;
 public class CoursControllerTest {
 
     //Tests pour comparerCours
-/*
+
     @Test
     @DisplayName("Comparaison de deux cours avec critères de comparaison valides")
     void testComparerCours_withValidCriteria() {
@@ -24,6 +24,7 @@ public class CoursControllerTest {
         CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
         req.cours = new String[]{"IFT1025", "IFT2255"};
         req.criteres = new String[]{"name", "credits"};
+        req.session ="A24";
 
         when(ctx.bodyAsClass(CoursController.RequeteComparaison.class)).thenReturn(req);
 
@@ -41,12 +42,13 @@ public class CoursControllerTest {
         CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
         req.cours = new String[]{"IFT1025", "IFT2255"};
         req.criteres = new String[]{"nom", "credits"};
+        req.session ="A24";
         when(ctx.bodyAsClass(CoursController.RequeteComparaison.class)).thenReturn(req);
         controller.comparerCours(ctx);
         // Critère invalide retourne quand même 200 avec "Critère inconnu"
         verify(ctx).status(200);
     }
-*/
+
     @Test
     @DisplayName("Comparaison avec cours invalides")
     void testComparerCours_withInvalidCourseIds() {
