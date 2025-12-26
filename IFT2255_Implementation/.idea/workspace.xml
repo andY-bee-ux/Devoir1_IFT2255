@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajout de la fonctionnalite de recherche de programme par nom.">
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajout de la generation de rapport dans le pom.xml + code fixe pour eviter l'arret du serveur lors d'un mauvais usage des routes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/projet/controller/CoursController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/projet/controller/CoursController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/projet/repository/CoursRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/projet/repository/CoursRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766683261870</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Ajout de la generation de rapport dans le pom.xml + code fixe pour eviter l'arret du serveur lors d'un mauvais usage des routes.">
+      <option name="closed" value="true" />
+      <created>1766725246966</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1766725246966</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,7 +246,8 @@
     <MESSAGE value="Ajout de codes dans les classes du fichiers /controller." />
     <MESSAGE value="Ajout de codes dans les classes du fichiers /service." />
     <MESSAGE value="Ajout de la fonctionnalite de recherche de programme par nom." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de la fonctionnalite de recherche de programme par nom." />
+    <MESSAGE value="Ajout de la generation de rapport dans le pom.xml + code fixe pour eviter l'arret du serveur lors d'un mauvais usage des routes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout de la generation de rapport dans le pom.xml + code fixe pour eviter l'arret du serveur lors d'un mauvais usage des routes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

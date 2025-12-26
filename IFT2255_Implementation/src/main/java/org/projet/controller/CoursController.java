@@ -64,12 +64,18 @@ public class CoursController {
             List<List<String>> resultat =
                     coursService.comparerCours(req.cours, req.criteres, req.session);
 
+            if (resultat == null) {
+                ctx.status(400);
+                ctx.json("Requête invalide");
+                return;
+            }
+
             ctx.status(200);
             ctx.json(resultat);
 
         } catch (RuntimeException e) {
-            ctx.status(200);
-            ctx.json(new ArrayList<>());
+            ctx.status(400);
+            ctx.json("Requête invalide");
         } catch (Exception e) {
             ctx.status(404);
             ctx.json("Contexte invalide");
@@ -85,12 +91,19 @@ public class CoursController {
              RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
             List<List<String>> resultat =
                     coursService.comparerCombinaisonCours(req.listeCours, req.session);
+
+            if (resultat == null) {
+                ctx.status(400);
+                ctx.json("Requête invalide");
+                return;
+            }
+
             ctx.status(200);
             ctx.json(resultat);
         } catch (RuntimeException e) {
-            ctx.status(200);
-            ctx.json(new ArrayList<>());
-        }catch (Exception e) {
+            ctx.status(400);
+            ctx.json("Requête invalide");
+        } catch (Exception e) {
              ctx.status(404);
              ctx.json("Contexte invalide");
          }
