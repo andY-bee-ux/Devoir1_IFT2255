@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Ajout de la generation de rapport dans le pom.xml + code fixe pour eviter l'arret du serveur lors d'un mauvais usage des routes.">
+    <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Test pour les CI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/projet/controller/CoursController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/projet/controller/CoursController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/projet/repository/CoursRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/projet/repository/CoursRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +232,23 @@
       <option name="project" value="LOCAL" />
       <updated>1766725246966</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fix des bugs">
+      <option name="closed" value="true" />
+      <created>1766726053798</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1766726053798</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Test pour les CI">
+      <option name="closed" value="true" />
+      <created>1766726275789</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1766726275789</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,15 +261,17 @@
     <MESSAGE value="Ajout de codes dans les classes du fichiers /service." />
     <MESSAGE value="Ajout de la fonctionnalite de recherche de programme par nom." />
     <MESSAGE value="Ajout de la generation de rapport dans le pom.xml + code fixe pour eviter l'arret du serveur lors d'un mauvais usage des routes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout de la generation de rapport dans le pom.xml + code fixe pour eviter l'arret du serveur lors d'un mauvais usage des routes." />
+    <MESSAGE value="Fix des bugs" />
+    <MESSAGE value="Test pour les CI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test pour les CI" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/org/projet/controller/CoursControllerTest.java</url>
-          <line>249</line>
-          <properties class="org.projet.controller.CoursControllerTest" method="testComparerCombinaisonCours_singleCombination">
+          <line>206</line>
+          <properties class="org.projet.controller.CoursControllerTest">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -263,7 +279,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/org/projet/controller/CoursControllerTest.java</url>
-          <line>260</line>
+          <line>206</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>

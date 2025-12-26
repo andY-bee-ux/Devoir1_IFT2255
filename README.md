@@ -648,8 +648,435 @@ Chacune des routes que nous avons définies pour notre architecture REST couvren
         | `available_periods` | Périodes disponibles |
         | `mode` | Mode du cours ( P(présentiel), AD( à distance asynchrone) ou SD ( à distance synchrone)) |
 
-13. Créer un ensemble de cours et générer l'horaire correspondant + détection de conflits horaires : **`POST /horaire`**
-A COMPLETER
+13. Créer un ensemble de cours et générer l'horaire correspondant + détection de conflits horaires : **`POST /horaire`** 
+    - **Format pour le body de la requête (Pour obtenir les horaires seulement) :**
+      - `{"idCours": [id1,id2,...],"session": session,"sections": bool}`
+    - Le parametre `idCours` correspond à un tableau contenant les ID des cours pour la generation d'horaire.
+    - Le parametre `session` correspond au trimestre de recherche.
+    - Le parametre `sections` correspond à `true` pour inclure les sections ou `false` sinon.
+    - **Format pour le body de la requête (Pour un horaire de session final (avec les choix de sections)) :**
+        - `{"idCours": [id1,id2,...],"session": session,"sections": bool, "choix" = {"id1": {"TH": section,"TP": TPSection},"id2": {"TH": section,"TP": TPSection}}}`
+    - Le parametre `idCours` correspond à un tableau contenant les ID des cours pour la generation d'horaire.
+    - Le parametre `session` correspond au trimestre de recherche.
+    - Le parametre `sections` correspond à `true` pour inclure les sections ou `false` sinon.
+    - Le parametre `choix` correspond à specifier pour chaque cours dans `idCours` la section théorique (parametre `TH`) et la section pratique (parametre `TP`).
+    - **Exemple de Body JSON attendu :**
+        - `{"idCours": ["IFT1015","MAT1400","IFT1215","IFT1065","IFT1005"],"session": "H26","sections": false}`
+        - `{"idCours": ["IFT1015","MAT1400","IFT1215","IFT1065","IFT1005"],"session": "H26","sections": false,"choix": {"IFT1015": {"TH": "A", "TP": "A101"},"MAT1400": {"TH": "A","TP" : "A101"},"IFT1215": {"TH": "A","TP": "A101"},"IFT2015": {"TH": "A","TP": "A101"},"IFT2125": {"TH": "A","TP": "A101"}}}`
+    - **Exemple de réponse JSON**: **(statut 200)**
+        - `{
+    "MAT1400": {
+        "TH": {
+            "A": [
+                [
+                    "[Ma]",
+                    "08:30-10:29"
+                ],
+                [
+                    "[Je]",
+                    "08:30-10:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Ma]",
+                    "08:30-10:29"
+                ],
+                [
+                    "[Je]",
+                    "08:30-10:29"
+                ]
+            ]
+        },
+        "TP": {
+            "A102": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "A103": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "B101": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "B102": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ]
+        }
+    },
+    "IFT1065": {
+        "TH": {
+            "A": [
+                [
+                    "[Lu]",
+                    "10:30-12:29"
+                ],
+                [
+                    "[Me]",
+                    "13:30-14:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Lu]",
+                    "10:30-12:29"
+                ],
+                [
+                    "[Me]",
+                    "14:30-15:29"
+                ]
+            ]
+        },
+        "TP": {
+            "B101": [
+                [
+                    "[Ve]",
+                    "10:30-12:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Ve]",
+                    "10:30-12:29"
+                ]
+            ]
+        }
+    },
+    "IFT1015": {
+        "TH": {
+            "A": [
+                [
+                    "[Lu]",
+                    "13:30-15:29"
+                ],
+                [
+                    "[Me]",
+                    "11:30-12:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Ma]",
+                    "15:30-17:29"
+                ],
+                [
+                    "[Je]",
+                    "13:30-14:29"
+                ]
+            ]
+        },
+        "TP": {
+            "A102": [
+                [
+                    "[Je]",
+                    "15:30-17:29"
+                ]
+            ],
+            "B101": [
+                [
+                    "[Je]",
+                    "14:30-15:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Je]",
+                    "14:30-15:29"
+                ]
+            ],
+            "B102": [
+                [
+                    "[Je]",
+                    "15:30-17:29"
+                ]
+            ]
+        }
+    },
+    "IFT1005": {
+        "TH": {
+            "A": [
+                [
+                    "[Ma]",
+                    "13:30-15:29"
+                ],
+                [
+                    "[Ve]",
+                    "08:30-09:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Je]",
+                    "10:30-12:29"
+                ],
+                [
+                    "[Ve]",
+                    "14:30-15:29"
+                ]
+            ]
+        },
+        "TP": {
+            "B101": [
+                [
+                    "[Ve]",
+                    "15:30-17:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Ve]",
+                    "15:30-17:29"
+                ]
+            ]
+        }
+    },
+    "IFT1215": {
+        "TH": {
+            "A": [
+                [
+                    "[Lu]",
+                    "08:30-10:29"
+                ],
+                [
+                    "[Me]",
+                    "08:30-09:29"
+                ]
+            ]
+        },
+        "TP": {
+            "A101": [
+                [
+                    "[Me]",
+                    "09:30-11:29"
+                ]
+            ]
+        }
+    }
+}`.
+        - `{
+    "MAT1400": {
+        "TH": {
+            "A": [
+                [
+                    "[Ma]",
+                    "08:30-10:29"
+                ],
+                [
+                    "[Je]",
+                    "08:30-10:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Ma]",
+                    "08:30-10:29"
+                ],
+                [
+                    "[Je]",
+                    "08:30-10:29"
+                ]
+            ]
+        },
+        "TP": {
+            "A102": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "A103": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "B101": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ],
+            "B102": [
+                [
+                    "[Lu]",
+                    "15:30-17:29"
+                ]
+            ]
+        }
+    },
+    "IFT1065": {
+        "TH": {
+            "A": [
+                [
+                    "[Lu]",
+                    "10:30-12:29"
+                ],
+                [
+                    "[Me]",
+                    "13:30-14:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Lu]",
+                    "10:30-12:29"
+                ],
+                [
+                    "[Me]",
+                    "14:30-15:29"
+                ]
+            ]
+        },
+        "TP": {
+            "B101": [
+                [
+                    "[Ve]",
+                    "10:30-12:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Ve]",
+                    "10:30-12:29"
+                ]
+            ]
+        }
+    },
+    "IFT1015": {
+        "TH": {
+            "A": [
+                [
+                    "[Lu]",
+                    "13:30-15:29"
+                ],
+                [
+                    "[Me]",
+                    "11:30-12:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Ma]",
+                    "15:30-17:29"
+                ],
+                [
+                    "[Je]",
+                    "13:30-14:29"
+                ]
+            ]
+        },
+        "TP": {
+            "A102": [
+                [
+                    "[Je]",
+                    "15:30-17:29"
+                ]
+            ],
+            "B101": [
+                [
+                    "[Je]",
+                    "14:30-15:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Je]",
+                    "14:30-15:29"
+                ]
+            ],
+            "B102": [
+                [
+                    "[Je]",
+                    "15:30-17:29"
+                ]
+            ]
+        }
+    },
+    "IFT1005": {
+        "TH": {
+            "A": [
+                [
+                    "[Ma]",
+                    "13:30-15:29"
+                ],
+                [
+                    "[Ve]",
+                    "08:30-09:29"
+                ]
+            ],
+            "B": [
+                [
+                    "[Je]",
+                    "10:30-12:29"
+                ],
+                [
+                    "[Ve]",
+                    "14:30-15:29"
+                ]
+            ]
+        },
+        "TP": {
+            "B101": [
+                [
+                    "[Ve]",
+                    "15:30-17:29"
+                ]
+            ],
+            "A101": [
+                [
+                    "[Ve]",
+                    "15:30-17:29"
+                ]
+            ]
+        }
+    },
+    "IFT1215": {
+        "TH": {
+            "A": [
+                [
+                    "[Lu]",
+                    "08:30-10:29"
+                ],
+                [
+                    "[Me]",
+                    "08:30-09:29"
+                ]
+            ]
+        },
+        "TP": {
+            "A101": [
+                [
+                    "[Me]",
+                    "09:30-11:29"
+                ]
+            ]
+        }
+    }
+}`
+    
 14. Comparer des combinaisons de cours : **`POST /cours/comparer/combinaison`**
     - **Format pour le body de la requête :**
         - `{
