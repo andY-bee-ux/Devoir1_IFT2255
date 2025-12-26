@@ -871,7 +871,7 @@ public class ClientController {
         );
         tableComparaison.getColumns().add(colCours);
 
-        /* Colonnes critères */
+        // colonnes de critères.
         for (int i = 0; i < criteresTable.size(); i++) {
             final int idx = i + 1; //  +1 à cause du sigle en position 0
 
@@ -1056,7 +1056,7 @@ public class ClientController {
 
 
 
-    // ---------------- Getters pour le Main ----------------
+    // getters pour le Main
     public TextField getChampRecherche() { return champRecherche; }
     public ListView<Cours> getListeResultats() { return listeResultats; }
     public TextField getSessionField() { return sessionField;}

@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Cette classe permet de gérer la logique de la vue pour l'interface du client.
+ */
 public class MainApp extends Application {
 
     private BorderPane root;
@@ -61,7 +64,7 @@ public class MainApp extends Application {
             topBar.add(lbl, i, 0);
         }
 
-        // -------- Actions --------
+        // Actions
         menuItems[0].setOnMouseClicked(e -> afficherAccueil());
         menuItems[1].setOnMouseClicked(e -> afficherRecherche());
         menuItems[2].setOnMouseClicked(e -> afficherCoursProgramme());
@@ -102,7 +105,7 @@ public class MainApp extends Application {
         accueil.setStyle("-fx-background-color: #f4f4f4;"); // couleur de fond
         accueil.setAlignment(Pos.CENTER);
 
-        // --- Partie texte à gauche ---
+        // Texte à gauche
         VBox textBox = new VBox(20);
         textBox.setAlignment(Pos.CENTER_LEFT);
 
@@ -138,7 +141,7 @@ public class MainApp extends Application {
         actions.getChildren().addAll(btnRecherche, btnProgramme);
         textBox.getChildren().addAll(flow, subtitle1, subtitle, actions);
 
-        // --- Partie image à droite ---
+        // Big image à droite
         Image img = new Image(getClass().getResourceAsStream("/PickCourse-logo.png")); // à remplacer par l'image souhaitée
         ImageView imageView = new ImageView(img);
         imageView.setPreserveRatio(true);
@@ -147,8 +150,7 @@ public class MainApp extends Application {
 
         VBox imageBox = new VBox(imageView);
         imageBox.setAlignment(Pos.CENTER_RIGHT);
-
-        // --- Ajouter les deux côtés à l'accueil ---
+        // on les ajoute côte à côte
         accueil.getChildren().addAll(textBox, imageBox);
         HBox.setHgrow(textBox, Priority.ALWAYS);
         HBox.setHgrow(imageBox, Priority.ALWAYS);
