@@ -22,7 +22,7 @@ public class CoursControllerTest {
         Context ctx = mock(Context.class);
 
         CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
-        req.cours = new String[]{"IFT1025", "IFT2255"};
+        req.cours = new String[]{"IFT1025", "IFT1015"};
         req.criteres = new String[]{"name", "credits"};
         req.session ="A24";
 
@@ -40,13 +40,13 @@ public class CoursControllerTest {
         CoursController controller = new CoursController();
         Context ctx = mock(Context.class);
         CoursController.RequeteComparaison req = new CoursController.RequeteComparaison();
-        req.cours = new String[]{"IFT1025", "IFT2255"};
+        req.cours = new String[]{"IFT1025", "IFT1015"};
         req.criteres = new String[]{"nom", "credits"};
         req.session ="A24";
         when(ctx.bodyAsClass(CoursController.RequeteComparaison.class)).thenReturn(req);
         controller.comparerCours(ctx);
         // Critère invalide retourne quand même 200 avec "Critère inconnu"
-        verify(ctx).status(200);
+        verify(ctx).status(400);
     }
 
     @Test
