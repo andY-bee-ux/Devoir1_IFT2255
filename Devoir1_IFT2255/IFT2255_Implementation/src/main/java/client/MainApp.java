@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import org.projet.model.Cours;
 
@@ -27,11 +29,11 @@ public class MainApp extends Application {
     public void start(Stage stage) {
         root = new BorderPane();
 
-        // -------- Top Bar --------
+        //top barr
         GridPane topBar = new GridPane();
-        topBar.setPadding(new Insets(10, 0, 10, 0));
-        topBar.setStyle("-fx-background-color: #2c3e50;");
-        topBar.setPrefHeight(55);
+        topBar.setPadding(new Insets(30, 0, 30, 0));
+        topBar.setStyle("-fx-background-color: #623E32;");
+        topBar.setPrefHeight(60);
 
         String[] labels = {
                 "Accueil", "Rechercher", "Programmes", "Avis",
@@ -94,39 +96,66 @@ public class MainApp extends Application {
     }
 
     private void afficherAccueil() {
-        VBox accueil = new VBox(25);
+        HBox accueil = new HBox();
+        accueil.setPadding(new Insets(40));
+        accueil.setSpacing(50);
+        accueil.setStyle("-fx-background-color: #f4f4f4;"); // couleur de fond
         accueil.setAlignment(Pos.CENTER);
-        accueil.setStyle("-fx-padding: 40;");
 
-        Image logo = new Image(getClass().getResourceAsStream("/PickCourse-logo.png"));
-        ImageView logoView = new ImageView(logo);
-        logoView.setFitWidth(220);
-        logoView.setPreserveRatio(true);
+        // --- Partie texte à gauche ---
+        VBox textBox = new VBox(20);
+        textBox.setAlignment(Pos.CENTER_LEFT);
 
-        Label welcome = new Label("Bienvenue sur PickCourse");
-        welcome.setStyle("-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
-        Label subtitle = new Label("Comparez, explorez et choisissez vos cours en un clic!");
-        subtitle.setStyle("-fx-font-size: 16px; -fx-text-fill: #555;");
+
+        Text text1 = new Text("Bienvenue sur Pick");
+        text1.setStyle("-fx-font-size: 60px; -fx-font-weight: bold; -fx-fill: black;");
+
+        Text text2 = new Text("Course");
+        text2.setStyle("-fx-font-size: 60px; -fx-font-weight: bold; -fx-fill: #623E32;");
+
+        TextFlow flow = new TextFlow(text1, text2);
+
+        Label subtitle1 = new Label("La plateforme par excellence pour les étudiants de l'Université de Montréal souhaitant s'inscrire à des cours.");
+        subtitle1.setStyle("-fx-font-size: 25px; -fx-text-fill: #555;");
+        subtitle1.setWrapText(true);
+        subtitle1.setMaxWidth(600);
+        Label subtitle = new Label("Comparez, explorez et choisissez ces derniers en un clic!");
+        subtitle.setStyle("-fx-font-size: 25px; -fx-text-fill: #555;");
         subtitle.setWrapText(true);
         subtitle.setMaxWidth(600);
-        subtitle.setAlignment(Pos.CENTER);
 
         HBox actions = new HBox(20);
-        actions.setAlignment(Pos.CENTER);
+        actions.setAlignment(Pos.CENTER_LEFT);
 
         Button btnRecherche = new Button("Rechercher un cours");
-        btnRecherche.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 18;");
+        btnRecherche.setStyle("-fx-background-color: #623E32; -fx-text-fill: white; -fx-font-size: 20px; -fx-padding: 20 25;");
         btnRecherche.setOnAction(e -> afficherRecherche());
 
         Button btnProgramme = new Button("Voir les programmes");
-        btnProgramme.setStyle("-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 18;");
+        btnProgramme.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 20px; -fx-padding: 20 25;");
         btnProgramme.setOnAction(e -> afficherCoursProgramme());
 
         actions.getChildren().addAll(btnRecherche, btnProgramme);
-        accueil.getChildren().addAll(logoView, welcome, subtitle, actions);
+        textBox.getChildren().addAll(flow, subtitle1, subtitle, actions);
+
+        // --- Partie image à droite ---
+        Image img = new Image(getClass().getResourceAsStream("/PickCourse-logo.png")); // à remplacer par l'image souhaitée
+        ImageView imageView = new ImageView(img);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(500); // ajuste pour couvrir la hauteur
+        imageView.setFitWidth(600);
+
+        VBox imageBox = new VBox(imageView);
+        imageBox.setAlignment(Pos.CENTER_RIGHT);
+
+        // --- Ajouter les deux côtés à l'accueil ---
+        accueil.getChildren().addAll(textBox, imageBox);
+        HBox.setHgrow(textBox, Priority.ALWAYS);
+        HBox.setHgrow(imageBox, Priority.ALWAYS);
 
         root.setCenter(accueil);
     }
+
 
     private void afficherCoursProgramme() {
         VBox layout = new VBox(10);
@@ -138,20 +167,38 @@ public class MainApp extends Application {
         TextField champProgramme = new TextField();
         champProgramme.setPromptText("Entrez l'ID/le nom du programme");
 
+        TextField champSession = new TextField();
+        champSession.setPromptText("Entrez la session (optionnel)");
+
         ScrollPane scrollPane = new ScrollPane();
         VBox listeCoursBox = new VBox(5);
         scrollPane.setContent(listeCoursBox);
         scrollPane.setFitToWidth(true);
 
         Button btnLancer = new Button("Afficher les cours");
-        btnLancer.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
+        btnLancer.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
 
         btnLancer.setOnAction(e -> {
             String programmeId = champProgramme.getText().trim();
+            String session = champSession.getText().trim();
             if (!programmeId.isEmpty()) {
-                // --- Thread séparé pour éviter de bloquer l'UI ---
                 new Thread(() -> {
-                    List<Cours> cours = new ApiService().getCoursesForAProgram(programmeId);
+                    List<Cours> cours;
+                    List<String> coursFilter;
+                    ApiService api = new ApiService();
+                    if (!session.isEmpty()) {
+
+                        // Session précisée → getCourseBySemester
+                        coursFilter = api.getCoursesBySemester(programmeId, session);
+                        cours = coursFilter.stream()
+                                .map(api::rechercherCoursParSigle)
+                                .filter(c -> c != null)
+                                .toList();
+                    } else {
+                        // Session non précisée → récupérer tous les cours
+                        cours = api.getCoursesForAProgram(programmeId);
+                    }
+
                     Platform.runLater(() -> {
                         listeCoursBox.getChildren().clear();
                         if (cours.isEmpty()) {
@@ -162,7 +209,7 @@ public class MainApp extends Application {
                                 lblCours.setStyle("-fx-font-size: 14px; -fx-text-fill: #3498db; -fx-cursor: hand;");
                                 lblCours.setOnMouseEntered(ev -> lblCours.setStyle("-fx-font-size: 14px; -fx-text-fill: #1abc9c; -fx-underline: true; -fx-cursor: hand;"));
                                 lblCours.setOnMouseExited(ev -> lblCours.setStyle("-fx-font-size: 14px; -fx-text-fill: #3498db; -fx-cursor: hand;"));
-                                lblCours.setOnMouseClicked(ev -> afficherCoursDetail(c));
+                                lblCours.setOnMouseClicked(ev -> afficherCoursDetail(c, session)); // <-- passage session
                                 listeCoursBox.getChildren().add(lblCours);
                             }
                         }
@@ -171,11 +218,11 @@ public class MainApp extends Application {
             }
         });
 
-        layout.getChildren().addAll(title, champProgramme, btnLancer, scrollPane);
+        layout.getChildren().addAll(title, champProgramme, new Label("Session (optionnel) :"), champSession, btnLancer, scrollPane);
         root.setCenter(layout);
     }
 
-    private void afficherCoursDetail(Cours cours) {
+    private void afficherCoursDetail(Cours cours, String session) {
         VBox container = new VBox(5);
         container.setStyle("-fx-padding: 10; -fx-border-color: gray; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: #f4f4f4;");
 
@@ -193,7 +240,7 @@ public class MainApp extends Application {
         Button btnHoraire = new Button("Voir horaire");
         btnHoraire.setOnAction(e -> {
             if (rechercheController == null) rechercheController = new ClientController();
-            rechercheController.afficherHoraire(cours);
+            rechercheController.afficherHoraire(cours, session); // <-- méthode avec session
         });
 
         Button btnAvis = new Button("Voir avis");
@@ -220,7 +267,7 @@ public class MainApp extends Application {
         title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
 
         Button btnLancerRecherche = new Button("Rechercher");
-        btnLancerRecherche.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
+        btnLancerRecherche.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
 
         btnLancerRecherche.setOnAction(e -> {
             //Lancer la recherche dans un thread séparé pour éviter que ça ne plante

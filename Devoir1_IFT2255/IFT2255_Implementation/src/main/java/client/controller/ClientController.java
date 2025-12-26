@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.geometry.Insets;
 import javafx.scene.text.Text;
 import org.projet.model.*;
 import client.service.ApiService;
@@ -36,7 +37,10 @@ public class ClientController {
     private ListView<String> listeCoursComparaison; // liste des cours à comparer
     private VBox criteresBox; // checkboxes critères
     private TextField sessionField;
+    private Label messageResultatAcademiquePopularite = new Label();
+    private Label messageResultatAcademiqueDifficulte = new Label();
     private Label messageResultatAcademique = new Label();
+    private Label messageAvisInofficiels = new Label();
     private ListView<List<String>> listeCombinaisons;
 
     private TableView<ObservableList<String>> tableComparaison;
@@ -163,19 +167,25 @@ public class ClientController {
             List<Cours> resultats = coursService.rechercherCours(param, texte, String.valueOf(includeSchedule), session);
 
 
-
+     // platform runlater car ça s'exécute sur un thrad séparé ( pour éviter les bugs ) et son utilisation permet de faire en sorte que ça s'exécute.
+            Platform.runLater(() -> {
                 if (resultats.isEmpty()) {
                     messageLabel.setText("Aucun cours trouvé pour : " + texte);
                     listeResultats.getItems().clear();
                 } else {
                     messageLabel.setText("");
+                    listeResultats.getItems().clear();
                     listeResultats.getItems().addAll(resultats);
                 }
+            });
 
 
         } catch (Exception e) { // ou l'exception que ton service lève pour une 404
             // Affiche le message d'erreur sur l'interface
-             messageLabel.setText("Erreur : cours introuvable ou session invalide.");
+            Platform.runLater(() -> {
+                messageLabel.setText("Erreur : cours introuvable ou session invalide.");
+                listeResultats.getItems().clear();
+            });
         }
     }
 
@@ -478,7 +488,7 @@ public class ClientController {
         champAjouterCours.setPromptText("Ajouter sigle de cours");
 
         Button btnAjouter = new Button("Ajouter");
-        btnAjouter.setStyle("-fx-background-color: #1C3144; -fx-text-fill: white;");
+        btnAjouter.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
         btnAjouter.setOnAction(e -> {
             String sigle = champAjouterCours.getText().trim();
             if (!sigle.isEmpty() && !listeCoursComparaison.getItems().contains(sigle)) {
@@ -518,7 +528,7 @@ public class ClientController {
         sessionField.setPromptText("Session (optionnel)");
 
         Button btnComparerCours = new Button("Comparer");
-        btnComparerCours.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
+        btnComparerCours.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
         btnComparerCours.setOnAction(e -> lancerComparaison());
 
         vueComparaisonCours.getChildren().addAll(
@@ -547,7 +557,7 @@ public class ClientController {
         });
 
         Button btnComparerEnsembles = new Button("Comparer ensembles");
-        btnComparerEnsembles.setStyle("-fx-background-color: #1C3144; -fx-text-fill: white;");
+        btnComparerEnsembles.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
         btnComparerEnsembles.setOnAction(e -> {
             List<List<String>> ensembles = new ArrayList<>();
             for (ListView<String> lv : combinaisons) {
@@ -576,7 +586,7 @@ public class ClientController {
         tableComparaison.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         messageResultatAcademique.setWrapText(true);
-        messageResultatAcademique.setStyle("-fx-padding: 8;-fx-text-fill: #2c3e50;-fx-font-style: italic;");
+        messageResultatAcademique.setStyle("-fx-padding: 8;-fx-text-fill: black;-fx-font-style: italic;");
 
         // Listening to le toggle
         modeGroup.selectedToggleProperty().addListener((obs, old, selected) -> {
@@ -593,18 +603,57 @@ public class ClientController {
                 vueComparaisonCours,
                 vueComparaisonEnsembles,
                 tableComparaison,
-                messageResultatAcademique
+                messageResultatAcademique,
+                messageResultatAcademiquePopularite,
+                messageResultatAcademiqueDifficulte,
+                messageAvisInofficiels
         );
 
         return comparaisonBox;
     }
+    private void afficherResultatsInofficiels(String[] ids, boolean difficulteInoff, boolean chargeInoff) {
+        VBox container = new VBox(8);
+        container.setStyle("-fx-padding: 10;");
+
+        if (difficulteInoff) {
+            List<List<String>> diffAvis = coursService.getDifficulteAvis(ids);
+            Label titre = new Label("Difficulté inofficielle moyenne");
+            titre.setStyle("-fx-font-weight: bold; -fx-underline: true;");
+            container.getChildren().add(titre);
+
+            for (int i = 0; i < Math.min(ids.length, diffAvis.size()); i++) {
+                String texte = diffAvis.get(i).isEmpty() ? "Aucune donnée" : String.join(", ", diffAvis.get(i));
+                Label lbl = new Label(ids[i] + " : " + texte);
+                lbl.setWrapText(true);
+                container.getChildren().add(lbl);
+            }
+        }
+
+        if (chargeInoff) {
+            List<List<String>> chargeAvis = coursService.getChargeDeTravailAvis(ids);
+            Label titre = new Label(" Charge de travail inofficielle moyenne");
+            titre.setStyle("-fx-font-weight: bold; -fx-underline: true;");
+            container.getChildren().add(titre);
+
+            for (int i = 0; i < Math.min(ids.length, chargeAvis.size()); i++) {
+                String texte = chargeAvis.get(i).isEmpty() ? "Aucune donnée" : String.join(", ", chargeAvis.get(i));
+                Label lbl = new Label(ids[i] + " : " + texte);
+                lbl.setWrapText(true);
+                container.getChildren().add(lbl);
+            }
+        }
+
+        messageAvisInofficiels.setGraphic(container);
+        messageAvisInofficiels.setText(""); // vider l'ancien texte
+    }
+
 
     // Méthode utilitaire pour créer la zone d'ajout de cours dans une combinaison
     private HBox creerAjoutCoursBox(ListView<String> lv) {
         TextField champCours = new TextField();
         champCours.setPromptText("Ajouter sigle de cours");
         Button btnAjouter = new Button("Ajouter");
-        btnAjouter.setStyle("-fx-background-color: #1C3144; -fx-text-fill: white;");
+        btnAjouter.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
         btnAjouter.setOnAction(e -> {
             String sigle = champCours.getText().trim();
             if (!sigle.isEmpty() && !lv.getItems().contains(sigle)) {
@@ -748,23 +797,27 @@ public class ClientController {
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode root = mapper.readTree(json);
 
-                StringBuilder resultText = new StringBuilder();
+                StringBuilder resultText1 = new StringBuilder();
+                StringBuilder resultText2 = new StringBuilder();
+
 
                 if (criteresSelectionnes.contains("popularité officielle")) {
                     String popularite = root.has("popularite")
                             ? root.get("popularite").asText()
                             : "Information non disponible pour la popularité de ce cours.";
-                    resultText.append("Popularité officielle : ").append(popularite).append("\n");
+
+                    resultText1.append("Popularité officielle : ").append(popularite).append("\n");
                 }
 
                 if (criteresSelectionnes.contains("difficulté officielle")) {
                     String difficulte = root.has("difficulte")
                             ? root.get("difficulte").asText()
                             : "Information non disponible pour la difficulté de ce cours.";
-                    resultText.append("Difficulté officielle : ").append(difficulte).append("\n");
+                    resultText2.append("Difficulté officielle : ").append(difficulte).append("\n");
                 }
 
-                messageResultatAcademique.setText(resultText.toString());
+                messageResultatAcademiquePopularite.setText(resultText1.toString());
+                messageResultatAcademiqueDifficulte.setText(resultText2.toString());
 
             } catch (Exception e) {
                 messageResultatAcademique.setText("Impossible d’obtenir la comparaison officielle.");
@@ -779,29 +832,8 @@ public class ClientController {
 
         if (difficulteInoff || chargeInoff) {
             String[] ids = cours.toArray(new String[0]);
+            afficherResultatsInofficiels(ids, difficulteInoff, chargeInoff);
 
-            if (difficulteInoff) {
-                List<List<String>> diffAvis = coursService.getDifficulteAvis(ids);
-                StringBuilder sb = new StringBuilder(" Difficulté inofficielle moyenne :\n");
-                for (int i = 0; i < diffAvis.size(); i++) {
-                    sb
-                            .append(ids[i]).append(" : ")
-                            .append(String.join(": ", diffAvis.get(i)))
-                            .append("\n");
-                }
-                messageResultatAcademique.setText(messageResultatAcademique.getText() + sb.toString());
-            }
-
-            if (chargeInoff) {
-                List<List<String>> chargeAvis = coursService.getChargeDeTravailAvis(ids);
-                StringBuilder sb = new StringBuilder(" Charge de travail inofficielle moyenne :\n");
-                for (int i = 0; i < chargeAvis.size(); i++) {
-                    sb.append(ids[i]).append(" : ")
-                            .append(String.join(", ", chargeAvis.get(i)))
-                            .append("\n");
-                }
-                messageResultatAcademique.setText(messageResultatAcademique.getText() + sb.toString());
-            }
         }
 
         // critères basés sur le "catalogue"
@@ -935,7 +967,7 @@ public class ClientController {
         if (resultat.conflits != null && !resultat.conflits.isEmpty()) {
             VBox conflitBox = new VBox(5);
             conflitBox.setStyle("-fx-border-color: red; -fx-padding: 5; -fx-background-color: #ffe6e6;");
-            conflitBox.getChildren().add(new Label("⚠️ Conflits détectés :"));
+            conflitBox.getChildren().add(new Label("Conflits détectés :"));
             for (ApiService.ResultatHoraire.ConflitHoraireDTO conflit : resultat.conflits) {
                 conflitBox.getChildren().add(new Label(conflit.toString()));
             }
@@ -965,6 +997,61 @@ public class ClientController {
             return;
         }
 
+    }
+
+    public void afficherHoraire(Cours cours, String session) {
+        if (cours == null || session == null || session.isEmpty()) return;
+
+        ApiService api = new ApiService();
+        Map<String, Object> horaires = api.getCourseSchedule(cours.getId(), session);
+
+        Stage stage = new Stage();
+        stage.setTitle("Horaire - " + cours.getId());
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(15));
+        layout.getChildren().add(new Label("Horaire pour le cours " + cours.getId() + " (" + session + ") :"));
+
+        if (horaires.isEmpty()) {
+            layout.getChildren().add(new Label("Aucun horaire trouvé pour ce cours."));
+        } else {
+            // Parcours des sections
+            horaires.forEach((section, voletObj) -> {
+                layout.getChildren().add(new Label(section.toString())); // ex: "Section : A"
+                if (voletObj instanceof Map<?, ?> volets) {
+                    volets.forEach((volet, horaireObj) -> {
+                        if (horaireObj instanceof Map<?, ?> horairesMap) {
+                            if (horairesMap.containsKey("Date de debut :")) {
+                                Label lbl = new Label(volet + " → " +
+                                        String.valueOf(horairesMap.get("Jours :")) + " " +
+                                        String.valueOf(horairesMap.get("Heures :")) + " | " +
+                                        String.valueOf(horairesMap.get("Salle :")) + " | " +
+                                        "Mode: " + String.valueOf(horairesMap.get("Mode d'enseignement :")));
+                                lbl.setStyle("-fx-font-size: 13px;");
+                                layout.getChildren().add(lbl);
+                            } else {
+                                // Sous-volets (ex: "Horaire (1) :")
+                                horairesMap.forEach((k, v) -> {
+                                    if (v instanceof Map<?, ?> map) {
+                                        Label lbl = new Label(k + " → " +
+                                                String.valueOf(map.get("Jours :")) + " " +
+                                                String.valueOf(map.get("Heures :")) + " | " +
+                                                String.valueOf(map.get("Salle :")) + " | " +
+                                                "Mode: " + String.valueOf(map.get("Mode d'enseignement :")));
+                                        lbl.setStyle("-fx-font-size: 13px;");
+                                        layout.getChildren().add(lbl);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        Scene scene = new Scene(new ScrollPane(layout), 450, 350);
+        stage.setScene(scene);
+        stage.show();
     }
 
 

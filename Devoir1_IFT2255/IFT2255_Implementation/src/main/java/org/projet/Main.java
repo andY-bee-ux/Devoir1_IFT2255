@@ -16,7 +16,7 @@ public class Main {
         // #2 Voir les cours offerts dans un programme
         app.get("/cours-programme/{id}",coursController::getCoursesForAProgram);
 
-        // #3 Voir les cours offerts pour un trimestre donné
+        // #3 Voir les cours offerts pour un trimestre donné dans un programme ( id = id du programme)
         app.get("/programme/courseBySemester/{id}/{session}",coursController::getCourseBySemester);
 
         // #4 Voir l'horaire d'un cours pour un trimestre donné
