@@ -563,7 +563,88 @@ public List<List<String>> comparerCombinaisonCatalogue(
     return comparerCombinaisonCours(listeDeListesDeCours);
 }
 
+   /**
+ * Compare des cours basé sur la note moyenne de difficulté
+ * des avis ( inofficiel).
+ * @param idsCours liste des cours
+ * @return un tableau de comparaison basé sur les dits cours.
+ */
 
+ public List<List<String>> comparerCoursParNoteDifficulteAvis(String[] idsCours) {
+        List<List<String>> result = new ArrayList<>();
+
+        for (String id : idsCours) {
+            if (!validateIdCours(id)) {
+                System.out.println("Cours non valide : " + id);
+                continue; // On passe au suivant au lieu de return null
+            }
+
+            List<String> ligne = new ArrayList<>();
+            ligne.add(id); // Ajouter le sigle du cours
+
+            try {
+                List<Avis> avis = avisService.getAvisParCours(id); // récupère les avis pour ce cours
+                if (avis == null || avis.isEmpty()) {
+                    ligne.add("Pas d'avis");
+                } else {
+                    float sum = 0;
+                    for (Avis av : avis) {
+                        sum += av.getNoteDifficulte();
+                    }
+                    float moyenne = sum / avis.size();
+                    ligne.add(String.format("%.2f", moyenne)); // ajouter la moyenne formatée
+                }
+            } catch (Exception e) {
+                ligne.add("Erreur récupération avis");
+                e.printStackTrace();
+            }
+
+            result.add(ligne);
+        }
+
+        return result;
+    }
+
+     /**
+ * Compare des cours basé sur la note moyenne de charge de travail
+ * des avis ( inofficiel).
+ * @param idsCours liste des cours
+ * @return un tableau de comparaison basé sur les dits cours.
+ */
+    public List<List<String>> comparerCoursParChargeTravailAvis(String[] idsCours) {
+        List<List<String>> result = new ArrayList<>();
+
+        for (String id : idsCours) {
+            if (!validateIdCours(id)) {
+                System.out.println("Cours non valide : " + id);
+                continue; // passer au suivant si le cours n'est pas valide
+            }
+
+            List<String> ligne = new ArrayList<>();
+            ligne.add(id); // Ajouter le sigle du cours
+
+            try {
+                List<Avis> avis = avisService.getAvisParCours(id); // récupère les avis pour ce cours
+                if (avis == null || avis.isEmpty()) {
+                    ligne.add("Pas d'avis");
+                } else {
+                    float sum = 0;
+                    for (Avis av : avis) {
+                        sum += av.getNoteChargeTravail(); // utiliser noteChargeTravail
+                    }
+                    float moyenne = sum / avis.size();
+                    ligne.add(String.format("%.2f", moyenne)); // ajouter la moyenne formatée
+                }
+            } catch (Exception e) {
+                ligne.add("Erreur récupération avis");
+                e.printStackTrace();
+            }
+
+            result.add(ligne);
+        }
+
+        return result;
+    }
 
 
 
