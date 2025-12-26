@@ -1,0 +1,58 @@
+[
+  {
+    "commentaire":"Professeur toujours à l'écoute ,cours très intéressant et captivant. Je donnerai une note de qualité de 100 si cela était possible.",
+    "noteDifficulte":1,
+    "sigleCours":"MAT1600",
+    "valide":true,
+    "noteChargeTravail":0,
+    "nomProfesseur":"Karima Arouma"
+  },
+  {
+    "commentaire":"Cours captivant",
+    "noteDifficulte":1,
+    "sigleCours":"IFT2255",
+    "valide":true,
+    "noteChargeTravail":0,
+    "nomProfesseur":"Louis-Edouard Lafontant"
+  },
+  {
+    "commentaire":"Cours captiva1qnt!",
+    "noteDifficulte":1,
+    "sigleCours":"IFT2255",
+    "valide":true,
+    "noteChargeTravail":0,
+    "nomProfesseur":"Louis-Edouard Lafontant"
+  },
+  {
+    "commentaire":"Cours intéressant",
+    "noteDifficulte":1,
+    "sigleCours":"IFT2255",
+    "valide":true,
+    "noteChargeTravail":0,
+    "nomProfesseur":"Louis-Edouard Lafontant"
+  },
+  {
+    "commentaire":"Cours pas à la hauteur de mes attentes, approche trop théorique, démonstrations ridicules...",
+    "noteDifficulte":5,
+    "sigleCours":"IFT3700",
+    "valide":true,
+    "noteChargeTravail":0,
+    "nomProfesseur":"Vincent Taboga"
+  },
+  {
+    "commentaire":"Soporific",
+    "noteDifficulte":2,
+    "sigleCours":"IFT1227",
+    "valide":true,
+    "noteChargeTravail":0,
+    "nomProfesseur":"Alena"
+  },
+  {
+    "commentaire":"Cours très intéressantd, prof à l'écoute.",
+    "noteDifficulte":2,
+    "sigleCours":"IFT2255",
+    "valide":true,
+    "noteChargeTravail":3,
+    "nomProfesseur":"Dupont"
+  }
+]
