@@ -46,7 +46,6 @@ L'oracle des tests est donné ci-dessous:
 | getAvis                  | Controller | Cours.setId("IFT1025"), result = controller.getAvis(cours)                                                                                                                                                                                                                | Une liste vide (aucun avis pour le cours IFT1025 de test)                                                                                                                         | Succès | Vérifie que la méthode `getAvis` retourne une liste (éventuellement vide) pour un cours donné. Ici on teste le cas où aucun avis n'est présent et on s'attend à une liste vide.     |
 | getAvis                  | Controller | cours = new Cours(), result = controller.getAvis(cours)                                                                                                                                                                                                                   | Peut être vide ou contenir des avis                                                                                                                                               | Succès | S'assure que `getAvis` ne retourne jamais `null` même si aucun avis n'existe pour le cours fourni.                                                                                  |
 
-<<<<<<< HEAD
 | comparerCours | Controller | { "cours" : ["IFT1025", "IFT2255"], "criteres" : ["nom", "credits"]} | message "Critère inconnu"| Échec| Si un critère est invalide, on s'attend à recevoir un message d'erreur.|
 
 | comparerCours | Controller | { "cours" : ["INVALID1", "INVALID2"], "criteres" : ["name", "credits"]} | Erreur 400| Echec| Si les ids des cours sont invalides, on s'attend à avoir une erreur de requête 400.|
@@ -60,8 +59,28 @@ L'oracle des tests est donné ci-dessous:
 | getCourseEligibility | courseId : "IFT2255", completed : ["IFT1025"] | Chainr Json valide contenant eligible | Succes | Test d'intégration : Vérifier que la requête POST vers l'API Planifium fonctionne et retourne un JSON structuré. |
 
 | checkEligibity | Service | id: "IFT2255", Réponse Repo simulée : HTML invalide | Message : "Une erreur est survenue..." | Echec | Test Unitaire : Vérifier que le service capture l'exception et ne plante pas (crash) si l'API externe renvoie des données corrompues. |
-=======
->>>>>>> 65b165908b27ec398e8712328c40fe6c3d9f527a
+
+| voirResultats | Model | sigleCours = "ANG1904" | Message formaté (Nom, Moyenne, Score, etc.) | Succès | Test unitaire : Vérifie la capacité de la méthode à extraire et formater correctement les 5 colonnes de données pour un cours valide. |
+
+| isCoursPresent | Model | sigleCours = "ANG1904" | true | Succès | Test unitaire : Confirme que la méthode de recherche identifie correctement un cours existant dans le fichier de données. |
+
+| isCoursPresent | Model | sigleCours = "IFT9999" | false | Échec | Test unitaire : Vérifie la logique de détection d'absence ; l'entité doit retourner faux si le sigle n'existe pas dans la Map. |
+
+| getScore | Model | sigleCours = "NUT1970" | 3.42 | Robustesse | Test unitaire : Vérifie que le parsing du CSV isole bien le score numérique même si le nom du cours contient une virgule interne. |
+
+| voirResultats | Model | sigleCours = "FAKE999" | Message : "Désolé ! Nous n'avons trouvé aucun résultat..." | Échec | Test unitaire : Vérifie que la branche conditionnelle de sécurité renvoie le bon message d'erreur à l'utilisateur. |
+
+| difficulteCours | Service | sigleCours = "MAT1400" | Message : "...considéré comme difficile avec un score de 1.55/5." | Succès | Test unitaire : Vérifie que le service identifie et qualifie correctement un cours dont le score est faible (difficile). |
+
+| difficulteCours | Service | sigleCours = "ANG1933" | Message : "...considéré comme facile avec un score de 4.79/5" | Succès | Test unitaire : Vérifie que le service identifie et qualifie correctement un cours dont le score est élevé (facile). |
+
+| populariteCours | Service | sigleCours = "IFT1015" | Message : "...très populaire avec 658 participants." | Succès | Test unitaire : Vérifie le formatage du message et l'extraction correcte du nombre de participants pour un cours fréquenté. |
+
+| populariteCours | Service | sigleCours = "ART1001" | Message : "Le cours demandé est absent des résultats..." | Échec | Test unitaire : Vérifie la gestion de l'absence de données et le retour d'un message d'erreur explicite à l'utilisateur. |
+
+| comparerDifficulte | Service | cours1="IFT1015", cours2="MAT1400" | Message : "...plus facile que Calcul 1 avec un score de 2.29/5 contre 1.55/5." | Succès | Test unitaire : Valide la logique de comparaison entre deux objets et le formatage des scores comparatifs. |
+
+| comparerPopularite | Service | cours1="IFT1015", cours2="ANG1933" | Message : "...plus populaire que Expression orale... avec 658 contre 5." | Succès | Test unitaire : Valide la comparaison numérique du nombre de participants entre deux cours et la clarté du message produit. |
 
 - Résumé qualitatif :
   - Comportement attendu obtenu
