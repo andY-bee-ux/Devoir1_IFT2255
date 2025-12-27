@@ -66,6 +66,18 @@ public class CoursController {
         }
     }
 
+    public void foundPrograms(Context ctx){
+    String nom = ctx.pathParam("nom");
+    List<String> details = coursService.foundProgramms(nom);
+
+    if (details.isEmpty()) {
+        ctx.status(404).json(Map.of("error", "Les paramètres fournis sont invalides ou le programme n'existe pas."));
+        return;
+    }
+
+    ctx.status(200).json(details);
+}
+
     /**
      * Cette méthode permet de comparer des ensembles de cours.
      * @param ctx
