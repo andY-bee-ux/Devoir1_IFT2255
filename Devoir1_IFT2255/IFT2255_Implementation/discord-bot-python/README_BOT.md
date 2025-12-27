@@ -24,7 +24,7 @@ discord-bot-python/
 
 - **Python 3.10+** installé
 - **pip** installé
-- **API Java** démarrée sur `http://localhost:7000`
+- **API Java** démarrée sur `http://172.17.0.1:7000`
 - **Bot Discord** créé et configuré sur le [Discord Developer Portal](https://discord.com/developers/applications)
 
 ---
@@ -64,7 +64,7 @@ Crée un fichier `.env` à la racine du dossier avec les informations suivantes 
 
 ```env
 DISCORD_TOKEN=TON_TOKEN_DISCORD_ICI
-API_BASE_URL=http://localhost:7000
+API_BASE_URL=http://172.17.0.1:7000
 GUILD_ID=1442296329740226774
 ```
 
@@ -89,7 +89,7 @@ Si tout va bien :
 Tomcat started on port(s): 7000 (http)
 ```
 
-l'API tourne sur `http://localhost:7000`
+l'API tourne sur `http://172.17.0.1:7000`
 
 ---
 

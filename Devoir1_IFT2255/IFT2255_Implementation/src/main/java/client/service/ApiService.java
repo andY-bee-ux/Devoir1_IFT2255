@@ -23,7 +23,7 @@ public class ApiService {
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    private final String baseUrl = "http://localhost:7070/cours/rechercher/";
+    private final String baseUrl = "http://172.17.0.1:7070/cours/rechercher/";
 
     public ObjectMapper getMapper() {
         return mapper;
@@ -37,7 +37,7 @@ public class ApiService {
 
     public List<Cours> getCoursesForAProgram(String programmeId) {
         try {
-            String url = "http://localhost:7070/cours-programme/" + programmeId;
+            String url = "http://172.17.0.1:7070/cours-programme/" + programmeId;
 // ce bloc de code tente d'envoyer une requête à notre API.
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -138,7 +138,7 @@ public class ApiService {
     public List<Avis> getAllAvis(){
         try {
             // URL correcte : sans /rechercher
-            String url = "http://localhost:7070/cours" +"/avis";
+            String url = "http://172.17.0.1:7070/cours" +"/avis";
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -168,7 +168,7 @@ public class ApiService {
      */
     public List<String> getCoursesBySemester(String programmeId, String session) {
         try {
-            String url = "http://localhost:7070/programme/courseBySemester/" + programmeId + "/" + session;
+            String url = "http://172.17.0.1:7070/programme/courseBySemester/" + programmeId + "/" + session;
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -197,7 +197,7 @@ public class ApiService {
      */
     public Map<String, Object> getCourseSchedule(String sigle, String session) {
         try {
-            String url = "http://localhost:7070/cours/horaires/" + sigle + "/" + session;
+            String url = "http://172.17.0.1:7070/cours/horaires/" + sigle + "/" + session;
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -229,7 +229,7 @@ public class ApiService {
     public List<Avis> getAvisCours(String sigle) {
         try {
             // URL correcte : sans /rechercher
-            String url = "http://localhost:7070/cours/" + sigle + "/avis";
+            String url = "http://172.17.0.1:7070/cours/" + sigle + "/avis";
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -261,7 +261,7 @@ public class ApiService {
 
     public String checkEligibility(String idCours, List<String> listeCours, Integer cycle) {
         try {
-            String url = "http://localhost:7070/cours/eligibilitenew";
+            String url = "http://172.17.0.1:7070/cours/eligibilitenew";
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode body = mapper.createObjectNode();
@@ -298,7 +298,7 @@ public class ApiService {
     public String afficherResultatAcademiques (String sigle){
 
         try {
-            String url = "http://localhost:7070/cours/voir/resultat";
+            String url = "http://172.17.0.1:7070/cours/voir/resultat";
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode body = mapper.createObjectNode();
@@ -339,7 +339,7 @@ public class ApiService {
             String requestBody = mapper.writeValueAsString(body);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:7070/cours/comparer")) // baseUrl = http://localhost:7070/cours/
+                    .uri(URI.create("http://172.17.0.1:7070/cours/comparer")) // baseUrl = http://172.17.0.1:7070/cours/
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
@@ -366,7 +366,7 @@ public class ApiService {
      */
     public String comparerCoursParResultats(String sigle1, String sigle2){
         try {
-            String url = "http://localhost:7070/cours/comparer/stats";
+            String url = "http://172.17.0.1:7070/cours/comparer/stats";
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode body = mapper.createObjectNode();
@@ -398,7 +398,7 @@ public class ApiService {
      */
     public String getPopulariteCours(String sigleCours){
         try {
-            String url = "http://localhost:7070/cours/popularite";
+            String url = "http://172.17.0.1:7070/cours/popularite";
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode body = mapper.createObjectNode();
@@ -429,7 +429,7 @@ public class ApiService {
      */
     public String getDifficulteCours(String sigleCours){
         try {
-            String url = "http://localhost:7070/cours/difficulte";
+            String url = "http://172.17.0.1:7070/cours/difficulte";
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode body = mapper.createObjectNode();
@@ -508,7 +508,7 @@ public class ApiService {
             String requestBody = mapper.writeValueAsString(requestBodyObj);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:7070/horaire"))
+                    .uri(URI.create("http://172.17.0.1:7070/horaire"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
@@ -538,7 +538,7 @@ public class ApiService {
 
     public List<List<String>> getChargeDeTravailAvis(String[] idsCours) {
         try {
-            String url = "http://localhost:7070/cours/comparer/avis/charge";
+            String url = "http://172.17.0.1:7070/cours/comparer/avis/charge";
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode body = mapper.createObjectNode();
@@ -576,7 +576,7 @@ public class ApiService {
 
     public List<List<String>> getDifficulteAvis(String[] idsCours) {
         try {
-            String url = "http://localhost:7070/cours/comparer/avis/difficulte";
+            String url = "http://172.17.0.1:7070/cours/comparer/avis/difficulte";
 
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode body = mapper.createObjectNode();
@@ -627,7 +627,7 @@ public class ApiService {
             String requestBody = mapper.writeValueAsString(body);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:7070/cours/comparer/combinaison"))
+                    .uri(URI.create("http://172.17.0.1:7070/cours/comparer/combinaison"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();

@@ -79,7 +79,7 @@ class CoursServiceTest {
         });
         server.start();
         int port = server.getAddress().getPort();
-        System.setProperty("planifium.base", "http://localhost:" + port);
+        System.setProperty("planifium.base", "http://172.17.0.1:" + port);
         return server;
     }
     
@@ -985,7 +985,7 @@ void testAppliquerChoixValide() {
         // Stop immediately to simulate network error (connection refused)
         int port = server.getAddress().getPort();
         server.stop(0);
-        System.setProperty("planifium.base", "http://localhost:" + port);
+        System.setProperty("planifium.base", "http://172.17.0.1:" + port);
 
         try {
             List<String> result = service.getCoursesForAProgram(programID);

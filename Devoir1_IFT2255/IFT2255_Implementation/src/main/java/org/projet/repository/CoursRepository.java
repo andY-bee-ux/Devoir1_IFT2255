@@ -4,7 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.projet.model.Cours;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -28,6 +33,11 @@ public class CoursRepository implements IRepository {
         return instance;
     }
 
+    private boolean isSigleComplet(String value) {
+        // Ex: IFT1025, MAT1600, IFT2255, etc.
+        return value != null && value.matches("^[A-Z]{3}\\d{4}$");
+    }
+
     /**
      * Cette méthode permet de récupérer un Cours de la source de données utilisée.
      * @param param paramètre de la recherche ( id, nom, ou description)
@@ -47,9 +57,23 @@ public class CoursRepository implements IRepository {
         // URL de base commune aux trois requêtes possibles.
         StringBuilder uri = new StringBuilder("https://planifium-api.onrender.com/api/v1/courses");
 
+        boolean isIdExact = false;
+
         // Cas 1 : recherche par id → /courses/{id}
         if (param.equalsIgnoreCase("id")) {
-            uri.append("/").append(value);
+
+            if (isSigleComplet(value)) {
+                // Sigle complet => /courses/{id}
+                uri.append("/").append(value);
+                isIdExact = true;
+            } else {
+                // Sigle partiel => /courses?sigle={id}
+                uri.append("?")
+                        .append("sigle")
+                        .append("=")
+                        .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
+            }
+
         } else {
             // Cas 2 : query → /courses?name=xxx ou ?description=xxx etc.
             uri.append("?")
@@ -71,10 +95,10 @@ public class CoursRepository implements IRepository {
         }
 
         // Ajouter le semester si demandé
-        if (semester != null && !semester.isEmpty() && includeScheduleBool == "true") {
+        if (semester != null && !semester.isEmpty() && "true".equalsIgnoreCase(includeScheduleBool)) {
             uri.append(hasQuery ? "&" : "?");
             uri.append("schedule_semester=").append(URLEncoder.encode(semester, StandardCharsets.UTF_8));
-        }else  if(semester != null && !semester.isEmpty() && includeScheduleBool == "false" ){
+        } else if (semester != null && !semester.isEmpty() && "false".equalsIgnoreCase(includeScheduleBool)) {
             return Optional.empty();
         }
 
@@ -89,7 +113,7 @@ public class CoursRepository implements IRepository {
 
         HttpResponse<String> response =
                 httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-       // si la requête n'a pas abouti, on retourne un Optional.empty.
+        // si la requête n'a pas abouti, on retourne un Optional.empty.
         if (response.statusCode() != 200) {
             return Optional.empty();
         }
@@ -98,21 +122,34 @@ public class CoursRepository implements IRepository {
         ObjectMapper mapper = new ObjectMapper();
         List<Cours> coursList;
         // on traite ce cas séparemment car la recherche par id ne retourne qu'un cours.
-        if (param.equalsIgnoreCase("id")) {
-            Cours cours = mapper.readValue(response.body(), Cours.class);
+        if (isIdExact) {
+            // Parse as JsonNode first to verify shape and presence of id field
+            JsonNode root = mapper.readTree(response.body());
+            if (!root.isObject() || !root.hasNonNull("id")) {
+                return Optional.empty();
+            }
+            String returnedId = root.path("id").asText(null);
+            if (returnedId == null || !returnedId.equalsIgnoreCase(value)) {
+                return Optional.empty();
+            }
+            // Safe to map to Cours now
+            Cours cours = mapper.treeToValue(root, Cours.class);
             coursList = List.of(cours);
         }
 
-        /* La recherche par nom ne devrait aussi retourner qu'un cours mais il y a des exemples
-            pour lesquels ça en retourne plusieurs ( Programmation 1 -> IFT1016 et IFT1015),
-            aussi on peut aussi rechercher par mot-clé pour le nom ( par exemple Programmation).
-         */
+    /* La recherche par nom ne devrait aussi retourner qu'un cours mais il y a des exemples
+        pour lesquels ça en retourne plusieurs ( Programmation 1 -> IFT1016 et IFT1015),
+        aussi on peut aussi rechercher par mot-clé pour le nom ( par exemple Programmation).
+     */
 
         else {
             coursList = mapper.readValue(
                     response.body(),
                     mapper.getTypeFactory().constructCollectionType(List.class, Cours.class)
             );
+            if (coursList == null || coursList.isEmpty()) {
+                return Optional.empty();
+            }
         }
 
         return Optional.of(coursList);
@@ -141,7 +178,7 @@ public class CoursRepository implements IRepository {
         JsonNode root = mapper.readTree(response.body());
 
         List<String> allCourses = new ArrayList<>();
-         // Le json obtenu contient pour chaque programme une liste de cours qui se trouve dans segments->blocs->courses
+        // Le json obtenu contient pour chaque programme une liste de cours qui se trouve dans segments->blocs->courses
         // Parcours de chaque programme
         for (JsonNode program : root) {
 
@@ -175,6 +212,43 @@ public class CoursRepository implements IRepository {
 
         return Optional.of(listeSansDoublons);
 
+    }
+
+    /**
+     * Cette methode retourne une liste qui contient des clés valeurs avec l'id des programmes et le nom.
+     * @return Une liste clés valeurs avec l'id des programmes et le nom.
+     **/
+    public List<Map<String,String>> getAllPrograms() {
+        List<Map<String,String>> programmes = new ArrayList<>();
+        String BASE_URL = "https://planifium-api.onrender.com/api/v1/programs";
+        try{
+            HttpURLConnection connection = (HttpURLConnection) new URL(BASE_URL).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            JsonNode json = mapper.readTree(response.toString());
+            for(JsonNode program : json) {
+                Map<String,String> map = new HashMap<>();
+                map.put("id",program.get("id").asText());
+                map.put("name",program.get("name").asText());
+                programmes.add(map);
+            }
+        }catch (IOException e) {
+            System.out.println("Erreur lors de la récupération des requêtes : " + e.getMessage());
+        }
+        return programmes;
     }
 
     /**
@@ -216,10 +290,6 @@ public class CoursRepository implements IRepository {
 
 
 
-        }
-
-
     }
 
-
-
+}

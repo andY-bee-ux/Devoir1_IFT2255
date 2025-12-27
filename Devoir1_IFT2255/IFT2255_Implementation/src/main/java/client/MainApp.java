@@ -27,6 +27,8 @@ public class MainApp extends Application {
 
     private BorderPane root;
     private ClientController rechercheController;
+    private VBox rechercheLayout;
+    private VBox resultContainer;
 
     @Override
     public void start(Stage stage) {
@@ -200,7 +202,7 @@ public class MainApp extends Application {
                         // Session non précisée → récupérer tous les cours
                         cours = api.getCoursesForAProgram(programmeId);
                     }
-
+// car ça s'exécute sur un thread
                     Platform.runLater(() -> {
                         listeCoursBox.getChildren().clear();
                         if (cours.isEmpty()) {
@@ -242,7 +244,7 @@ public class MainApp extends Application {
         Button btnHoraire = new Button("Voir horaire");
         btnHoraire.setOnAction(e -> {
             if (rechercheController == null) rechercheController = new ClientController();
-            rechercheController.afficherHoraire(cours, session); // <-- méthode avec session
+            rechercheController.afficherHoraire(cours); // <-- méthode avec session
         });
 
         Button btnAvis = new Button("Voir avis");
@@ -260,9 +262,16 @@ public class MainApp extends Application {
     }
 
     private void afficherRecherche() {
-        if (rechercheController == null) rechercheController = new ClientController();
+        if (rechercheController == null) {
+            rechercheController = new ClientController();
+        }
 
-        VBox rechercheLayout = new VBox(10);
+        if (rechercheLayout != null) {
+            root.setCenter(rechercheLayout);
+            return;
+        }
+
+        rechercheLayout = new VBox(10);
         rechercheLayout.setStyle("-fx-padding: 20;");
 
         Label title = new Label("Recherche de cours");
@@ -272,27 +281,44 @@ public class MainApp extends Application {
         btnLancerRecherche.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
 
         btnLancerRecherche.setOnAction(e -> {
-            //Lancer la recherche dans un thread séparé pour éviter que ça ne plante
-            new Thread(() -> rechercheController.rechercher()).start();
+            //  vider les anciens résultats
+            Platform.runLater(() -> rechercheController.resetResultats());
 
+            new Thread(() -> rechercheController.rechercher()).start();
         });
+
+
+        // 🔥 container UNIQUE pour les résultats
+        resultContainer = new VBox();
+        resultContainer.getChildren().add(rechercheController.getListeResultats());
 
         rechercheLayout.getChildren().addAll(
                 title,
-                new Label("Type de recherche :"),
+                new Label("Type (Param) de recherche :"),
                 rechercheController.getTypeRecherche(),
-                new Label("Texte de recherche :"),
+                new Label("Valeur de recherche :"),
                 rechercheController.getChampRecherche(),
                 new Label("Session (optionnel) :"),
-                rechercheController.getChampSession(), // nouveau champ
+                rechercheController.getChampSession(),
                 btnLancerRecherche,
                 rechercheController.getMessageLabel(),
-                rechercheController.getListeResultats()
+                resultContainer
         );
 
+        //  écoute le changement de type
+        rechercheController.getTypeRecherche()
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener((obs, oldVal, newVal) -> {
+                    resultContainer.getChildren().clear();
+                    resultContainer.getChildren().add(
+                            rechercheController.getListeResultats()
+                    );
+                });
 
         root.setCenter(rechercheLayout);
     }
+
 
     private void afficherMessage(String texte) {
         VBox box = new VBox();

@@ -8,7 +8,7 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 # URL de base de l'API Java (backend du projet)
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:7000")
+API_BASE_URL = os.getenv("API_BASE_URL", "http://172.17.0.1:7000")
 
 GUILD_ID = int(os.getenv("GUILD_ID", 0))
 

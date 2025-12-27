@@ -38,6 +38,8 @@ public class ClientController {
     private VBox criteresBox; // checkboxes critères
     private TextField sessionField;
     private Label messageResultatAcademiquePopularite = new Label();
+    private VBox rechercheLayout;
+
     private Label messageResultatAcademiqueDifficulte = new Label();
     private Label messageResultatAcademique = new Label();
     private Label messageAvisInofficiels = new Label();
@@ -170,7 +172,7 @@ public class ClientController {
      // platform runlater car ça s'exécute sur un thrad séparé ( pour éviter les bugs ) et son utilisation permet de faire en sorte que ça s'exécute.
             Platform.runLater(() -> {
                 if (resultats.isEmpty()) {
-                    messageLabel.setText("Aucun cours trouvé pour : " + texte);
+                    messageLabel.setText("Aucun cours trouvé pour cette recherche. Vérifiez d'avoir choisi le bon paramètre, et que ce dernier est valide et recommencez.");
                     listeResultats.getItems().clear();
                 } else {
                     messageLabel.setText("");
@@ -205,7 +207,7 @@ public class ClientController {
         root.setStyle("-fx-padding: 10;");
 
         if (cours.getSchedules() == null || cours.getSchedules().isEmpty()) {
-            root.getChildren().add(new Label("Aucun horaire disponible."));
+            root.getChildren().add(new Label("Aucun horaire disponible, veuillez préciser une session et recommencez."));
         } else {
             // Récupérer les semestres disponibles
             List<String> semestres = cours.getSchedules().stream()
@@ -1060,4 +1062,10 @@ public class ClientController {
     public TextField getChampRecherche() { return champRecherche; }
     public ListView<Cours> getListeResultats() { return listeResultats; }
     public TextField getSessionField() { return sessionField;}
+    public void resetResultats() {
+        listeResultats.getItems().clear();
+        messageLabel.setText("");
+    }
+
+
 }

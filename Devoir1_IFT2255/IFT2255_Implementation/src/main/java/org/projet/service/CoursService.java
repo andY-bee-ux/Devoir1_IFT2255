@@ -670,7 +670,7 @@ public class CoursService {
 
     }
 
-    
+
 
     /**
      * Cette méthode permet d'extraire la partie numérique d’un identifiant de cours.
@@ -736,7 +736,7 @@ public class CoursService {
             return "Ce cours est un cours de cycles supérieurs. Les étudiants de 1er cycle ne peuvent y être admissibles que dans des cas particuliers (ex. cheminement Honor).";
         }
         // PS: On n'impose pas de restriction pour les autres cycles vu que par exemple un étudiant de 2e cycle peut prendre des cours de 1er cycle et
-        // nous n'avons pas d'information précise sur le cycle lié à un cours donné. 
+        // nous n'avons pas d'information précise sur le cycle lié à un cours donné.
 
 
         try {
@@ -764,7 +764,7 @@ public class CoursService {
             return "Une erreur est survenue lors de la vérification d'éligibilité.";
         }
     }
-    
+
 
     /**
      * Cette méthode génère toutes les combinaisons d’horaires possibles pour un ensemble de cours
@@ -846,7 +846,7 @@ public class CoursService {
 
                         String rawVoletName = volet.getName();
                         if (rawVoletName == null) continue;
-                        
+
                         // on ignore les horaires d'examens vu que le but est d'afficher un horaire hebdomadaire pour un ensemble de cours
                         String lower = rawVoletName.toLowerCase();
                         if (lower.contains("intra") || lower.contains("final")) continue;
@@ -891,11 +891,11 @@ public class CoursService {
         return resultat;
     }
 
-    
+
     /**
      * Cette méthode permet d'appliquer les choix de sections (théorie et démonstration) effectués par l’utilisateur
      * à un ensemble d’horaires générés.
-     * 
+     *
      * La méthode valide la cohérence des choix fournis, construit l’horaire
      * final correspondant et détecte les conflits horaires éventuels.
      * En cas d’erreurs multiples, celles-ci sont regroupées et retournées
@@ -917,7 +917,7 @@ public class CoursService {
         Map<String, List<List<String>>> resultat = new HashMap<>();
         List<String> erreurs = new ArrayList<>();
 
-        // on vérifie qu'il n'y pas de choix fournis pour des cours non demandés 
+        // on vérifie qu'il n'y pas de choix fournis pour des cours non demandés
         for (String coursId : choix.keySet()) {
             if (!horaires.containsKey(coursId)) {
                 erreurs.add(
@@ -1028,7 +1028,7 @@ public class CoursService {
     }
 
 
-    
+
     /**
      * Cette classe représente le résultat final d’une génération d’horaire.
      * Contient l’horaire retenu pour chaque cours ainsi que la liste
@@ -1064,7 +1064,7 @@ public class CoursService {
     }
 
 
-    
+
     /**
      * Cette méthode détecte les conflits horaires dans un horaire final.
      * Deux activités sont en conflit si elles ont lieu le même jour
@@ -1451,17 +1451,17 @@ public class CoursService {
 
     /**
  * Récupère les données de performance et de participation pour un cours spécifique.
- * Cette méthode initialise un nouvel objet Resultats, ce qui déclenche 
+ * Cette méthode initialise un nouvel objet Resultats, ce qui déclenche
  * la recherche et l'extraction des données depuis le fichier CSV historique.
  *
  * @param sigleCours Le code unique du cours (ex: "IFT1015") à rechercher dans la base de données.
- * @return Une instance de {@link Resultats} contenant les statistiques du cours, 
+ * @return Une instance de {@link Resultats} contenant les statistiques du cours,
  * ou un objet avec des valeurs par défaut si le cours n'est pas trouvé.
- */    
+ */
 public Resultats getResultats(String sigleCours) {
     Resultats res = new Resultats(sigleCours);
     return res;
-}    
+}
 
 
 
