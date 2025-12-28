@@ -115,14 +115,11 @@
     <artifactId>maven-surefire-plugin</artifactId>
     <version>3.1.2</version>
     <configuration>
-        <includes>
-            <include>**/*Test.java</include>
-        </includes>
-        <argLine>
-            --add-modules javafx.controls,javafx.fxml
-        </argLine>
+        <forkCount>0</forkCount> <!-- Exécute les tests dans le même JVM que Maven -->
+        <argLine>-Djava.awt.headless=true --add-modules javafx.controls,javafx.fxml</argLine>
     </configuration>
 </plugin>
+
 
 
             <!-- Jar exécutable -->
