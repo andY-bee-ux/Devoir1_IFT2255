@@ -142,6 +142,7 @@ Une fois le formulaire soumis, un message est envoyé dans le serveur afin que l
 ## Côté API (backend Java)
 L'avis est récupéré et stocké dans Avis.json.
 ```
+---
 # Documentation pour l'API REST développée avec Javalin
 ## Routes pour notre architecture REST
 Pour tester les routes, on utilise POSTMAN après avoir run le fichier main.java dans src/main/java,
