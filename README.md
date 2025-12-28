@@ -83,6 +83,18 @@ Le répertoire est organisé comme suit :
 - **requirements** :
   Ce fichier contient les dépendances Python.
 
+# Tests de fonctionnalités
+
+Les fonctionnalités testées sont les suivantes :
+
+- Voir les cours offerts dans un programme;
+- Voir les cours offerts pour un trimestre donné;
+- Vérifier son éligibilité à un cours;
+- Voir les résultats académiques d'un cours;
+- Comparer deux cours;
+- Créer un ensemble de cours; 
+- Voir l'horaire d'un cours pour un trimestre donné.
+  
 # Documentation pour l'interface graphique de l'application
 
 L'interface graphique a été developpée avec javaFX. Nous utilisons la dépendance maven associée à ce module, et pour afficher l'interface on procède comme suit :
