@@ -5,7 +5,15 @@ import io.javalin.Javalin;
 import org.projet.controller.AvisController;
 import org.projet.controller.CoursController;
 
+/**
+ * Cette classe permet de définir les routes pour notre API et lancer cette dernière.
+ */
 public class Main {
+
+    /**
+     * Cette méthode permet de définir les routes et run l'API.
+     * @param args arguments
+     */
     public static void main(String[] args) {
         CoursController coursController = new CoursController();
         AvisController avisController = new AvisController();

@@ -37,19 +37,25 @@ public class CoursRepository implements IRepository {
         return instance;
     }
 
+    /**
+     * Cette méthode permet de vérifier si le sigle est complet ( utile pour la recherche).
+     * @param value sigle
+     * @return booléen indiquant si le sigle est complet ou non.
+     */
+
     private boolean isSigleComplet(String value) {
         // Ex: IFT1025, MAT1600, IFT2255, etc.
         return value != null && value.matches("^[A-Z]{3}\\d{4}$");
     }
 
     /**
-     * Cette méthode permet de récupérer un Cours de la source de données utilisée.
+     * Cette méthode permet de récupérer un Cours depuis Planifium.
      * @param param paramètre de la recherche ( id, nom, ou description)
      * @param value valeur de la recherche.
      * @param includeScheduleBool "true" ou "false" dépendamment de si on veut inclure ou non le schedule
      * @param semester le semestre si jamais on veut inclure le schedule
      * @return un type Optional de Cours
-     * @throws Exception
+     * @throws Exception en cas d'erreur
      */
     public Optional<List<Cours>> getCourseBy(
             String param,
@@ -165,7 +171,7 @@ public class CoursRepository implements IRepository {
      * du coup on passe par une route qui permet d'avoir tous les cours par programmes, ce qui
      * prend malheureusement beaucoup de temps.
      * @return String contenant tous les cours de Planifium ( de l'Udem par ricochet).
-     * @throws Exception
+     * @throws Exception en cas d'erreur
      */
 
     public Optional<List<String>> getAllCoursesId() throws Exception {
@@ -261,7 +267,7 @@ public class CoursRepository implements IRepository {
      * @param courseId id du cours
      * @param completedCourses liste de cours complétés
      * @return response body de Planifium
-     * @throws Exception
+     * @throws Exception en cas d'erreur
      */
     public String getCourseEligibility(String courseId, List<String> completedCourses) throws Exception {
 

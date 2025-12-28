@@ -26,8 +26,10 @@ public class CoursController {
     }
 
 
-
-
+    /**
+     * Cette méthode permet de gérer la requête de recherche de cours.
+     * @param ctx requête + notre réponse.
+     */
 
     public void rechercherCours(Context ctx){
         RequeteRecherche req = ctx.bodyAsClass(RequeteRecherche.class);
@@ -70,9 +72,9 @@ public class CoursController {
      * @param ctx
      */
     public void comparerCombinaisonCours(Context ctx){
-     RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
+        RequeteComparaisonCombinaison req = ctx.bodyAsClass(RequeteComparaisonCombinaison.class);
 
-         try {
+        try {
             List<List<String>> resultat =
                     coursService.comparerCombinaisonCours(req.listeCours, req.session);
             ctx.status(200);
@@ -165,16 +167,16 @@ public class CoursController {
      * @param ctx requête + notre réponse.
      */
     public void foundPrograms(Context ctx){
-    String nom = ctx.pathParam("nom");
-    List<String> details = coursService.foundProgramms(nom);
+        String nom = ctx.pathParam("nom");
+        List<String> details = coursService.foundProgramms(nom);
 
-    if (details.isEmpty()) {
-        ctx.status(404).json(Map.of("error", "Les paramètres fournis sont invalides ou le programme n'existe pas."));
-        return;
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error", "Les paramètres fournis sont invalides ou le programme n'existe pas."));
+            return;
+        }
+
+        ctx.status(200).json(details);
     }
-
-    ctx.status(200).json(details);
-}
     /**
      * Cette methode permet d'obtenir les cours offerts dans un programme donne.
      * @param ctx ID du programme.
@@ -229,55 +231,55 @@ public class CoursController {
     }
 
     /**
-* Analyse la difficulté du cours envoyé via JSON.
- * @param ctx Contexte Javalin.
- */
-public void difficulteCours(Context ctx) {
+     * Analyse la difficulté du cours envoyé via JSON.
+     * @param ctx Contexte Javalin.
+     */
+    public void difficulteCours(Context ctx) {
         RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
         Resultats res = coursService.getResultats(req.sigle);
         String difficulte = coursService.difficulteCours(res);
         ctx.json(difficulte);
-    }  
+    }
 
 
-/**
-* Analyse la popularité du cours envoyé via JSON.
-* @param ctx Contexte Javalin.
- */  
-public void populariteCours(Context ctx) {
+    /**
+     * Analyse la popularité du cours envoyé via JSON.
+     * @param ctx Contexte Javalin.
+     */
+    public void populariteCours(Context ctx) {
         RequeteUnCours req = ctx.bodyAsClass(RequeteUnCours.class);
         Resultats res = coursService.getResultats(req.sigle);
         String popularite = coursService.populariteCours(res);
         ctx.json(popularite);
-    }  
+    }
 
-       
-/**
- * Cette méthode permet de comparer les statistiques de deux cours.
- * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
- */ 
-public void comparerDeuxCoursByResultats(Context ctx) {
+
+    /**
+     * Cette méthode permet de comparer les statistiques de deux cours.
+     * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
+     */
+    public void comparerDeuxCoursByResultats(Context ctx) {
         RequeteDeuxCours req = ctx.bodyAsClass(RequeteDeuxCours.class);
-        
+
         Resultats res1 = coursService.getResultats(req.sigle1);
         Resultats res2 = coursService.getResultats(req.sigle2);
-        
-    
+
+
         Map<String, String> reponses = new HashMap<>();
         reponses.put("popularite", coursService.comparerPopularite(res1, res2));
         reponses.put("difficulte", coursService.comparerDifficulte(res1, res2));
-        
+
         ctx.json(reponses);
-    }  
+    }
 
 
 
 
-/**
- * Récupère et renvoie les résultats d'un cours au format JSON.
- * @param ctx Le contexte de la requête HTTP.
- */
-public void voirResultats(Context ctx) {
+    /**
+     * Récupère et renvoie les résultats d'un cours au format JSON.
+     * @param ctx Le contexte de la requête HTTP.
+     */
+    public void voirResultats(Context ctx) {
         RequeteResultats req = ctx.bodyAsClass(RequeteResultats.class);
         Resultats res = coursService.getResultats(req.sigle);
         String message = res.voirResultats();

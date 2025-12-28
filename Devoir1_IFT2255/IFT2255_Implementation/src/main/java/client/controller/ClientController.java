@@ -309,7 +309,8 @@ public class ClientController {
             for (Avis avis : avisList) {
                 VBox avisBox = new VBox(5);
                 avisBox.setStyle("-fx-border-color: gray; -fx-padding: 5; -fx-background-color: #f9f9f9;");
-
+                Label sigleCours = new Label("Cours :" + avis.getSigleCours());
+                sigleCours.setStyle("-fx-font-weight: bold;");
                 Label auteur = new Label("Professeur : " + avis.getNomProfesseur());
                 auteur.setStyle("-fx-font-weight: bold;");
 
@@ -319,7 +320,7 @@ public class ClientController {
                 Label note = new Label("Note Difficulté : " + avis.getNoteDifficulte());
                 Label note2 = new Label("Note Charge de Travail : " + avis.getNoteChargeTravail());
 
-                avisBox.getChildren().addAll(auteur, texte, note,note2);
+                avisBox.getChildren().addAll(sigleCours, auteur, texte, note,note2);
                 root.getChildren().add(avisBox);
             }
         }
