@@ -47,14 +47,17 @@ Le répertoire est organisé comme suit :
   - **src** :
     - **main** :
       - **java** :
-        - **Model (`model/`)** : Représentation des entités du domaine (ex. User, Course).
-        - **Controller (`controller/`)** : Gestion des requêtes HTTP et appels au service.
-        - **Service (`service/`)** : Logique métier central.
-        - **Util (`util/`)** : Fonctions utilitaires réutilisables (validation, réponses, etc.).
-        - **Config (`config/`)** : Configuration du serveur et définition des routes.
-        - **`Main.java`** : Point d’entrée du serveur (initialise Javalin et enregistre les routes).
+         - **org/projet**:
+           - **Model (`model/`)** : Représentation des entités du domaine (ex. User, Course).
+           - **Controller (`controller/`)** : Gestion des requêtes HTTP et appels au service.
+           - **Service (`service/`)** : Logique métier central.
+           - **Util (`util/`)** : Fonctions utilitaires réutilisables (validation, réponses, etc.).
+           - **Config (`config/`)** : Configuration du serveur et définition des routes.
+           - **`Main.java`** : Point d’entrée du serveur (initialise Javalin et enregistre les routes).
       - **resources** :
         Ce dossier contient les fichiers JSON utilisés pour stocker de manière permanente nos données.
+      - **client** :
+         Ce dossier contient la logique pour l'interface GUI.
     - **test** :
       - **java** :
         - **Model** : Contient les tests pour les classes du fichier **`main/java/org/example/model`**.
@@ -64,6 +67,8 @@ Le répertoire est organisé comme suit :
         - **Config** : Contient les tests pour les classes du fichier **`main/java/org/example/config`**.
     - **pom.xml** : 
       Fichier contenant les dépendances Maven.
+      - **Avis.json** :
+      - Fichier contenant la liste de tous les avis obtenus depuis Discord.
 
 - **.gitignore** :
   Spécifie quelles fichiers sont ignorer par git.
@@ -73,6 +78,7 @@ Le répertoire est organisé comme suit :
 
 - **Pipfile** :
   Cet élément a été importé à l’aide du modèle MkDocs fourni pour ce devoir.
+
 
 - **requirements** :
   Ce fichier contient les dépendances Python.
@@ -93,6 +99,37 @@ Notre bot Discord, **Danielle**, a été developpé avec Python. Pour le lancer,
 
 Le serveur utilisé est *AvisPickCourse*, et vous recevrez un message de bienvenue de la part de Danielle détaillant comment soumettre un avis ( on utilise la commande /avis dans le serveur).
 
+##  Utilisation dans Discord
+
+1. Ouvrir ton **serveur Discord** et accéder au serveur **AvisPickCourse**.
+2. Taper `/avis` → Discord ouvrira un **formulaire** avec les champs :
+
+| Champ | Type | Obligatoire | Description |
+|-------|------|--------------|-------------|
+|Sigle du cours| texte | ✅ | Sigle du cours (ex: IFT2255) |
+| commentaire | texte| ✅ | Avis personnel |
+| Nom du professeur | texte | ✅ | nom du professeur |
+| note difficulté | entier | ✅ |( entier entre 1 et 5) |
+| charge de travail | entier | ✅ |( entier entre 1 et 5) |
+
+---
+
+##  Exemple de réponse du bot
+
+Une fois le formulaire soumis, un message est envoyé dans le serveur afin que les autres étudiants puissent aussi voir les avis depuis le serveur. 
+```
+✅ Merci pour ton avis sur IFT2255 (H2025) avec Dupont.
+- Difficulté : 3/5
+- Qualité du cours : 4/5
+- Charge de travail : 3/5
+- Note obtenue : 85
+- Commentaire : super cours !
+```
+
+---
+## Côté API (backend Java)
+L'avis est récupéré et stocké dans Avis.json.
+```
 # Documentation pour l'API REST développée avec Javalin
 ## Routes pour notre architecture REST
 Pour tester les routes, on utilise POSTMAN après avoir run le fichier main.java dans src/main/java,
