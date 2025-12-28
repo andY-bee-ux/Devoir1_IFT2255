@@ -10,7 +10,7 @@ from better_profanity import profanity
 import re
 from dotenv import load_dotenv
 import requests
-
+# url de notre api
 API_URL = "http://localhost:7070/avis"
 
 load_dotenv()  # charge les variables du fichier .env
@@ -114,7 +114,7 @@ class CoursModal(Modal):
                 f"**Commentaire** : {self.commentaire.value}"
             )
         
-        # ⚠️ Ajout pour éviter l'erreur après envoi dans le salon
+        #  Ajout pour éviter l'erreur après envoi dans le salon
         await interaction.response.send_message(
             "Votre avis a été ajouté avec succès ! ✅", ephemeral=True
         )
