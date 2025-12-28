@@ -497,7 +497,7 @@ public class ClientController {
         VBox vueComparaisonCours = new VBox(10);
         listeCoursComparaison = new ListView<>();
         listeCoursComparaison.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listeCoursComparaison.setPrefHeight(120);
+        listeCoursComparaison.setPrefHeight(200);
 
         TextField champAjouterCours = new TextField();
         champAjouterCours.setPromptText("Ajouter sigle de cours");
@@ -564,7 +564,7 @@ public class ClientController {
         Button btnAjouterCombinaison = new Button("+ Ajouter une combinaison");
         btnAjouterCombinaison.setOnAction(e -> {
             ListView<String> lv = new ListView<>();
-            lv.setPrefHeight(100);
+            lv.setPrefHeight(150);
             combinaisons.add(lv);
 
             VBox bloc = new VBox(5, new Label("Combinaison " + combinaisons.size()), lv, creerAjoutCoursBox(lv));
@@ -658,8 +658,8 @@ public class ClientController {
             container.getChildren().add(titre);
 
             for (int i = 0; i < Math.min(ids.length, chargeAvis.size()); i++) {
-                String texte = chargeAvis.get(i).isEmpty() ? "Aucune donnée" : String.join(", ", chargeAvis.get(i));
-                Label lbl = new Label(ids[i] + " : " + texte);
+                String texte = chargeAvis.get(i).isEmpty() ? "Aucune donnée" : String.join(": ", chargeAvis.get(i));
+                Label lbl = new Label( texte);
                 lbl.setWrapText(true);
                 container.getChildren().add(lbl);
             }
