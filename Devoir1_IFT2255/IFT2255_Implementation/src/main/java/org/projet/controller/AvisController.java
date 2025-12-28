@@ -36,6 +36,11 @@ public class AvisController {
         }
     }
 
+    /**
+     * Cette méthode permet de récupérer tous les avis.
+     * @param ctx
+     */
+
     public void getAllAvis(Context ctx){
         try{
             List<Avis> avis = avisService.getAllAvis();
@@ -95,7 +100,9 @@ public class AvisController {
 
     }
 
-    // Classe interne pour parser le JSON du formulaire
+    /**
+     * Cette classe permet de parser le json d'avis.
+     */
     public static class RequeteAvis {
         public String sigleCours;
         public String professeur;

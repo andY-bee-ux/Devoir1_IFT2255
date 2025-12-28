@@ -20,9 +20,6 @@ public class Cours {
     private Map<String, Boolean> available_periods;
     private List<Schedule> schedules;
 
-    /**
-     * Cette classe interne permet de gérer les horaires.
-     */
     public static class Schedule {
         private String _id;
         private String sigle;
@@ -31,18 +28,28 @@ public class Cours {
         private List<Section> sections;
         private String fetch_date;
         private int semester_int;
-
-        /**
-         * Constructeur vide.
-         */
         public Schedule() {
+        }
+
+        public int getSemester_int() {
+            return semester_int;
         }
 
         public void setSections(List<Section> sections) {
             this.sections = sections;
         }
 
+        public String getFetch_date() {
+            return fetch_date;
+        }
 
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
 
         public String getSigle() {
             return sigle;
@@ -436,5 +443,6 @@ public class Cours {
     public void setAvailable_periods(Map<String, Boolean> available_periods) {
         this.available_periods = available_periods;
     }
+
 }
 

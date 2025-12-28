@@ -26,7 +26,7 @@ import java.util.Map;
 public class MainApp extends Application {
 
     private BorderPane root;
-    private ClientController rechercheController;
+    private ClientController clientController;
     private VBox rechercheLayout;
     private VBox resultContainer;
     private VBox listeCoursProgrammeBox;
@@ -79,17 +79,17 @@ public class MainApp extends Application {
         menuItems[1].setOnMouseClicked(e -> afficherRecherche());
         menuItems[2].setOnMouseClicked(e -> afficherCoursProgramme());
          menuItems[3].setOnMouseClicked(e -> {
-            if (rechercheController == null) rechercheController = new ClientController();
-            rechercheController.afficherAllAvis(); // ouvre la fenêtre séparée
+            if (clientController == null) clientController = new ClientController();
+            clientController.afficherAllAvis(); // ouvre la fenêtre séparée
         });
 
         menuItems[4].setOnMouseClicked(e -> {
-            if (rechercheController == null) rechercheController = new ClientController();
-            root.setCenter(rechercheController.getVueComparaison());
+            if (clientController == null) clientController = new ClientController();
+            root.setCenter(clientController.getVueComparaison());
         });
         menuItems[5].setOnMouseClicked(e -> {
-            if (rechercheController == null) rechercheController = new ClientController();
-            root.setCenter(rechercheController.afficherResultatsAcademiques());
+            if (clientController == null) clientController = new ClientController();
+            root.setCenter(clientController.afficherResultatsAcademiques());
         });
         menuItems[6].setOnMouseClicked(e -> afficherHoraireDialog());
 
@@ -318,14 +318,14 @@ public class MainApp extends Application {
 
         Button btnHoraire = new Button("Voir horaire");
         btnHoraire.setOnAction(e -> {
-            if (rechercheController == null) rechercheController = new ClientController();
-            rechercheController.afficherHoraire(cours, session); // passer la session
+            if (clientController == null) clientController = new ClientController();
+            clientController.afficherHoraire(cours, session); // passer la session
         });
 
         Button btnAvis = new Button("Voir avis");
         btnAvis.setOnAction(e -> {
-            if (rechercheController == null) rechercheController = new ClientController();
-            rechercheController.afficherAvis(cours);
+            if (clientController == null) clientController = new ClientController();
+            clientController.afficherAvis(cours);
         });
 
         HBox boutons = new HBox(10, btnHoraire, btnAvis);
@@ -342,8 +342,8 @@ public class MainApp extends Application {
      * s'ils ne sont pas déjà créés.
      */
     private void afficherRecherche() {
-        if (rechercheController == null) {
-            rechercheController = new ClientController();
+        if (clientController == null) {
+            clientController = new ClientController();
         }
 
         if (rechercheLayout != null) {
@@ -362,37 +362,37 @@ public class MainApp extends Application {
 
         btnLancerRecherche.setOnAction(e -> {
             //  vider les anciens résultats
-            Platform.runLater(() -> rechercheController.resetResultats());
+            Platform.runLater(() -> clientController.resetResultats());
 
-            new Thread(() -> rechercheController.rechercher()).start();
+            new Thread(() -> clientController.rechercher()).start();
         });
 
 
         //  container UNIQUE pour les résultats
         resultContainer = new VBox();
-        resultContainer.getChildren().add(rechercheController.getListeResultats());
+        resultContainer.getChildren().add(clientController.getListeResultats());
 
         rechercheLayout.getChildren().addAll(
                 title,
                 new Label("Type (Param) de recherche :"),
-                rechercheController.getTypeRecherche(),
+                clientController.getTypeRecherche(),
                 new Label("Valeur de recherche :"),
-                rechercheController.getChampRecherche(),
+                clientController.getChampRecherche(),
                 new Label("Session (optionnel) :"),
-                rechercheController.getChampSession(),
+                clientController.getChampSession(),
                 btnLancerRecherche,
-                rechercheController.getMessageLabel(),
+                clientController.getMessageLabel(),
                 resultContainer
         );
 
         //  écoute le changement de type
-        rechercheController.getTypeRecherche()
+        clientController.getTypeRecherche()
                 .getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> {
                     resultContainer.getChildren().clear();
                     resultContainer.getChildren().add(
-                            rechercheController.getListeResultats()
+                            clientController.getListeResultats()
                     );
                 });
 
@@ -407,7 +407,7 @@ public class MainApp extends Application {
      */
 
     private void afficherHoraireDialog() {
-        if (rechercheController == null) rechercheController = new ClientController();
+        if (clientController == null) clientController = new ClientController();
 
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Afficher horaire");
@@ -416,7 +416,7 @@ public class MainApp extends Application {
         dialog.showAndWait().ifPresent(input -> {
             List<String> idsCours = List.of(input.split(",")).stream().map(String::trim).filter(s -> !s.isEmpty()).toList();
             if (idsCours.isEmpty()) {
-                rechercheController.getChampRecherche().setText("Aucun cours saisi.");
+                clientController.getChampRecherche().setText("Aucun cours saisi.");
                 return;
             }
 
@@ -465,7 +465,7 @@ public class MainApp extends Application {
                         choix.put(coursId, sections);
                     }
 
-                    rechercheController.afficherHorairesEnsemble(idsCours, session, choix);
+                    clientController.afficherHorairesEnsemble(idsCours, session, choix);
                     choixStage.close();
                 });
 

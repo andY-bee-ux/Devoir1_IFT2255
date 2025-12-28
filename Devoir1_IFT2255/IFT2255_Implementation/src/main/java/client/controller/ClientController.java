@@ -916,34 +916,60 @@ public class ClientController {
 
 
     public void afficherHorairesEnsemble(List<String> idsCours, String session, Map<String, Map<String, String>> choix) {
+        // Vérification des cours sélectionnés
         if (idsCours == null || idsCours.isEmpty()) {
-            messageLabel.setText("Veuillez sélectionner au moins un cours.");
-            return;
-        }
-        if (session == null || session.isBlank()) {
-            messageLabel.setText("Veuillez entrer une session.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Cours manquant");
+            alert.setContentText("Veuillez sélectionner au moins un cours.");
+            alert.showAndWait();
             return;
         }
 
-        if (idsCours.size() > 6) {
-            messageLabel.setText("La limite maximale de cours a été atteinte.");
+        // Vérification de la session
+        if (session == null || session.isBlank()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Session manquante");
+            alert.setContentText("Veuillez entrer une session.");
+            alert.showAndWait();
             return;
         }
-        // Appel au service API
+
+        // Limite de 6 cours max
+        if (idsCours.size() > 6) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Nombre de cours dépassé");
+            alert.setContentText("Il faut sélectionner au maximum 6 cours.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Appel au service API pour générer les horaires
         ApiService.ResultatHoraire resultat;
         try {
             resultat = coursService.genererHoraire(idsCours, session, true, choix);
         } catch (Exception e) {
-            messageLabel.setText("Erreur lors de la récupération des horaires : ");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Problème de récupération");
+            alert.setContentText("Erreur lors de la récupération des horaires.");
+            alert.showAndWait();
             return;
         }
 
+        // Vérification si aucun horaire n'a été trouvé
         if (resultat == null || resultat.horaire == null || resultat.horaire.isEmpty()) {
-            messageLabel.setText("Aucun horaire disponible pour les cours sélectionnés.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Aucun horaire");
+            alert.setHeaderText(null);
+            alert.setContentText("Aucun horaire disponible pour les cours sélectionnés.");
+            alert.showAndWait();
             return;
         }
 
-        // Création de la fenêtre
+        // Création de la fenêtre pour afficher les horaires
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Horaires des cours sélectionnés");
@@ -951,7 +977,7 @@ public class ClientController {
         VBox root = new VBox(10);
         root.setStyle("-fx-padding: 10;");
 
-        // Affichage des horaires
+        // Affichage des horaires pour chaque cours
         for (String coursId : resultat.horaire.keySet()) {
             VBox coursBox = new VBox(5);
             coursBox.setStyle("-fx-border-color: gray; -fx-padding: 5; -fx-background-color: #f9f9f9;");
@@ -971,7 +997,7 @@ public class ClientController {
             root.getChildren().add(coursBox);
         }
 
-        // Affichage des conflits ( s'il y en a)
+        // Affichage des conflits, s'il y en a
         if (resultat.conflits != null && !resultat.conflits.isEmpty()) {
             VBox conflitBox = new VBox(5);
             conflitBox.setStyle("-fx-border-color: red; -fx-padding: 5; -fx-background-color: #ffe6e6;");
