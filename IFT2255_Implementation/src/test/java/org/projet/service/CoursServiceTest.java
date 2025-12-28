@@ -815,6 +815,7 @@ void testAppliquerChoixValide() {
     @Test
     void testGetCoursesForAProgram_Success() throws Exception {
         String programID = "117510";
+
         String mockResponse = """
             [
                 {
@@ -824,81 +825,84 @@ void testAppliquerChoixValide() {
             ]
             """;
 
-        HttpServer server = startServer((path, query) -> mockResponse);
-        try {
-                List<String> result = service.getCoursesForAProgram(programID);
+        // le repository retourne le JSON simulé
+        when(coursRepository.getCoursesForAProgram(programID))
+                .thenReturn(mockResponse);
 
-                assertNotNull(result);
-                assertEquals(3, result.size());
-                assertTrue(result.contains("IFT1015"));
-                assertTrue(result.contains("IFT1025"));
-                assertTrue(result.contains("IFT2035"));
-            } finally {
-                server.stop(0);
-                System.clearProperty("planifium.base");
+        // appel du service
+        List<String> result = service.getCoursesForAProgram(programID);
+
+        // vérifications
+        assertNotNull(result);
+        assertEquals(3, result.size());
+        assertTrue(result.contains("IFT1015"));
+        assertTrue(result.contains("IFT1025"));
+        assertTrue(result.contains("IFT2035"));
+
+        // vérifie que le repository a bien été appelé
+        verify(coursRepository).getCoursesForAProgram(programID);
+    }
+
+   /**
+ * Test de la méthode getCoursesForAProgram lorsque le programme n'a pas de cours.
+ * Vérifie que la méthode retourne une liste vide quand aucun cours n'est
+ * associé au programme.
+ *
+ * @throws Exception si une erreur survient lors du test
+ */
+@Test
+void testGetCoursesForAProgram_NoCourses() throws Exception {
+    String programID = "INVALID";
+
+    String mockResponse = """
+        [
+            {
+                "id": "INVALID"
             }
-    }
+        ]
+        """;
 
-    /**
-     * Test de la méthode getCoursesForAProgram lorsque le programme n'a pas de cours.
-     * Vérifie que la méthode retourne une liste vide quand aucun cours n'est
-     * associé au programme.
-     *
-     * @throws Exception si une erreur survient lors du test
-     */
-    @Test
-    void testGetCoursesForAProgram_NoCourses() throws Exception {
-        String programID = "INVALID";
-        String mockResponse = """
-            [
-                {
-                    "id": "INVALID"
-                }
-            ]
-            """;
+    // le repository retourne un programme sans champ "courses"
+    when(coursRepository.getCoursesForAProgram(programID))
+            .thenReturn(mockResponse);
 
-        HttpURLConnection mockConnection = mock(HttpURLConnection.class);
-        when(mockConnection.getInputStream())
-            .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
+    // appel du service
+    List<String> result = service.getCoursesForAProgram(programID);
 
-        HttpServer server = startServer((path, query) -> mockResponse);
-        try {
-            List<String> result = service.getCoursesForAProgram(programID);
+    // vérifications
+    assertNotNull(result);
+    assertTrue(result.isEmpty());
 
-            assertNotNull(result);
-            assertTrue(result.isEmpty());
-        } finally {
-            server.stop(0);
-            System.clearProperty("planifium.base");
-        }
-    }
+    // vérifie que le repository a bien été appelé
+    verify(coursRepository).getCoursesForAProgram(programID);
+}
 
-    /**
-     * Test de la méthode getCoursesForAProgram lors d'une IOException.
-     * Vérifie que la méthode gère correctement les erreurs réseau
-     * et retourne une liste vide au lieu de lancer une exception.
-     *
-     * @throws Exception si une erreur survient lors du test
-     */
-    @Test
-    void testGetCoursesForAProgram_IOException() throws Exception {
-        String programID = "117510";
+   /**
+ * Test de la méthode getCoursesForAProgram lors d'une IOException.
+ * Vérifie que la méthode gère correctement les erreurs
+ * et retourne une liste vide au lieu de lancer une exception.
+ *
+ * @throws Exception si une erreur survient lors du test
+ */
+@Test
+void testGetCoursesForAProgram_IOException() throws Exception {
+    String programID = "117510";
 
-        HttpServer server = startServer((p,q) -> "");
-        // Stop immediately to simulate network error (connection refused)
-        int port = server.getAddress().getPort();
-        server.stop(0);
-        System.setProperty("planifium.base", "http://localhost:" + port);
+    // le repository simule une erreur réseau
+    when(coursRepository.getCoursesForAProgram(programID))
+            .thenThrow(new RuntimeException("Erreur réseau simulée"));
 
-        try {
-            List<String> result = service.getCoursesForAProgram(programID);
+    // appel du service
+    List<String> result = service.getCoursesForAProgram(programID);
 
-            assertNotNull(result);
-            assertTrue(result.isEmpty());
-        } finally {
-            System.clearProperty("planifium.base");
-        }
-    }
+    // vérifications
+    assertNotNull(result);
+    assertTrue(result.isEmpty());
+
+    // vérifie que le repository a bien été appelé
+    verify(coursRepository).getCoursesForAProgram(programID);
+}
+
 
     // ==================== Tests pour getCourseBySemester ====================
 
