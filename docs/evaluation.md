@@ -112,6 +112,22 @@ L'oracle des tests est donné ci-dessous:
 | CoursService | Service | semester = "A24", programID = "117510"       | Liste de cours offerts au semestre A24                        | Succès | Vérifie que `getCourseBySemester` filtre correctement les cours d’un programme pour ne retourner que ceux offerts durant le semestre demandé. |
 | CoursService | Service | semester = "E24", programID = "117510"       | Liste vide                                                    | Échec  | Vérifie que `getCourseBySemester` retourne une liste vide lorsqu’aucun cours du programme n’est offert durant le semestre spécifié.           |
 
+| getScore | Model | sigleCours = "NUT1970" | 3.42 | Robustesse | Test unitaire : Vérifie que le parsing du CSV isole bien le score numérique même si le nom du cours contient une virgule interne. |
+
+| voirResultats | Model | sigleCours = "FAKE999" | Message : "Désolé ! Nous n'avons trouvé aucun résultat..." | Échec | Test unitaire : Vérifie que la branche conditionnelle de sécurité renvoie le bon message d'erreur à l'utilisateur. |
+
+| difficulteCours | Service | sigleCours = "MAT1400" | Message : "...considéré comme difficile avec un score de 1.55/5." | Succès | Test unitaire : Vérifie que le service identifie et qualifie correctement un cours dont le score est faible (difficile). |
+
+| difficulteCours | Service | sigleCours = "ANG1933" | Message : "...considéré comme facile avec un score de 4.79/5" | Succès | Test unitaire : Vérifie que le service identifie et qualifie correctement un cours dont le score est élevé (facile). |
+
+| populariteCours | Service | sigleCours = "IFT1015" | Message : "...très populaire avec 658 participants." | Succès | Test unitaire : Vérifie le formatage du message et l'extraction correcte du nombre de participants pour un cours fréquenté. |
+
+| populariteCours | Service | sigleCours = "ART1001" | Message : "Le cours demandé est absent des résultats..." | Échec | Test unitaire : Vérifie la gestion de l'absence de données et le retour d'un message d'erreur explicite à l'utilisateur. |
+
+| comparerDifficulte | Service | cours1="IFT1015", cours2="MAT1400" | Message : "...plus facile que Calcul 1 avec un score de 2.29/5 contre 1.55/5." | Succès | Test unitaire : Valide la logique de comparaison entre deux objets et le formatage des scores comparatifs. |
+
+| comparerPopularite | Service | cours1="IFT1015", cours2="ANG1933" | Message : "...plus populaire que Expression orale... avec 658 contre 5." | Succès | Test unitaire : Valide la comparaison numérique du nombre de participants entre deux cours et la clarté du message produit. |
+
 <!--
 - Résumé qualitatif :
   - Comportement attendu obtenu
