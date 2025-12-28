@@ -27,4 +27,4 @@ jobs:
           cache: 'maven'
 
       - name: Build and test with Maven
-        run: mvn -B test --file IFT2255_Implementation/pom.xml -Djavafx.platform=linux
+        run: mvn -B test --file IFT2255_Implementation/pom.xml
