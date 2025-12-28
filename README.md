@@ -89,7 +89,10 @@ Une fenêtre s'ouvrira après quelques secondes.
 
 # Documentation pour le bot Discord
 
-Notre bot Discord, **Danielle**, a été developpé avec Python. Pour le lancer, on utilise un environnement virtuel dans lequel on installe toutes les dépendances python au préalable, mais cela n'est pas nécessaire si vous avez déjà toutes les dépendances installées sur votre machine principale. Ensuite, on 
+Notre bot Discord, **Danielle**, a été developpé avec Python. Pour le lancer, on utilise un environnement virtuel dans lequel on installe toutes les dépendances python au préalable, mais cela n'est pas nécessaire si vous avez déjà toutes les dépendances installées sur votre machine principale. Pour run le bot, il faut d'abord run l'API REST ( depuis le fichier main.java comme spécifié plus bas dans la documentation du backend), puis créer un fichier .env qui contient TOKEN=TOKEN_DISCORD. Le token_discord a été joint lors de la remise sur StudiUM. Ensuite, run le main en utilisant la commande python3 main.py.
+
+Le serveur utilisé est *AvisPickCourse*, et vous recevrez un message de bienvenue de la part de Danielle détaillant comment soumettre un avis ( on utilise la commande /avis dans le serveur).
+
 # Documentation pour l'API REST développée avec Javalin
 ## Routes pour notre architecture REST
 Pour tester les routes, on utilise POSTMAN après avoir run le fichier main.java dans src/main/java,
