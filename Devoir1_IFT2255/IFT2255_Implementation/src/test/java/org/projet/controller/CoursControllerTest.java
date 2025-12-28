@@ -174,28 +174,28 @@ public class CoursControllerTest {
 
     //Tests pour getAvis
 
-    // @Test
-    // @DisplayName("Récupération des avis pour un cours")
-    // void testGetAvis() {
-    //     CoursController controller = new CoursController();
-    //     Cours cours = new Cours();
-    //     cours.setId("IFT1025");
+    @Test
+    @DisplayName("Récupération des avis pour un cours")
+    void testGetAvis() {
+        CoursController controller = new CoursController();
+        Cours cours = new Cours();
+        cours.setId("IFT1025");
 
-    //     List<Avis> result = controller.getAvis(cours);
+        List<Avis> result = controller.getAvis(cours);
 
-    //     assertNotNull(result);
-    //     assertTrue(result.isEmpty());
-    //     assertEquals(0, result.size());
-    // }
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        assertEquals(0, result.size());
+    }
 
-    // @Test
-    // @DisplayName("Récupération des avis retourne une liste non-null")
-    // void testGetAvis_notNull() {
-    //     CoursController controller = new CoursController();
-    //     Cours cours = new Cours();
+    @Test
+    @DisplayName("Récupération des avis retourne une liste non-null")
+    void testGetAvis_notNull() {
+        CoursController controller = new CoursController();
+        Cours cours = new Cours();
 
-    //     List<Avis> result = controller.getAvis(cours);
+        List<Avis> result = controller.getAvis(cours);
 
-    //     assertNotNull(result, "getAvis devrait retourner une liste non-null");
-    // }
+        assertNotNull(result, "getAvis devrait retourner une liste non-null");
+    }
 }
