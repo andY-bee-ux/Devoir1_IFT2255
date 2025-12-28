@@ -2,25 +2,29 @@
 
 # Description du projet 
 
-Ce projet vise à concevoir une **plateforme web intelligente**, accessible via une **API REST**, 
-destinée aux étudiants de l’Université de Montréal et plus particulièrement du **DIRO** 
+Ce projet vise à concevoir une **plateforme**, accessible via une **API REST** en interne,  et via une interface graphique nommée PickCourse,
+destinée aux étudiants de l’Université de Montréal 
 afin de les aider à faire des **choix de cours éclairés**.
 
-La plateforme combinera :
+La plateforme combine:
 
 - des **données officielles** (résultats académiques, informations provenant de l’API Planifium),
-- et des **données collectées auprès des étudiants** (forums, Discord, etc).
+- et des **données inofficielles collectées auprès des étudiants**, via Discord.
 
-L’objectif est d’offrir aux étudiants une **vue centralisée**, **fiable et personnalisée** des cours, leur permettant de :
+L'objectif est de permettre aux étudiants d'obtenir une expérience fluide et fiable tout au long de leur entreprise de recherche de cours, en leur permettant de :
 
-- comparer plusieurs cours selon la charge de travail, la difficulté perçue et la compatibilité avec leur profil ;
-- consulter des **tableaux de bord interactifs** par cours ;
-- **personnaliser l’affichage** selon leur profil académique et leurs préférences ;
-- **interroger les données** de manière dynamique et intuitive.
+- comparer plusieurs cours ainsi que plusieurs chox de cours selon la charge de travail inofficielle dont l'estimation est basée sur les commentaires d'autres étudiants, la difficulté perçue, le score moyen ou encore la popularité, tous deux basés sur les résultats académiques officiels. Ils peuvent également comparer des cours selon des critères un peu plus généraux comme le nombre de crédits, les sessions de disponibilité et surtout, les horaires;
+- rechercher des cours d'un certain programme;
+- consulter les avis relatifs à des cours;
+- voir les résultats académiques officiels propres à des cours;
+- Voir l'horaire d'un cours donné pour une session spécifique. 
 
 # Structure du projet
 
 Le répertoire est organisé comme suit :
+
+- **.github/workflows** :
+  Ce dossier contient la configuration CI permettant d'automatiser l'exécution des tests.
 
 - **.history** :
   Ce dossier fait partie des éléments importés à partir du modèle MkDocs fourni pour ce devoir.
@@ -73,16 +77,22 @@ Le répertoire est organisé comme suit :
 - **requirements** :
   Ce fichier contient les dépendances Python.
 
+# Documentation pour l'interface graphique de l'application
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+L'interface graphique a été developpée avec javaFX. Nous utilisons la dépendance maven associée à ce module, et pour afficher l'interface on procède comme suit :
+- S'assurer d'être dans le dossier IFT2255_Implementation/ ( car ce dernier contient le pom.xml);
+- Lancer l'API Rest ( depuis le main.java comme spécifié plus bas dans la documentation du backend)
+- Utiliser la commande mvn clean javafx:run;
 
-### Ressources utiles
+Une fenêtre s'ouvrira après quelques secondes.
+  **NB** : Certaines actions de l'utilisateur ouvrent une deuxième fenêtre ( par exemple dans la section "Horaire", lorsqu'on veut obtenir l'horaire pour un ensemble de cours, une deuxième fenêtre s'ouvre). Sans fermer cette deuxième fenêtre, la fenêtre principale reste figée. Il faut alors toujours fermer la fenêtre secondaire afin de continuer de naviguer dans la fenêtre principale.
 
-- Documentation officielle MkDocs
-- Thème Material for MkDocs
+# Documentation pour le bot Discord
 
+Notre bot Discord, **Danielle**, a été developpé avec Python. Pour le lancer, on utilise un environnement virtuel dans lequel on installe toutes les dépendances python au préalable, mais cela n'est pas nécessaire si vous avez déjà toutes les dépendances installées sur votre machine principale. Ensuite, on 
 # Documentation pour l'API REST développée avec Javalin
 ## Routes pour notre architecture REST
+Pour tester les routes, on utilise POSTMAN après avoir run le fichier main.java dans src/main/java,
 Chacune des routes que nous avons définies pour notre architecture REST couvrent des fonctionnalités énoncés, on a donc :
 1. Rechercher des cours : **`POST /cours/rechercher`**
    - **Format pour le body de la requête :**
@@ -1117,6 +1127,10 @@ Chacune des routes que nous avons définies pour notre architecture REST couvren
       "Conflits=[]"
     ]
     ]`
+
+    
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
     - **Exemple de réponse JSON (status 400)**:
       - `Requête invalide`
 
