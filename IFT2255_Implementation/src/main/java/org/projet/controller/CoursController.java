@@ -48,25 +48,33 @@ public class CoursController {
      * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
      */
 
-    public void comparerCours(Context ctx) {
+   public void comparerCours(Context ctx) {
        /* cette ligne de code map le body de la requête avec un objet Java. Cela permet de
        récupérer la liste de cours et celle des critères.
        */
-        RequeteComparaison req = ctx.bodyAsClass(RequeteComparaison.class);
 
         try {
+            RequeteComparaison req = ctx.bodyAsClass(RequeteComparaison.class);
             List<List<String>> resultat =
                     coursService.comparerCours(req.cours, req.criteres, req.session);
+
+            if (resultat == null) {
+                ctx.status(400);
+                ctx.json("Requête invalide");
+                return;
+            }
 
             ctx.status(200);
             ctx.json(resultat);
 
         } catch (RuntimeException e) {
             ctx.status(400);
-            ctx.json(new ArrayList<>());
+            ctx.json("Requête invalide");
+        } catch (Exception e) {
+            ctx.status(404);
+            ctx.json("Contexte invalide");
         }
     }
-
     /**
      * Cette méthode permet de comparer des ensembles de cours.
      * @param ctx
