@@ -90,6 +90,7 @@ public class AvisService {
 
     /**
      * Cette méthode permet d'enregistrer l'avis localement.
+     * synchronised pour gérer le cas où plusieurs utilisateurs envoient des avis en même temps.
      * @param sigle sigle du cours
      * @param prof nom du prof
      * @param noteDifficulte note de la difficulté
@@ -97,12 +98,17 @@ public class AvisService {
      * @param commentaire  commentaire subjectif.
      */
 
-    public void enregistrerAvis(String sigle, String prof,
-                                int noteDifficulte, int noteQualite,
-                                String commentaire) {
-        try{
-            // Si l'avis est valide, on le stocke en local.
+    public synchronized void enregistrerAvis(String sigle, String prof,
+                                             int noteDifficulte, int noteQualite,
+                                             String commentaire) {
+        try {
             this.validateAvis(sigle, prof, noteDifficulte, noteQualite, commentaire);
+
+            //  Recharger le fichier à chaque écriture
+            if (fichier.exists()) {
+                avisStockes = mapper.readValue(fichier, new TypeReference<List<Avis>>() {});
+            }
+
             Avis avis = new Avis(
                     sigle,
                     prof,
@@ -113,12 +119,14 @@ public class AvisService {
             );
 
             avisStockes.add(avis);
-            // on l'ajoute au fichier JSON ( amélioration possible car ici on override tout, pas pratique si on a 100000 avis).
             mapper.writeValue(fichier, avisStockes);
-        } catch(Exception e){
+
+        } catch (Exception e) {
             System.out.println("Erreur enregistrer avis");
+            e.printStackTrace();
         }
     }
+
 
     /**
      * Cette méthode permet de récupérer la liste des avis associés à un cours.

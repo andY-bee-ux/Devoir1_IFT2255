@@ -2,10 +2,12 @@ package org.projet.repository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.jetbrains.annotations.NotNull;
 import org.projet.model.Cours;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -16,6 +18,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+
 
 /**
  * Cette classe permet de communiquer avec l'API Planifium pour récupérer les informations relatives aux Cours.
@@ -33,127 +37,133 @@ public class CoursRepository implements IRepository {
         return instance;
     }
 
+    /**
+     * Cette méthode permet de vérifier si le sigle est complet ( utile pour la recherche).
+     * @param value sigle
+     * @return booléen indiquant si le sigle est complet ou non.
+     */
+
     private boolean isSigleComplet(String value) {
-    // Ex: IFT1025, MAT1600, IFT2255, etc. 
+        // Ex: IFT1025, MAT1600, IFT2255, etc.
         return value != null && value.matches("^[A-Z]{3}\\d{4}$");
     }
 
     /**
-     * Cette méthode permet de récupérer un Cours de la source de données utilisée.
+     * Cette méthode permet de récupérer un Cours depuis Planifium.
      * @param param paramètre de la recherche ( id, nom, ou description)
      * @param value valeur de la recherche.
      * @param includeScheduleBool "true" ou "false" dépendamment de si on veut inclure ou non le schedule
      * @param semester le semestre si jamais on veut inclure le schedule
      * @return un type Optional de Cours
-     * @throws Exception
+     * @throws Exception en cas d'erreur
      */
     public Optional<List<Cours>> getCourseBy(
-        String param,
-        String value,
-        String includeScheduleBool,
-        String semester
-) throws Exception {
+            String param,
+            String value,
+            String includeScheduleBool,
+            String semester
+    ) throws Exception {
 
-    // URL de base commune aux trois requêtes possibles.
-    StringBuilder uri = new StringBuilder("https://planifium-api.onrender.com/api/v1/courses");
+        // URL de base commune aux trois requêtes possibles.
+        StringBuilder uri = new StringBuilder("https://planifium-api.onrender.com/api/v1/courses");
 
-    boolean isIdExact = false;
+        boolean isIdExact = false;
 
-    // Cas 1 : recherche par id → /courses/{id}
-    if (param.equalsIgnoreCase("id")) {
+        // Cas 1 : recherche par id → /courses/{id}
+        if (param.equalsIgnoreCase("id")) {
 
-        if (isSigleComplet(value)) {
-            // Sigle complet => /courses/{id}
-            uri.append("/").append(value);
-            isIdExact = true;
+            if (isSigleComplet(value)) {
+                // Sigle complet => /courses/{id}
+                uri.append("/").append(value);
+                isIdExact = true;
+            } else {
+                // Sigle partiel => /courses?sigle={id}
+                uri.append("?")
+                        .append("sigle")
+                        .append("=")
+                        .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
+            }
+
         } else {
-            // Sigle partiel => /courses?sigle={id}
+            // Cas 2 : query → /courses?name=xxx ou ?description=xxx etc.
             uri.append("?")
-                    .append("sigle")
+                    .append(param)
                     .append("=")
+                    // afin d'encoder les caractères spéciaux car si non ça ne fonctionne pas.
+                    // Malgré l'encodage, cela ne fonctionne pas si l'expression recherchée contient des accents.
                     .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
         }
 
-    } else {
-        // Cas 2 : query → /courses?name=xxx ou ?description=xxx etc.
-        uri.append("?")
-                .append(param)
-                .append("=")
-                // afin d'encoder les caractères spéciaux car si non ça ne fonctionne pas.
-                // Malgré l'encodage, cela ne fonctionne pas si l'expression recherchée contient des accents.
-                .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
-    }
+        // Booleen qui permettra de savoir si on a déjà un query dans la liste de queries afin de commencer par un ?.
+        boolean hasQuery = uri.toString().contains("?");
 
-    // Booleen qui permettra de savoir si on a déjà un query dans la liste de queries afin de commencer par un ?.
-    boolean hasQuery = uri.toString().contains("?");
+        // Ajouter include_schedule=true si demandé ( si non ce sera null)
+        if ("true".equalsIgnoreCase(includeScheduleBool)) {
+            uri.append(hasQuery ? "&" : "?");
+            uri.append("include_schedule=true");
+            hasQuery = true;
+        }
 
-    // Ajouter include_schedule=true si demandé ( si non ce sera null)
-    if ("true".equalsIgnoreCase(includeScheduleBool)) {
-        uri.append(hasQuery ? "&" : "?");
-        uri.append("include_schedule=true");
-        hasQuery = true;
-    }
-
-    // Ajouter le semester si demandé
-    if (semester != null && !semester.isEmpty() && "true".equalsIgnoreCase(includeScheduleBool)) {
-        uri.append(hasQuery ? "&" : "?");
-        uri.append("schedule_semester=").append(URLEncoder.encode(semester, StandardCharsets.UTF_8));
-    } else if (semester != null && !semester.isEmpty() && "false".equalsIgnoreCase(includeScheduleBool)) {
-        return Optional.empty();
-    }
-
-    // Construire la requête
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI(uri.toString()))
-            .build();
-
-    HttpClient httpClient = HttpClient.newBuilder()
-            .followRedirects(HttpClient.Redirect.ALWAYS)
-            .build();
-
-    HttpResponse<String> response =
-            httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    // si la requête n'a pas abouti, on retourne un Optional.empty.
-    if (response.statusCode() != 200) {
-        return Optional.empty();
-    }
-
-    // Parsing JSON
-    ObjectMapper mapper = new ObjectMapper();
-    List<Cours> coursList;
-    // on traite ce cas séparemment car la recherche par id ne retourne qu'un cours.
-    if (isIdExact) {
-        // Parse as JsonNode first to verify shape and presence of id field
-        JsonNode root = mapper.readTree(response.body());
-        if (!root.isObject() || !root.hasNonNull("id")) {
+        // Ajouter le semester si demandé
+        if (semester != null && !semester.isEmpty() && "true".equalsIgnoreCase(includeScheduleBool)) {
+            uri.append(hasQuery ? "&" : "?");
+            uri.append("schedule_semester=").append(URLEncoder.encode(semester, StandardCharsets.UTF_8));
+        } else if (semester != null && !semester.isEmpty() && "false".equalsIgnoreCase(includeScheduleBool)) {
             return Optional.empty();
         }
-        String returnedId = root.path("id").asText(null);
-        if (returnedId == null || !returnedId.equalsIgnoreCase(value)) {
+
+        // Construire la requête
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(uri.toString()))
+                .build();
+
+        HttpClient httpClient = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.ALWAYS)
+                .build();
+
+        HttpResponse<String> response =
+                httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // si la requête n'a pas abouti, on retourne un Optional.empty.
+        if (response.statusCode() != 200) {
             return Optional.empty();
         }
-        // Safe to map to Cours now
-        Cours cours = mapper.treeToValue(root, Cours.class);
-        coursList = List.of(cours);
-    }
+
+        // Parsing JSON
+        ObjectMapper mapper = new ObjectMapper();
+        List<Cours> coursList;
+        // on traite ce cas séparemment car la recherche par id ne retourne qu'un cours.
+        if (isIdExact) {
+            // Parse as JsonNode first to verify shape and presence of id field
+            JsonNode root = mapper.readTree(response.body());
+            if (!root.isObject() || !root.hasNonNull("id")) {
+                return Optional.empty();
+            }
+            String returnedId = root.path("id").asText(null);
+            if (returnedId == null || !returnedId.equalsIgnoreCase(value)) {
+                return Optional.empty();
+            }
+            // Safe to map to Cours now
+            Cours cours = mapper.treeToValue(root, Cours.class);
+            coursList = List.of(cours);
+        }
 
     /* La recherche par nom ne devrait aussi retourner qu'un cours mais il y a des exemples
         pour lesquels ça en retourne plusieurs ( Programmation 1 -> IFT1016 et IFT1015),
         aussi on peut aussi rechercher par mot-clé pour le nom ( par exemple Programmation).
      */
 
-    else {
-        coursList = mapper.readValue(
-                response.body(),
-                mapper.getTypeFactory().constructCollectionType(List.class, Cours.class)
-        );
-        if (coursList == null || coursList.isEmpty()) {
-            return Optional.empty();
+        else {
+            coursList = mapper.readValue(
+                    response.body(),
+                    mapper.getTypeFactory().constructCollectionType(List.class, Cours.class)
+            );
+            if (coursList == null || coursList.isEmpty()) {
+                return Optional.empty();
+            }
         }
-    }
 
-    return Optional.of(coursList);
-}
+        return Optional.of(coursList);
+    }
 
     /**
      * Cette méthode permet de récupérer tous les ids de Cours de Planifium.
@@ -161,7 +171,7 @@ public class CoursRepository implements IRepository {
      * du coup on passe par une route qui permet d'avoir tous les cours par programmes, ce qui
      * prend malheureusement beaucoup de temps.
      * @return String contenant tous les cours de Planifium ( de l'Udem par ricochet).
-     * @throws Exception
+     * @throws Exception en cas d'erreur
      */
 
     public Optional<List<String>> getAllCoursesId() throws Exception {
@@ -178,7 +188,7 @@ public class CoursRepository implements IRepository {
         JsonNode root = mapper.readTree(response.body());
 
         List<String> allCourses = new ArrayList<>();
-         // Le json obtenu contient pour chaque programme une liste de cours qui se trouve dans segments->blocs->courses
+        // Le json obtenu contient pour chaque programme une liste de cours qui se trouve dans segments->blocs->courses
         // Parcours de chaque programme
         for (JsonNode program : root) {
 
@@ -245,7 +255,7 @@ public class CoursRepository implements IRepository {
                 map.put("name",program.get("name").asText());
                 programmes.add(map);
             }
-        }catch (IOException e) {
+        }catch (Exception e) {
             System.out.println("Erreur lors de la récupération des requêtes : " + e.getMessage());
         }
         return programmes;
@@ -257,7 +267,7 @@ public class CoursRepository implements IRepository {
      * @param courseId id du cours
      * @param completedCourses liste de cours complétés
      * @return response body de Planifium
-     * @throws Exception
+     * @throws Exception en cas d'erreur
      */
     public String getCourseEligibility(String courseId, List<String> completedCourses) throws Exception {
 
@@ -290,9 +300,114 @@ public class CoursRepository implements IRepository {
 
 
 
+    }
+
+    /**
+     * Cette méthode permet de récupérer les cours d'un programme à partir de l'id de ce dernier.
+     * @param programID id du programme.
+     * @return le response body
+     * @throws Exception en cas d'erreur.
+     */
+
+    public String getCoursesForAProgram(String programID) throws Exception {
+        String BASE_URL = "https://planifium-api.onrender.com/api/v1/programs";
+        Map<String, String> params = Map.of(
+                "programs_list", programID
+        );
+        URI uri  = getStringBuilder(BASE_URL,params);
+        try{
+            HttpURLConnection connection = (HttpURLConnection) new URL(uri.toString()).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+
+
+            return response.toString();
+
+    }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Cette méthode permet de fetch les schedules.
+     * @param courseID id du cours dont on veut fetch les schedules.
+     * @param semester session en question.
+     * @return un InputStream.
+     * @throws Exception en cas d'erreur
+     */
+
+    public InputStream fetchSchedules(String courseID, String semester) throws Exception{
+        String baseUrl = "https://planifium-api.onrender.com/api/v1/schedules";
+        Map<String, String> params = Map.of(
+                "courses_list", "[\"" + courseID + "\"]",
+                "min_semester", semester
+        );
+
+        URI uri = getStringBuilder(baseUrl, params);
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+return connection.getInputStream();
+
+
+
+        }catch( Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
+    }
+
+    /**
+     *  Cette methode forme des URL en prenant en compte des paramètres de recherche.
+     * @param BASE_URL URL de base sur lequel il faudra appliquer des paramètres.
+     * @param params Paramètres qui doivent être ajouté a l'URL pour effectuer une recherche optimal.
+     * @return Un URI valide.
+     **/
+    @NotNull
+    private static URI getStringBuilder(String BASE_URL,Map<String, String> params) {
+        // Allow overriding the Planifium base host for testing (e.g., local HTTP server)
+        String override = System.getProperty("planifium.base");
+        if (override != null && !override.isBlank()) {
+            try {
+                URI orig = URI.create(BASE_URL);
+                URI over = URI.create(override);
+                String combined = over.toString().replaceAll("/+$", "") + orig.getPath();
+                BASE_URL = combined;
+            } catch (Exception ignored) {
+                // if parsing fails, fall back to the provided BASE_URL
+            }
+        }
+
+
+
+        StringBuilder sb = new StringBuilder(BASE_URL);
+        if (params != null && !params.isEmpty()) {
+            sb.append("?");
+            params.forEach((key, value) -> {
+                sb.append(URLEncoder.encode(key, StandardCharsets.UTF_8))
+                        .append("=")
+                        .append(URLEncoder.encode(value, StandardCharsets.UTF_8))
+                        .append("&");
+            });
+            sb.deleteCharAt(sb.length() - 1); // remove trailing &
+        }
+        return URI.create(sb.toString());
+    }
+
 }
-
-
-
