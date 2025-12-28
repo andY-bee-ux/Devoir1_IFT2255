@@ -144,7 +144,7 @@ L'avis est récupéré et stocké dans Avis.json.
 # Documentation pour l'API REST développée avec Javalin
 ## Routes pour notre architecture REST
 Pour tester les routes, on utilise POSTMAN après avoir run le fichier main.java dans src/main/java,
-Chacune des routes que nous avons définies pour notre architecture REST couvrent des fonctionnalités énoncés, on a donc :
+Chacune des routes que nous avons définies pour notre architecture REST couvrent des fonctionnalités énoncés. Nous travaillons su rle port 7070.  On a donc :
 1. Rechercher des cours : **`POST /cours/rechercher`**
    - **Format pour le body de la requête :**
      -  ` {"param" : Param ,"valeur" : "IFT1025", "includeSchedule": "false","semester":  String}`
@@ -1180,8 +1180,116 @@ Chacune des routes que nous avons définies pour notre architecture REST couvren
     ]`
 
     
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
     - **Exemple de réponse JSON (status 400)**:
       - `Requête invalide`
+14. Voir les programmes contenant un certain "nom" dans leur nom : **`GET /cours-programme/nom/{nom}`**
+   - Le parametre **`nom`** corresponds au mot-clé qu'on veut rechercher dans le nom de programme.
+   - **Exemple de requête attendu :**
+     - **http://localhost:7070/cours-programme/nom/informatique**
+   - **Exemple de réponse JSON**: **(statut 200)** :
+   - [
+    "117510-Baccalauréat en informatique (B. Sc.)",
+    "117520-Majeure en informatique",
+    "117540-Mineure en informatique",
+    "117550-Certificat en informatique appliquée",
+    "117561-Microprogramme de premier cycle d'exploration en technologies informatiques",
+    "117573-Microprogramme de premier cycle en administration des systèmes informatiques",
+    "119110-Baccalauréat en mathématiques et informatique (B. Sc.)",
+    "120510-Baccalauréat en physique et informatique (B. Sc.)",
+    "146810-Baccalauréat en bio-informatique",
+    "146811-Baccalauréat en bio-informatique (B. Sc.)",
+    "217510-Maîtrise en informatique (M. Sc.)",
+    "317510-Doctorat en informatique (Ph. D.)"
+]
+    - **Exemple de réponse JSON (status 400)**:
+      - "Les paramètres fournis sont invalides ou le programme n'existe pas."
+15. Soumettre un avis ( utilisé principalement par le bot mais c'est possible de le faire depuis postman) : **`POST /avis`**
+  - **Format pour le body de la requête :**
+        - `{
+            "sigleCours" :"sigle",
+    "professeur" : "nom",
+    "noteDifficulte" :"note",
+    "noteCharge": "note",
+    "commentaire": "commentaire"
+        }`
+    - **Exemple de Body JSON attendu :**
+      - `{
+            "sigleCours" :"IFT2255",
+    "professeur" : "Louis-Edouard",
+    "noteDifficulte" :"4",
+    "noteCharge": "5",
+    "commentaire": "cours captivant et intéressant"
+        }`
+   - **Exemple de réponse JSON**: **(statut 200)** : Avis enregistré avec succès.
+    - **Exemple de réponse JSON (status 400)**: Veuillez vérifier les champs.
+16. Voir tous les avis: **`GET /cours/avis`**
+   - **Exemple de requête attendu :**
+     - **http://localhost:7070/cours/avis**
+   - **Exemple de réponse JSON**: **(statut 200)** : [
+    {
+        "commentaire": "Cours très intéressant, professeur à l'écoute. Les démos sont bien organisés et les devoirs sont faciles à faire.",
+        "noteDifficulte": 2,
+        "sigleCours": "IFT3700",
+        "valide": true,
+        "noteChargeTravail": 3,
+        "nomProfesseur": "Matthieu Taboga"
+    },
+    {
+        "commentaire": "Cours très intéressant, démonstrations bien organisés et devoirs faciles à faire. Je reprendrais ce cours avec plaisir!",
+        "noteDifficulte": 2,
+        "sigleCours": "IFT3700",
+        "valide": true,
+        "noteChargeTravail": 4,
+        "nomProfesseur": "Matthieu Taboga"
+    },
+    {
+        "commentaire": "Certains cours étaient donnés en ligne à cause de la grève, et la plupart du temps il n'y avait pas d'enregistrements vidéos. C'était difficile à suivre tout au long, mais au moins les examens étaient faciles et basés sur les notes de cours.",
+        "noteDifficulte": 3,
+        "sigleCours": "IFT3700",
+        "valide": true,
+        "noteChargeTravail": 3,
+        "nomProfesseur": "Eleanor Taboga"
+    }, ... ]
 
+17. Comparer par difficulté basée sur les avis  : **`POST /cours/comparer/avis/difficulte`**
+  - **Format pour le body de la requête :**
+         - `{
+            "idsCours" : ["cours1","cours2",..]
+        }`
+    - **Exemple de Body JSON attendu :**
+      - `{
+           "idsCours" : ["IFT2255","IFT1227"]
+        }`
+   - **Exemple de réponse JSON**: **(statut 200)**
+   - [
+    [
+        "IFT1227",
+        "2.75"
+    ],
+    [
+        "IFT2255",
+        "1.56"
+    ]
+]
+
+18. Comparer par charge de travail basée sur les avis  : **`POST /cours/comparer/avis/charge`**
+  - **Format pour le body de la requête :**
+        - `{
+            "idsCours" : ["cours1","cours2",..]
+        }`
+    - **Exemple de Body JSON attendu :**
+      - `{
+           "idsCours" : ["IFT2255","IFT1227"]
+        }`
+   - **Exemple de réponse JSON**: **(statut 200)**
+   - [
+    [
+        "IFT1227",
+        "4"
+    ],
+    [
+        "IFT2255",
+        "2"
+    ]
+]
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
