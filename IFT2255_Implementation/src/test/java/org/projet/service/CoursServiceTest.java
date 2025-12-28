@@ -45,7 +45,7 @@ import java.io.IOException;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class CoursServiceTest {
-
+private CoursRepository coursRepository = CoursRepository.getInstance(); 
     private CoursRepository mockRepo;
     private CoursService service;
 
@@ -82,7 +82,7 @@ class CoursServiceTest {
         System.setProperty("planifium.base", "http://localhost:" + port);
         return server;
     }
-    
+
 
     @Test
     @DisplayName("validateIdCours() retourne true pour un id valide")
@@ -115,53 +115,53 @@ class CoursServiceTest {
 
 
     // Tests pour la fonctionnalité "Vérifier son éligibilité à un cours"
-        /**
-         * Ce test vérifie que la méthode {@code checkEligibilityNew} retourne un message
-         * d'erreur lorsque le cycle d’études n’est pas fourni.
-         */
-        @Test
-        @DisplayName("checkEligibilityNew() retourne une erreur si le cycle est null")
-        void testCheckEligibilityNewCycleNull() throws Exception {
+    /**
+     * Ce test vérifie que la méthode {@code checkEligibilityNew} retourne un message
+     * d'erreur lorsque le cycle d’études n’est pas fourni.
+     */
+    @Test
+    @DisplayName("checkEligibilityNew() retourne une erreur si le cycle est null")
+    void testCheckEligibilityNewCycleNull() throws Exception {
 
-                when(mockRepo.getAllCoursesId())
-                        .thenReturn(Optional.of(List.of("IFT2255", "IFT1025")));
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255", "IFT1025")));
 
-                String r = service.checkEligibilityNew(
-                        "IFT2255",
-                        List.of("IFT1025"),
-                        null
-                );
+        String r = service.checkEligibilityNew(
+                "IFT2255",
+                List.of("IFT1025"),
+                null
+        );
 
-                assertEquals("Le cycle doit être fourni", r);
-        }
-        /**
-         * Ce test vérifie que la méthode {@code checkEligibilityNew} retourne un message
-         * d'erreur lorsque le cycle d’études fourni est hors des bornes autorisées.
-        */
+        assertEquals("Le cycle doit être fourni", r);
+    }
+    /**
+     * Ce test vérifie que la méthode {@code checkEligibilityNew} retourne un message
+     * d'erreur lorsque le cycle d’études fourni est hors des bornes autorisées.
+     */
 
-        @Test
-        @DisplayName("checkEligibilityNew() retourne une erreur si le cycle est hors bornes")
-        void testCheckEligibilityNewCycleInvalide() throws Exception {
+    @Test
+    @DisplayName("checkEligibilityNew() retourne une erreur si le cycle est hors bornes")
+    void testCheckEligibilityNewCycleInvalide() throws Exception {
 
-                when(mockRepo.getAllCoursesId())
-                        .thenReturn(Optional.of(List.of("IFT2255", "IFT1025")));
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255", "IFT1025")));
 
-                String r = service.checkEligibilityNew(
-                        "IFT2255",
-                        List.of("IFT1025"),
-                        5
-                );
+        String r = service.checkEligibilityNew(
+                "IFT2255",
+                List.of("IFT1025"),
+                5
+        );
 
-                assertEquals("Le cycle fourni est invalide", r);
-        }
+        assertEquals("Le cycle fourni est invalide", r);
+    }
 
-        /**
-         * Ce test vérifie la règle métier selon laquelle un étudiant de premier cycle
-         * ne peut pas s’inscrire à un cours de cycles supérieurs (niveau 6000+).
-         */
-        @Test
-        @DisplayName("checkEligibilityNew() refuse un cours 6000+ pour un étudiant de 1er cycle")
-        void testCheckEligibilityNewCycle1Cours6000() throws Exception {
+    /**
+     * Ce test vérifie la règle métier selon laquelle un étudiant de premier cycle
+     * ne peut pas s’inscrire à un cours de cycles supérieurs (niveau 6000+).
+     */
+    @Test
+    @DisplayName("checkEligibilityNew() refuse un cours 6000+ pour un étudiant de 1er cycle")
+    void testCheckEligibilityNewCycle1Cours6000() throws Exception {
 
         when(mockRepo.getAllCoursesId())
                 .thenReturn(Optional.of(List.of("IFT6010", "IFT2255")));
@@ -176,12 +176,12 @@ class CoursServiceTest {
                 r.contains("cycles supérieurs"),
                 "Le message doit indiquer que le cours est réservé aux cycles supérieurs"
         );
-        }
+    }
 
-/**
- * Ce test vérifie que la méthode {@code checkEligibilityNew} rejette un identifiant
- * de cours invalide avant tout appel au repository.
- */
+    /**
+     * Ce test vérifie que la méthode {@code checkEligibilityNew} rejette un identifiant
+     * de cours invalide avant tout appel au repository.
+     */
     @Test
     @DisplayName("checkEligibilityNew() retourne un message d'erreur si l'id du cours est invalide")
     void testCheckEligibilityNewIdCoursInvalide() throws Exception {
@@ -193,10 +193,10 @@ class CoursServiceTest {
         assertEquals("L'id du cours est invalide", r);
         verify(mockRepo, never()).getCourseEligibility(anyString(), anyList());
     }
-/**
- * Vérifie que la méthode {@code checkEligibilityNew} retourne une erreur
- * lorsque la liste des cours complétés contient un cours invalide.
- */
+    /**
+     * Vérifie que la méthode {@code checkEligibilityNew} retourne une erreur
+     * lorsque la liste des cours complétés contient un cours invalide.
+     */
 
     @Test
     @DisplayName("checkEligibilityNew() retourne un message si des cours complétés sont invalides")
@@ -210,10 +210,10 @@ class CoursServiceTest {
         assertEquals("Il y a des cours complétés invalides", r);
         verify(mockRepo, never()).getCourseEligibility(anyString(), anyList());
     }
-/**
- * Ce test vérifie que la méthode {@code checkEligibilityNew} retourne une erreur
- * lorsque la liste des cours complétés contient un cours invalide.
- */
+    /**
+     * Ce test vérifie que la méthode {@code checkEligibilityNew} retourne une erreur
+     * lorsque la liste des cours complétés contient un cours invalide.
+     */
     @Test
     @DisplayName("checkEligibilityNew() éligible")
     void testCheckEligibilityNewEligible() throws Exception {
@@ -234,9 +234,9 @@ class CoursServiceTest {
     }
 
     /**
- * Ce test vérifie le cas où l’étudiant n’est pas éligible au cours
- * en raison de prérequis manquants.
- */
+     * Ce test vérifie le cas où l’étudiant n’est pas éligible au cours
+     * en raison de prérequis manquants.
+     */
     @Test
     @DisplayName("checkEligibilityNew() non éligible")
     void testCheckEligibilityNewNonEligible() throws Exception {
@@ -258,11 +258,11 @@ class CoursServiceTest {
                 r
         );
     }
-/**
- * Ce test vérifie que la méthode {@code checkEligibilityNew} gère correctement
- * une exception levée par le repository lors de la vérification
- * des prérequis.
- */
+    /**
+     * Ce test vérifie que la méthode {@code checkEligibilityNew} gère correctement
+     * une exception levée par le repository lors de la vérification
+     * des prérequis.
+     */
     @Test
     @DisplayName("checkEligibilityNew() gère l'exception du repository")
     void testCheckEligibilityNewExceptionRepository() throws Exception {
@@ -279,262 +279,262 @@ class CoursServiceTest {
 
     // Tests pour la fonctionnalité "Créer un ensemble de cours" + génération d'horaires avec détection de conflits horaires
     /**
- * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
- * retourne une erreur lorsque la liste de cours est vide.
- */
-@Test
-@DisplayName("genererEnsembleHoraire() échoue si la liste de cours est vide")
-void testGenererEnsembleHoraireListeVide() {
+     * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
+     * retourne une erreur lorsque la liste de cours est vide.
+     */
+    @Test
+    @DisplayName("genererEnsembleHoraire() échoue si la liste de cours est vide")
+    void testGenererEnsembleHoraireListeVide() {
 
-    HoraireException ex = assertThrows(
-        HoraireException.class,
-        () -> service.genererEnsembleHoraire(List.of(), "A25")
-    );
+        HoraireException ex = assertThrows(
+                HoraireException.class,
+                () -> service.genererEnsembleHoraire(List.of(), "A25")
+        );
 
-    assertEquals(
-        "La liste des cours est vide ou inexistante.",
-        ex.getMessage()
-    );
+        assertEquals(
+                "La liste des cours est vide ou inexistante.",
+                ex.getMessage()
+        );
 
-    verifyNoInteractions(mockRepo);
-}
+        verifyNoInteractions(mockRepo);
+    }
 
-/**
- * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
- * retourne une erreur lorsqu’on fournit plus de 6 cours.
- */
-@Test
-@DisplayName("genererEnsembleHoraire() échoue si plus de 6 cours sont fournis")
-void testGenererEnsembleHoraireTropDeCours() {
+    /**
+     * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
+     * retourne une erreur lorsqu’on fournit plus de 6 cours.
+     */
+    @Test
+    @DisplayName("genererEnsembleHoraire() échoue si plus de 6 cours sont fournis")
+    void testGenererEnsembleHoraireTropDeCours() {
 
-    List<String> ids = List.of(
-        "IFT1000","IFT1001","IFT1002",
-        "IFT1003","IFT1004","IFT1005","IFT1006"
-    );
+        List<String> ids = List.of(
+                "IFT1000","IFT1001","IFT1002",
+                "IFT1003","IFT1004","IFT1005","IFT1006"
+        );
 
-    HoraireException ex = assertThrows(
-        HoraireException.class,
-        () -> service.genererEnsembleHoraire(ids, "H26")
-    );
+        HoraireException ex = assertThrows(
+                HoraireException.class,
+                () -> service.genererEnsembleHoraire(ids, "H26")
+        );
 
-    assertTrue(ex.getMessage().contains("plus de 6 cours"));
-    verifyNoInteractions(mockRepo);
-}
+        assertTrue(ex.getMessage().contains("plus de 6 cours"));
+        verifyNoInteractions(mockRepo);
+    }
 
-/**
- * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
- * retourne une erreur lorsqu’un cours valide ne peut pas être récupéré
- * depuis le repository.
- */
-@Test
-@DisplayName("genererEnsembleHoraire() échoue si un cours ne peut pas être récupéré")
-void testGenererEnsembleHoraireCoursNonRecupere() throws Exception {
+    /**
+     * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
+     * retourne une erreur lorsqu’un cours valide ne peut pas être récupéré
+     * depuis le repository.
+     */
+    @Test
+    @DisplayName("genererEnsembleHoraire() échoue si un cours ne peut pas être récupéré")
+    void testGenererEnsembleHoraireCoursNonRecupere() throws Exception {
 
-    when(mockRepo.getAllCoursesId())
-            .thenReturn(Optional.of(List.of("IFT2255")));
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255")));
 
-    when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
-            .thenReturn(Optional.empty());
+        when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
+                .thenReturn(Optional.empty());
 
-    HoraireException ex = assertThrows(
-        HoraireException.class,
-        () -> service.genererEnsembleHoraire(
+        HoraireException ex = assertThrows(
+                HoraireException.class,
+                () -> service.genererEnsembleHoraire(
+                        List.of("IFT2255"), "A25"
+                )
+        );
+
+        assertEquals(
+                "Le cours IFT2255 n’a pas pu être récupéré.",
+                ex.getMessage()
+        );
+    }
+
+    /**
+     * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
+     * ignore correctement les horaires d’examen (intra et final).
+     */
+    @Test
+    @DisplayName("genererEnsembleHoraire() ignore les horaires d'intra et de final")
+    void testGenererEnsembleHoraireIgnoreExamens() throws Exception {
+
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255")));
+
+        Cours c = new Cours();
+        c.setId("IFT2255");
+
+        Cours.Schedule s = new Cours.Schedule();
+        s.setSemester("A25");
+
+        Cours.Section sec = new Cours.Section();
+        sec.setName("A");
+
+        Cours.Volet voletIntra = new Cours.Volet();
+        voletIntra.setName("Intra");
+
+        Cours.Volet voletFinal = new Cours.Volet();
+        voletFinal.setName("Final");
+
+        sec.setVolets(List.of(voletIntra, voletFinal));
+        s.setSections(List.of(sec));
+        c.setSchedules(List.of(s));
+
+        when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
+                .thenReturn(Optional.of(List.of(c)));
+
+        var res = service.genererEnsembleHoraire(
                 List.of("IFT2255"), "A25"
-        )
-    );
+        );
 
-    assertEquals(
-        "Le cours IFT2255 n’a pas pu être récupéré.",
-        ex.getMessage()
-    );
-}
+        assertTrue(res.get("IFT2255").isEmpty());
+    }
 
-/**
- * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
- * ignore correctement les horaires d’examen (intra et final).
- */
-@Test
-@DisplayName("genererEnsembleHoraire() ignore les horaires d'intra et de final")
-void testGenererEnsembleHoraireIgnoreExamens() throws Exception {
+    /**
+     * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
+     * élimine les activités horaires en double.
+     */
+    @Test
+    @DisplayName("genererEnsembleHoraire() élimine les doublons d'activités")
+    void testGenererEnsembleHoraireSansDoublons() throws Exception {
 
-    when(mockRepo.getAllCoursesId())
-            .thenReturn(Optional.of(List.of("IFT2255")));
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255")));
 
-    Cours c = new Cours();
-    c.setId("IFT2255");
+        Cours c = new Cours();
+        c.setId("IFT2255");
 
-    Cours.Schedule s = new Cours.Schedule();
-    s.setSemester("A25");
+        Cours.Schedule s = new Cours.Schedule();
+        s.setSemester("A25");
 
-    Cours.Section sec = new Cours.Section();
-    sec.setName("A");
+        Cours.Section sec = new Cours.Section();
+        sec.setName("A");
 
-    Cours.Volet voletIntra = new Cours.Volet();
-    voletIntra.setName("Intra");
+        Cours.Volet volet = new Cours.Volet();
+        volet.setName("TH");
 
-    Cours.Volet voletFinal = new Cours.Volet();
-    voletFinal.setName("Final");
+        Cours.Activity act1 = new Cours.Activity();
+        act1.setDays(List.of("LUN"));
+        act1.setStart_time("08:30");
+        act1.setEnd_time("10:00");
 
-    sec.setVolets(List.of(voletIntra, voletFinal));
-    s.setSections(List.of(sec));
-    c.setSchedules(List.of(s));
+        Cours.Activity act2 = new Cours.Activity();
+        act2.setDays(List.of("LUN"));
+        act2.setStart_time("08:30");
+        act2.setEnd_time("10:00");
 
-    when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
-            .thenReturn(Optional.of(List.of(c)));
+        volet.setActivities(List.of(act1, act2));
+        sec.setVolets(List.of(volet));
+        s.setSections(List.of(sec));
+        c.setSchedules(List.of(s));
 
-    var res = service.genererEnsembleHoraire(
-            List.of("IFT2255"), "A25"
-    );
+        when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
+                .thenReturn(Optional.of(List.of(c)));
 
-    assertTrue(res.get("IFT2255").isEmpty());
-}
+        var res = service.genererEnsembleHoraire(
+                List.of("IFT2255"), "A25"
+        );
 
-/**
- * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
- * élimine les activités horaires en double.
- */
-@Test
-@DisplayName("genererEnsembleHoraire() élimine les doublons d'activités")
-void testGenererEnsembleHoraireSansDoublons() throws Exception {
+        var blocs =
+                res.get("IFT2255")
+                        .get("TH")
+                        .get("A");
 
-    when(mockRepo.getAllCoursesId())
-            .thenReturn(Optional.of(List.of("IFT2255")));
+        assertEquals(1, blocs.size());
+    }
 
-    Cours c = new Cours();
-    c.setId("IFT2255");
+    /**
+     * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
+     * fonctionne correctement lorsqu’un cours valide est fourni.
+     */
+    @Test
+    @DisplayName("genererEnsembleHoraire() fonctionne correctement avec un cours valide")
+    void testGenererEnsembleHoraireValide() throws Exception {
 
-    Cours.Schedule s = new Cours.Schedule();
-    s.setSemester("A25");
+        when(mockRepo.getAllCoursesId())
+                .thenReturn(Optional.of(List.of("IFT2255")));
 
-    Cours.Section sec = new Cours.Section();
-    sec.setName("A");
+        Cours c = new Cours();
+        c.setId("IFT2255");
 
-    Cours.Volet volet = new Cours.Volet();
-    volet.setName("TH");
+        Cours.Schedule s = new Cours.Schedule();
+        s.setSemester("A25");
 
-    Cours.Activity act1 = new Cours.Activity();
-    act1.setDays(List.of("LUN"));
-    act1.setStart_time("08:30");
-    act1.setEnd_time("10:00");
+        Cours.Section sec = new Cours.Section();
+        sec.setName("A");
 
-    Cours.Activity act2 = new Cours.Activity();
-    act2.setDays(List.of("LUN"));
-    act2.setStart_time("08:30");
-    act2.setEnd_time("10:00");
+        Cours.Volet volet = new Cours.Volet();
+        volet.setName("TH");
 
-    volet.setActivities(List.of(act1, act2));
-    sec.setVolets(List.of(volet));
-    s.setSections(List.of(sec));
-    c.setSchedules(List.of(s));
+        Cours.Activity act = new Cours.Activity();
+        act.setDays(List.of("LUN"));
+        act.setStart_time("08:30");
+        act.setEnd_time("10:00");
 
-    when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
-            .thenReturn(Optional.of(List.of(c)));
+        volet.setActivities(List.of(act));
+        sec.setVolets(List.of(volet));
+        s.setSections(List.of(sec));
+        c.setSchedules(List.of(s));
 
-    var res = service.genererEnsembleHoraire(
-            List.of("IFT2255"), "A25"
-    );
+        when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
+                .thenReturn(Optional.of(List.of(c)));
 
-    var blocs =
-            res.get("IFT2255")
-               .get("TH")
-               .get("A");
+        var res = service.genererEnsembleHoraire(
+                List.of("IFT2255"), "A25"
+        );
 
-    assertEquals(1, blocs.size());
-}
+        assertNotNull(res);
+        assertTrue(res.containsKey("IFT2255"));
 
-/**
- * Ce test vérifie que la méthode {@code genererEnsembleHoraire}
- * fonctionne correctement lorsqu’un cours valide est fourni.
- */
-@Test
-@DisplayName("genererEnsembleHoraire() fonctionne correctement avec un cours valide")
-void testGenererEnsembleHoraireValide() throws Exception {
+        assertTrue(res.get("IFT2255").containsKey("TH"));
+        assertTrue(res.get("IFT2255").get("TH").containsKey("A"));
 
-    when(mockRepo.getAllCoursesId())
-            .thenReturn(Optional.of(List.of("IFT2255")));
+        var blocs =
+                res.get("IFT2255")
+                        .get("TH")
+                        .get("A");
 
-    Cours c = new Cours();
-    c.setId("IFT2255");
+        assertEquals(1, blocs.size());
+        assertEquals("[LUN]", blocs.get(0).get(0));
+        assertEquals("08:30-10:00", blocs.get(0).get(1));
+    }
 
-    Cours.Schedule s = new Cours.Schedule();
-    s.setSemester("A25");
+    /**
+     * Ce test vérifie que la méthode {@code appliquerChoix}
+     * retourne un horaire valide lorsqu’un choix cohérent est fourni.
+     */
+    @Test
+    @DisplayName("appliquerChoix() fonctionne correctement avec des choix valides")
+    void testAppliquerChoixValide() {
 
-    Cours.Section sec = new Cours.Section();
-    sec.setName("A");
-
-    Cours.Volet volet = new Cours.Volet();
-    volet.setName("TH");
-
-    Cours.Activity act = new Cours.Activity();
-    act.setDays(List.of("LUN"));
-    act.setStart_time("08:30");
-    act.setEnd_time("10:00");
-
-    volet.setActivities(List.of(act));
-    sec.setVolets(List.of(volet));
-    s.setSections(List.of(sec));
-    c.setSchedules(List.of(s));
-
-    when(mockRepo.getCourseBy("id", "IFT2255", "true", null))
-            .thenReturn(Optional.of(List.of(c)));
-
-    var res = service.genererEnsembleHoraire(
-            List.of("IFT2255"), "A25"
-    );
-
-    assertNotNull(res);
-    assertTrue(res.containsKey("IFT2255"));
-
-    assertTrue(res.get("IFT2255").containsKey("TH"));
-    assertTrue(res.get("IFT2255").get("TH").containsKey("A"));
-
-    var blocs =
-            res.get("IFT2255")
-               .get("TH")
-               .get("A");
-
-    assertEquals(1, blocs.size());
-    assertEquals("[LUN]", blocs.get(0).get(0));
-    assertEquals("08:30-10:00", blocs.get(0).get(1));
-}
-
-/**
- * Ce test vérifie que la méthode {@code appliquerChoix}
- * retourne un horaire valide lorsqu’un choix cohérent est fourni.
- */
-@Test
-@DisplayName("appliquerChoix() fonctionne correctement avec des choix valides")
-void testAppliquerChoixValide() {
-
-    var horaires = Map.of(
-        "IFT2255", Map.of(
-            "TH", Map.of(
-                "A", List.of(
-                    List.of("[LUN]", "08:30-10:00")
+        var horaires = Map.of(
+                "IFT2255", Map.of(
+                        "TH", Map.of(
+                                "A", List.of(
+                                        List.of("[LUN]", "08:30-10:00")
+                                )
+                        ),
+                        "TP", Map.of(
+                                "A01", List.of(
+                                        List.of("[MER]", "10:00-11:30")
+                                )
+                        )
                 )
-            ),
-            "TP", Map.of(
-                "A01", List.of(
-                    List.of("[MER]", "10:00-11:30")
+        );
+
+        var choix = Map.of(
+                "IFT2255", Map.of(
+                        "TH", "A",
+                        "TP", "A01"
                 )
-            )
-        )
-    );
+        );
 
-    var choix = Map.of(
-        "IFT2255", Map.of(
-            "TH", "A",
-            "TP", "A01"
-        )
-    );
+        var res = service.appliquerChoix(horaires, choix);
 
-    var res = service.appliquerChoix(horaires, choix);
-
-    assertNotNull(res);
-    assertTrue(res.horaire.containsKey("IFT2255"));
-    assertEquals(2, res.horaire.get("IFT2255").size());
-    assertTrue(res.conflits.isEmpty());
-}
+        assertNotNull(res);
+        assertTrue(res.horaire.containsKey("IFT2255"));
+        assertEquals(2, res.horaire.get("IFT2255").size());
+        assertTrue(res.conflits.isEmpty());
+    }
 
 // ==================== Tests HTTP / Planifium API ====================
 
@@ -596,7 +596,7 @@ void testAppliquerChoixValide() {
 
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
         when(mockConnection.getInputStream())
-            .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
@@ -661,7 +661,7 @@ void testAppliquerChoixValide() {
 
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
         when(mockConnection.getInputStream())
-            .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
@@ -692,7 +692,7 @@ void testAppliquerChoixValide() {
 
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
         when(mockConnection.getInputStream())
-            .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
@@ -757,7 +757,7 @@ void testAppliquerChoixValide() {
 
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
         when(mockConnection.getInputStream())
-            .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
@@ -789,7 +789,7 @@ void testAppliquerChoixValide() {
 
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
         when(mockConnection.getInputStream())
-            .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(mockResponse.getBytes()));
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
@@ -843,18 +843,18 @@ void testAppliquerChoixValide() {
         verify(coursRepository).getCoursesForAProgram(programID);
     }
 
-   /**
- * Test de la méthode getCoursesForAProgram lorsque le programme n'a pas de cours.
- * Vérifie que la méthode retourne une liste vide quand aucun cours n'est
- * associé au programme.
- *
- * @throws Exception si une erreur survient lors du test
- */
-@Test
-void testGetCoursesForAProgram_NoCourses() throws Exception {
-    String programID = "INVALID";
+    /**
+     * Test de la méthode getCoursesForAProgram lorsque le programme n'a pas de cours.
+     * Vérifie que la méthode retourne une liste vide quand aucun cours n'est
+     * associé au programme.
+     *
+     * @throws Exception si une erreur survient lors du test
+     */
+    @Test
+    void testGetCoursesForAProgram_NoCourses() throws Exception {
+        String programID = "INVALID";
 
-    String mockResponse = """
+        String mockResponse = """
         [
             {
                 "id": "INVALID"
@@ -862,46 +862,46 @@ void testGetCoursesForAProgram_NoCourses() throws Exception {
         ]
         """;
 
-    // le repository retourne un programme sans champ "courses"
-    when(coursRepository.getCoursesForAProgram(programID))
-            .thenReturn(mockResponse);
+        // le repository retourne un programme sans champ "courses"
+        when(coursRepository.getCoursesForAProgram(programID))
+                .thenReturn(mockResponse);
 
-    // appel du service
-    List<String> result = service.getCoursesForAProgram(programID);
+        // appel du service
+        List<String> result = service.getCoursesForAProgram(programID);
 
-    // vérifications
-    assertNotNull(result);
-    assertTrue(result.isEmpty());
+        // vérifications
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
 
-    // vérifie que le repository a bien été appelé
-    verify(coursRepository).getCoursesForAProgram(programID);
-}
+        // vérifie que le repository a bien été appelé
+        verify(coursRepository).getCoursesForAProgram(programID);
+    }
 
-   /**
- * Test de la méthode getCoursesForAProgram lors d'une IOException.
- * Vérifie que la méthode gère correctement les erreurs
- * et retourne une liste vide au lieu de lancer une exception.
- *
- * @throws Exception si une erreur survient lors du test
- */
-@Test
-void testGetCoursesForAProgram_IOException() throws Exception {
-    String programID = "117510";
+    /**
+     * Test de la méthode getCoursesForAProgram lors d'une IOException.
+     * Vérifie que la méthode gère correctement les erreurs
+     * et retourne une liste vide au lieu de lancer une exception.
+     *
+     * @throws Exception si une erreur survient lors du test
+     */
+    @Test
+    void testGetCoursesForAProgram_IOException() throws Exception {
+        String programID = "117510";
 
-    // le repository simule une erreur réseau
-    when(coursRepository.getCoursesForAProgram(programID))
-            .thenThrow(new RuntimeException("Erreur réseau simulée"));
+        // le repository simule une erreur réseau
+        when(coursRepository.getCoursesForAProgram(programID))
+                .thenThrow(new RuntimeException("Erreur réseau simulée"));
 
-    // appel du service
-    List<String> result = service.getCoursesForAProgram(programID);
+        // appel du service
+        List<String> result = service.getCoursesForAProgram(programID);
 
-    // vérifications
-    assertNotNull(result);
-    assertTrue(result.isEmpty());
+        // vérifications
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
 
-    // vérifie que le repository a bien été appelé
-    verify(coursRepository).getCoursesForAProgram(programID);
-}
+        // vérifie que le repository a bien été appelé
+        verify(coursRepository).getCoursesForAProgram(programID);
+    }
 
 
     // ==================== Tests pour getCourseBySemester ====================
@@ -941,13 +941,13 @@ void testGetCoursesForAProgram_IOException() throws Exception {
         HttpURLConnection mockConnection4 = mock(HttpURLConnection.class);
 
         when(mockConnection1.getInputStream())
-            .thenReturn(new ByteArrayInputStream(programResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(programResponse.getBytes()));
         when(mockConnection2.getInputStream())
-            .thenReturn(new ByteArrayInputStream(scheduleResponse1.getBytes()));
+                .thenReturn(new ByteArrayInputStream(scheduleResponse1.getBytes()));
         when(mockConnection3.getInputStream())
-            .thenReturn(new ByteArrayInputStream(scheduleResponse1.getBytes()));
+                .thenReturn(new ByteArrayInputStream(scheduleResponse1.getBytes()));
         when(mockConnection4.getInputStream())
-            .thenReturn(new ByteArrayInputStream(scheduleResponse2.getBytes()));
+                .thenReturn(new ByteArrayInputStream(scheduleResponse2.getBytes()));
 
         HttpServer server = startServer((path, query) -> {
             if (path.contains("/programs")) return programResponse;
@@ -995,9 +995,9 @@ void testGetCoursesForAProgram_IOException() throws Exception {
         HttpURLConnection mockConnection2 = mock(HttpURLConnection.class);
 
         when(mockConnection1.getInputStream())
-            .thenReturn(new ByteArrayInputStream(programResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(programResponse.getBytes()));
         when(mockConnection2.getInputStream())
-            .thenReturn(new ByteArrayInputStream(scheduleResponse.getBytes()));
+                .thenReturn(new ByteArrayInputStream(scheduleResponse.getBytes()));
 
         HttpServer server = startServer((path, query) -> {
             if (path.contains("/programs")) return programResponse;
@@ -1017,11 +1017,11 @@ void testGetCoursesForAProgram_IOException() throws Exception {
     }
 
 
-    
-@Test
-@DisplayName("difficulteCours() retourne le bon message pour un cours ")    
-void testDifficulteCours() {      
-        
+
+    @Test
+    @DisplayName("difficulteCours() retourne le bon message pour un cours ")
+    void testDifficulteCours() {
+
         // ARRANGE
         CoursService service = CoursService.getInstance();
         Resultats coursDifficile = new Resultats("MAT1400");
@@ -1032,12 +1032,12 @@ void testDifficulteCours() {
         // ASSERT
         assertEquals("Le cours Calcul 1 est considéré comme difficile avec un score de 1.55/5.", message);
 
-}
+    }
 
-@Test
-@DisplayName("difficulteCours() retourne le bon message pour un cours facile")    
-void testDifficulteCoursFacile() {      
-        
+    @Test
+    @DisplayName("difficulteCours() retourne le bon message pour un cours facile")
+    void testDifficulteCoursFacile() {
+
         // ARRANGE
         CoursService service = CoursService.getInstance();
         Resultats coursFacile = new Resultats("ANG1933");
@@ -1047,12 +1047,12 @@ void testDifficulteCoursFacile() {
 
         // ASSERT
         assertEquals("Le cours Expression orale académique et professionnelle est considéré comme facile avec un score de 4.79/5", message);
-}
+    }
 
-@Test
-@DisplayName("populariteCours() retourne le bon message pour un cours populaire")    
-void testPopulariteCoursPopulaire() {      
-        
+    @Test
+    @DisplayName("populariteCours() retourne le bon message pour un cours populaire")
+    void testPopulariteCoursPopulaire() {
+
         // ARRANGE
         CoursService service = CoursService.getInstance();
         Resultats coursPopulaire = new Resultats("IFT1015");
@@ -1062,11 +1062,11 @@ void testPopulariteCoursPopulaire() {
 
         // ASSERT
         assertEquals("Le cours Programmation 1 est très populaire avec 658 participants.", message);
-}
+    }
 
-@Test
-@DisplayName("populariteCours() retourne le bon message pour un cours absent des résultats")    
-void testPopulariteCoursPeuPopulaire() {      
+    @Test
+    @DisplayName("populariteCours() retourne le bon message pour un cours absent des résultats")
+    void testPopulariteCoursPeuPopulaire() {
         // ARRANGE
         CoursService service = CoursService.getInstance();
         Resultats coursPeuPopulaire = new Resultats("ART1001");
@@ -1076,32 +1076,32 @@ void testPopulariteCoursPeuPopulaire() {
 
         // ASSERT
         assertEquals("Le cours demandé est absent des résultats. Veuillez vérifier le sigle.", message);
-}
+    }
 
-@Test
-@DisplayName("comparerDifficulte() retourne le bon message pour deux cours")
-void testCompareDifficulteCours() {      
-        
+    @Test
+    @DisplayName("comparerDifficulte() retourne le bon message pour deux cours")
+    void testCompareDifficulteCours() {
+
         // ARRANGE
         CoursService service = CoursService.getInstance();
-        Resultats cours1 = new Resultats("IFT1015"); 
-        Resultats cours2 = new Resultats("MAT1400"); 
+        Resultats cours1 = new Resultats("IFT1015");
+        Resultats cours2 = new Resultats("MAT1400");
 
         // ACT
         String message = service.comparerDifficulte(cours1, cours2);
 
         // ASSERT
         assertEquals("Le cours Programmation 1 est considéré comme plus facile que Calcul 1 avec un score de 2.29/5 contre 1.55/5.", message);
-}
+    }
 
-@Test
-@DisplayName("comparerPopularite() retourne le bon message pour deux cours")    
-void testComparePopulariteCours() {      
-        
+    @Test
+    @DisplayName("comparerPopularite() retourne le bon message pour deux cours")
+    void testComparePopulariteCours() {
+
         // ARRANGE
         CoursService service = CoursService.getInstance();
-        Resultats cours1 = new Resultats("IFT1015"); 
-        Resultats cours2 = new Resultats("ANG1933"); 
+        Resultats cours1 = new Resultats("IFT1015");
+        Resultats cours2 = new Resultats("ANG1933");
 
         // ACT
         String message = service.comparerPopularite(cours1, cours2);
@@ -1109,6 +1109,6 @@ void testComparePopulariteCours() {
         // ASSERT
         assertEquals("Le cours Programmation 1 est plus populaire que Expression orale académique et professionnelle avec 658 participants contre 5.", message);
 
-}
+    }
 
 }
