@@ -15,11 +15,10 @@ public class CoursController {
     // CoursService est un Singleton, donc on récupère l'instance existante.
     private CoursService coursService =CoursService.getInstance();
 
-
-
-   
-
-
+    /**
+     * Cette méthode permet de vérifier l'éligibilité à un cours ( sans cycle).
+     * @param ctx requête + réponse.
+     */
     public void checkEligibility(Context ctx){
         RequeteEligibilite req = ctx.bodyAsClass(RequeteEligibilite.class);
         String resultat = coursService.checkEligibility(req.idCours,req.listeCours);
@@ -116,61 +115,6 @@ public class CoursController {
         }
     }
 
-    public static class RequeteComparaisonAvis{
-        public String[] idsCours;
-    }
-    /**
-     * Cette classe permet de parser le json du body de la requête comparaison. La classe est interne donc
-     * on peut déclarer les attributs publics.
-     */
-    public static class RequeteComparaison {
-        public String[] cours;
-        public String[] criteres;
-        public String session;
-    }
-
-    /**
-     * Cette classe permet de parser le json du body de la requête recherche. La classe est interne donc
-     * on peut déclarer les attributs publics.
-     */
-
-    public static class RequeteRecherche{
-        public String param;
-        public String valeur;
-        public String includeSchedule;
-        public String semester;
-    }
-    /**
-     * Cette classe permet de parser le json du body de la requête eligibilite. La classe est interne donc
-     * on peut déclarer les attributs publics.
-     */
-    public static class RequeteEligibilite{
-        public String idCours;
-        public List<String> listeCours;
-    }
-
-    /**
-     * Cette classe permet de parser le json du body de la requête comparaisonCombinaison. La classe est interne donc
-     * on peut déclarer les attributs publics.
-     */
-    public static class RequeteComparaisonCombinaison{
-        public List<List<String>> listeCours;
-        public String session;
-    }
-
-   
-    
-
-    /**
-     * Requête utilisée pour vérifier l’éligibilité d’un étudiant à un cours,
-     * en tenant compte des cours complétés et du cycle d’études.
-     */
-    public static class RequeteEligibiliteNew{
-        public String idCours;
-        public List<String> listeCours;
-        public Integer cycle;
-    }
-
     /**
      * Cette méthode vérifie l’éligibilité d’un étudiant à un cours donné.
      * Le controller délègue la logique métier au {@code CoursService} et
@@ -184,17 +128,6 @@ public class CoursController {
         ctx.json(resultat);
     }
 
-   
-    
-    /**
-     * Requête utilisée pour générer les horaires possibles d’un ensemble de cours.
-     */
-    public static class RequeteHoraire {
-        public List<String> idCours;
-        public String session;
-        public Boolean sections;
-        public Map<String, Map<String, String>> choix; 
-    }
 
     /**
      * Cette méthode génère toutes les combinaisons d’horaires possibles pour un ensemble de cours.
@@ -227,7 +160,21 @@ public class CoursController {
         }
     }
 
+    /**
+     * Cette méthode permet de trouver les programmes par nom
+     * @param ctx requête + notre réponse.
+     */
+    public void foundPrograms(Context ctx){
+    String nom = ctx.pathParam("nom");
+    List<String> details = coursService.foundProgramms(nom);
 
+    if (details.isEmpty()) {
+        ctx.status(404).json(Map.of("error", "Les paramètres fournis sont invalides ou le programme n'existe pas."));
+        return;
+    }
+
+    ctx.status(200).json(details);
+}
     /**
      * Cette methode permet d'obtenir les cours offerts dans un programme donne.
      * @param ctx ID du programme.
@@ -304,14 +251,6 @@ public void populariteCours(Context ctx) {
         ctx.json(popularite);
     }  
 
-    /**
-     * Cette classe permet de parser le json du body de la requête difficulte ou popularite. La classe est interne donc
-     * on peut déclarer les attributs publics.
-     */
-    public static class RequeteUnCours{
-        public String sigle;
-    }    
-
        
 /**
  * Cette méthode permet de comparer les statistiques de deux cours.
@@ -332,28 +271,7 @@ public void comparerDeuxCoursByResultats(Context ctx) {
     }  
 
 
-/**
- * Cette classe permet de parser le json du body de la requête comparaisonStats. La classe est interne donc
- * on peut déclarer les attributs publics.
- */    
-public static class RequeteDeuxCours{
-        public String sigle1;
-        public String sigle2;
-    }
 
-/**
- * Cette classe permet de parser le json du body de la requête stats. La classe est interne donc
- * on peut déclarer les attributs publics.
- */
-public static class RequeteStats {
-        public String sigle;
-}    
-
-
-
-public static class RequeteResultats {
-        public String sigle;
-}
 
 /**
  * Récupère et renvoie les résultats d'un cours au format JSON.
@@ -365,4 +283,105 @@ public void voirResultats(Context ctx) {
         String message = res.voirResultats();
         ctx.json(message);
     }
+    /**
+     * Cette classe permet de parser le json du body de la requête comparaisonStats. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteDeuxCours{
+        public String sigle1;
+        public String sigle2;
+    }
+
+    /**
+     * Cette classe permet de parser le json du body de la requête stats. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteStats {
+        public String sigle;
+    }
+
+
+    /**
+     * Cette classe parse le json du body de la requête Resultat.
+     */
+    public static class RequeteResultats {
+        public String sigle;
+    }
+    /**
+     * Cette classe permet de parser le json du body de la requête difficulte ou popularite. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteUnCours{
+        public String sigle;
+    }
+
+    /**
+     * Requête utilisée pour générer les horaires possibles d’un ensemble de cours.
+     */
+    public static class RequeteHoraire {
+        public List<String> idCours;
+        public String session;
+        public Boolean sections;
+        public Map<String, Map<String, String>> choix;
+    }
+
+    /**
+     * Permet de parser le body de la requête de comparaison par avis.
+     */
+    public static class RequeteComparaisonAvis{
+        public String[] idsCours;
+    }
+    /**
+     * Cette classe permet de parser le json du body de la requête comparaison. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteComparaison {
+        public String[] cours;
+        public String[] criteres;
+        public String session;
+    }
+
+    /**
+     * Cette classe permet de parser le json du body de la requête recherche. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+
+    public static class RequeteRecherche{
+        public String param;
+        public String valeur;
+        public String includeSchedule;
+        public String semester;
+    }
+    /**
+     * Cette classe permet de parser le json du body de la requête eligibilite. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteEligibilite{
+        public String idCours;
+        public List<String> listeCours;
+    }
+
+    /**
+     * Cette classe permet de parser le json du body de la requête comparaisonCombinaison. La classe est interne donc
+     * on peut déclarer les attributs publics.
+     */
+    public static class RequeteComparaisonCombinaison{
+        public List<List<String>> listeCours;
+        public String session;
+    }
+
+
+
+
+    /**
+     * Requête utilisée pour vérifier l’éligibilité d’un étudiant à un cours,
+     * en tenant compte des cours complétés et du cycle d’études.
+     */
+    public static class RequeteEligibiliteNew{
+        public String idCours;
+        public List<String> listeCours;
+        public Integer cycle;
+    }
+
+
 }

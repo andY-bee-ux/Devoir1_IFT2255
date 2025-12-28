@@ -29,8 +29,16 @@ public class MainApp extends Application {
     private ClientController rechercheController;
     private VBox rechercheLayout;
     private VBox resultContainer;
+    private VBox listeCoursProgrammeBox;
 
-    @Override
+
+    /**
+     * Point d'entrée de l'application JavaFX.
+     * Cette méthode initialise la scène, la barre de navigation
+     * et affiche la page d'accueil par défaut.
+     * @param stage la fenêtre principale de l'application
+     */
+        @Override
     public void start(Stage stage) {
         root = new BorderPane();
 
@@ -99,7 +107,11 @@ public class MainApp extends Application {
         stage.setResizable(true);
         stage.show();
     }
-
+    /**
+     * Affiche la page d'accueil de l'application.
+     * Cette vue contient un texte de bienvenue, une description
+     * et des boutons permettant de naviguer rapidement.
+     */
     private void afficherAccueil() {
         HBox accueil = new HBox();
         accueil.setPadding(new Insets(40));
@@ -144,7 +156,7 @@ public class MainApp extends Application {
         textBox.getChildren().addAll(flow, subtitle1, subtitle, actions);
 
         // Big image à droite
-        Image img = new Image(getClass().getResourceAsStream("/PickCourse-logo.png")); // à remplacer par l'image souhaitée
+        Image img = new Image(getClass().getResourceAsStream("/PickCourse-logo.png"));
         ImageView imageView = new ImageView(img);
         imageView.setPreserveRatio(true);
         imageView.setFitHeight(500); // ajuste pour couvrir la hauteur
@@ -160,7 +172,11 @@ public class MainApp extends Application {
         root.setCenter(accueil);
     }
 
-
+    /**
+     * Cette méthode affiche l'interface permettant de
+     * rechercher les programmes et de consulter les
+     * cours associés.
+     */
     private void afficherCoursProgramme() {
         VBox layout = new VBox(10);
         layout.setStyle("-fx-padding: 20;");
@@ -169,62 +185,121 @@ public class MainApp extends Application {
         title.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
 
         TextField champProgramme = new TextField();
-        champProgramme.setPromptText("Entrez l'ID/le nom du programme");
+        champProgramme.setPromptText("Entrez l'ID ou le nom du programme");
 
         TextField champSession = new TextField();
         champSession.setPromptText("Entrez la session (optionnel)");
 
         ScrollPane scrollPane = new ScrollPane();
-        VBox listeCoursBox = new VBox(5);
-        scrollPane.setContent(listeCoursBox);
+        listeCoursProgrammeBox = new VBox(5);
+        listeCoursProgrammeBox.setStyle("-fx-padding: 10; -fx-background-color: #f9f9f9; -fx-spacing: 5;");
+        scrollPane.setContent(listeCoursProgrammeBox);
         scrollPane.setFitToWidth(true);
 
-        Button btnLancer = new Button("Afficher les cours");
+        Button btnLancer = new Button("Afficher les programmes");
         btnLancer.setStyle("-fx-background-color: #623E32; -fx-text-fill: white;");
 
         btnLancer.setOnAction(e -> {
-            String programmeId = champProgramme.getText().trim();
+            String input = champProgramme.getText().trim();
             String session = champSession.getText().trim();
-            if (!programmeId.isEmpty()) {
-                new Thread(() -> {
-                    List<Cours> cours;
-                    List<String> coursFilter;
-                    ApiService api = new ApiService();
-                    if (!session.isEmpty()) {
+            if (input.isEmpty()) return;
 
-                        // Session précisée → getCourseBySemester
-                        coursFilter = api.getCoursesBySemester(programmeId, session);
-                        cours = coursFilter.stream()
-                                .map(api::rechercherCoursParSigle)
-                                .filter(c -> c != null)
-                                .toList();
-                    } else {
-                        // Session non précisée → récupérer tous les cours
-                        cours = api.getCoursesForAProgram(programmeId);
-                    }
-// car ça s'exécute sur un thread
+            new Thread(() -> {
+                ApiService api = new ApiService();
+
+                if (input.matches("\\d+")) { // C'est un ID → affichage direct des cours
+                    Platform.runLater(() -> afficherCoursPourProgramme(input, session));
+                } else { // C'est un nom → recherche des programmes
+                    List<ApiService.ProgrammeDTO> programmes = api.rechercherProgrammesParNom(input);
+
                     Platform.runLater(() -> {
-                        listeCoursBox.getChildren().clear();
-                        if (cours.isEmpty()) {
-                            listeCoursBox.getChildren().add(new Label("Aucun cours trouvé pour ce programme."));
-                        } else {
-                            for (Cours c : cours) {
-                                Label lblCours = new Label(c.getId() + " - " + c.getName());
-                                lblCours.setStyle("-fx-font-size: 14px; -fx-text-fill: #3498db; -fx-cursor: hand;");
-                                lblCours.setOnMouseEntered(ev -> lblCours.setStyle("-fx-font-size: 14px; -fx-text-fill: #1abc9c; -fx-underline: true; -fx-cursor: hand;"));
-                                lblCours.setOnMouseExited(ev -> lblCours.setStyle("-fx-font-size: 14px; -fx-text-fill: #3498db; -fx-cursor: hand;"));
-                                lblCours.setOnMouseClicked(ev -> afficherCoursDetail(c, session)); // <-- passage session
-                                listeCoursBox.getChildren().add(lblCours);
-                            }
+                        listeCoursProgrammeBox.getChildren().clear();
+
+                        if (programmes.isEmpty()) {
+                            listeCoursProgrammeBox.getChildren().add(new Label("Aucun programme trouvé."));
+                            return;
+                        }
+
+                        for (ApiService.ProgrammeDTO p : programmes) {
+                            HBox hbox = new HBox();
+                            hbox.setStyle("-fx-padding: 5; -fx-border-color: #3498db; -fx-border-width: 1; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: #eaf2f8;");
+                            Label lbl = new Label(p.name);
+                            lbl.setStyle("-fx-text-fill: #3498db; -fx-cursor: hand; -fx-font-size: 14;");
+                            lbl.setOnMouseClicked(ev -> afficherCoursPourProgramme(p.id, session));
+                            hbox.getChildren().add(lbl);
+                            listeCoursProgrammeBox.getChildren().add(hbox);
                         }
                     });
-                }).start();
-            }
+                }
+            }).start();
         });
 
-        layout.getChildren().addAll(title, champProgramme, new Label("Session (optionnel) :"), champSession, btnLancer, scrollPane);
+        layout.getChildren().addAll(
+                title,
+                champProgramme,
+                new Label("Session (optionnel) :"),
+                champSession,
+                btnLancer,
+                scrollPane
+        );
+
         root.setCenter(layout);
     }
+
+    /**
+     * Affiche les cours associés à un programme donné.
+     *
+     * @param programmeId identifiant du programme
+     * @param session session sélectionnée par l'utilisateur
+     */
+    private void afficherCoursPourProgramme(String programmeId, String session) {
+        listeCoursProgrammeBox.getChildren().clear();
+        listeCoursProgrammeBox.getChildren().add(new Label("Chargement des cours..."));
+
+        new Thread(() -> {
+            ApiService api = new ApiService();
+            List<Cours> cours;
+
+            if (session != null && !session.isEmpty()) {
+                List<String> ids = api.getCoursesBySemester(programmeId, session);
+                cours = ids.stream()
+                        .map(api::rechercherCoursParSigle)
+                        .filter(c -> c != null)
+                        .toList();
+            } else {
+                cours = api.getCoursesForAProgram(programmeId);
+            }
+
+            Platform.runLater(() -> {
+                listeCoursProgrammeBox.getChildren().clear();
+
+                if (cours.isEmpty()) {
+                    listeCoursProgrammeBox.getChildren().add(new Label("Aucun cours trouvé."));
+                } else {
+                    Label titreCours = new Label("Cours pour le programme : " + programmeId);
+                    titreCours.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 0 10 0;");
+                    listeCoursProgrammeBox.getChildren().add(titreCours);
+
+                    for (Cours c : cours) {
+                        HBox hbox = new HBox();
+                        hbox.setStyle("-fx-padding: 3 0 3 10;");
+                        Label lbl = new Label(c.getId() + " - " + c.getName());
+                        lbl.setStyle("-fx-text-fill: #2c3e50; -fx-cursor: hand;");
+                        lbl.setOnMouseClicked(e -> afficherCoursDetail(c, session));
+                        hbox.getChildren().add(lbl);
+                        listeCoursProgrammeBox.getChildren().add(hbox);
+                    }
+                }
+            });
+        }).start();
+    }
+
+    /**
+     * Affiche les détails d'un cours sélectionné dans l'interface programme..
+     *
+     * @param cours cours à afficher
+     * @param session session associée
+     */
 
     private void afficherCoursDetail(Cours cours, String session) {
         VBox container = new VBox(5);
@@ -244,7 +319,7 @@ public class MainApp extends Application {
         Button btnHoraire = new Button("Voir horaire");
         btnHoraire.setOnAction(e -> {
             if (rechercheController == null) rechercheController = new ClientController();
-            rechercheController.afficherHoraire(cours); // <-- méthode avec session
+            rechercheController.afficherHoraire(cours, session); // passer la session
         });
 
         Button btnAvis = new Button("Voir avis");
@@ -261,6 +336,11 @@ public class MainApp extends Application {
         root.setCenter(scroll);
     }
 
+    /**
+     * Affiche l'interface de recherche de cours.
+     * Cette méthode initialise les champs et les résultats
+     * s'ils ne sont pas déjà créés.
+     */
     private void afficherRecherche() {
         if (rechercheController == null) {
             rechercheController = new ClientController();
@@ -288,7 +368,7 @@ public class MainApp extends Application {
         });
 
 
-        // 🔥 container UNIQUE pour les résultats
+        //  container UNIQUE pour les résultats
         resultContainer = new VBox();
         resultContainer.getChildren().add(rechercheController.getListeResultats());
 
@@ -320,12 +400,11 @@ public class MainApp extends Application {
     }
 
 
-    private void afficherMessage(String texte) {
-        VBox box = new VBox();
-        box.setAlignment(Pos.CENTER);
-        box.getChildren().add(new Label(texte));
-        root.setCenter(box);
-    }
+    /**
+     * Ouvre une fenêtre permettant à l'utilisateur
+     * de saisir des cours et une session afin
+     * d'afficher un horaire.
+     */
 
     private void afficherHoraireDialog() {
         if (rechercheController == null) rechercheController = new ClientController();
@@ -397,7 +476,11 @@ public class MainApp extends Application {
             });
         });
     }
-
+    /**
+     * Méthode main de lancement de l'application.
+     *
+     * @param args arguments de lancement
+     */
     public static void main(String[] args) {
         launch();
     }

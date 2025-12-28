@@ -4,9 +4,7 @@ package org.projet.model;
  * Cette classe permet de définir l'entité Avis.
  */
 public class Avis {
-    //private int id;
     private String commentaire;
-    //private int idAuteur;
     private int noteDifficulte;
     private String sigleCours;
     private boolean valide;
@@ -46,6 +44,7 @@ public class Avis {
         return sigleCours;
     }
 
+
     /**
      * Cette méthode permet de récupérer le nom de professeur.
      * @return le nom d'un professeur.
@@ -79,6 +78,22 @@ public class Avis {
 
     public int getNoteChargeTravail() {
         return noteChargeTravail;
+    }
+
+    /**
+     * Cette méthode permet de get le champ valide.
+     * @return  valide.
+     */
+    public boolean isValide() {
+        return valide;
+    }
+
+    /**
+     * Cette méthode permet de set le champ valide.
+     * @param valide booleen.
+     */
+    public void setValide(boolean valide){
+this.valide = valide;
     }
 
 }

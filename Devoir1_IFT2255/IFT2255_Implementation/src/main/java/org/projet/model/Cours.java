@@ -443,5 +443,6 @@ public class Cours {
     public void setAvailable_periods(Map<String, Boolean> available_periods) {
         this.available_periods = available_periods;
     }
+
 }
 

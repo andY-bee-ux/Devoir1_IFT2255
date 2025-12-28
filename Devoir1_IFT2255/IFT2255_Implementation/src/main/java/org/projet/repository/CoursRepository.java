@@ -2,10 +2,12 @@ package org.projet.repository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.jetbrains.annotations.NotNull;
 import org.projet.model.Cours;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -16,6 +18,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+
 
 /**
  * Cette classe permet de communiquer avec l'API Planifium pour récupérer les informations relatives aux Cours.
@@ -245,7 +249,7 @@ public class CoursRepository implements IRepository {
                 map.put("name",program.get("name").asText());
                 programmes.add(map);
             }
-        }catch (IOException e) {
+        }catch (Exception e) {
             System.out.println("Erreur lors de la récupération des requêtes : " + e.getMessage());
         }
         return programmes;
@@ -290,6 +294,114 @@ public class CoursRepository implements IRepository {
 
 
 
+    }
+
+    /**
+     * Cette méthode permet de récupérer les cours d'un programme à partir de l'id de ce dernier.
+     * @param programID id du programme.
+     * @return le response body
+     * @throws Exception en cas d'erreur.
+     */
+
+    public String getCoursesForAProgram(String programID) throws Exception {
+        String BASE_URL = "https://planifium-api.onrender.com/api/v1/programs";
+        Map<String, String> params = Map.of(
+                "programs_list", programID
+        );
+        URI uri  = getStringBuilder(BASE_URL,params);
+        try{
+            HttpURLConnection connection = (HttpURLConnection) new URL(uri.toString()).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()));
+
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+
+
+            return response.toString();
+
+    }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Cette méthode permet de fetch les schedules.
+     * @param courseID id du cours dont on veut fetch les schedules.
+     * @param semester session en question.
+     * @return un InputStream.
+     * @throws Exception en cas d'erreur
+     */
+
+    public InputStream fetchSchedules(String courseID, String semester) throws Exception{
+        String baseUrl = "https://planifium-api.onrender.com/api/v1/schedules";
+        Map<String, String> params = Map.of(
+                "courses_list", "[\"" + courseID + "\"]",
+                "min_semester", semester
+        );
+
+        URI uri = getStringBuilder(baseUrl, params);
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+return connection.getInputStream();
+
+
+
+        }catch( Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    /**
+     *  Cette methode forme des URL en prenant en compte des paramètres de recherche.
+     * @param BASE_URL URL de base sur lequel il faudra appliquer des paramètres.
+     * @param params Paramètres qui doivent être ajouté a l'URL pour effectuer une recherche optimal.
+     * @return Un URI valide.
+     **/
+    @NotNull
+    private static URI getStringBuilder(String BASE_URL,Map<String, String> params) {
+        // Allow overriding the Planifium base host for testing (e.g., local HTTP server)
+        String override = System.getProperty("planifium.base");
+        if (override != null && !override.isBlank()) {
+            try {
+                URI orig = URI.create(BASE_URL);
+                URI over = URI.create(override);
+                String combined = over.toString().replaceAll("/+$", "") + orig.getPath();
+                BASE_URL = combined;
+            } catch (Exception ignored) {
+                // if parsing fails, fall back to the provided BASE_URL
+            }
+        }
+
+
+
+        StringBuilder sb = new StringBuilder(BASE_URL);
+        if (params != null && !params.isEmpty()) {
+            sb.append("?");
+            params.forEach((key, value) -> {
+                sb.append(URLEncoder.encode(key, StandardCharsets.UTF_8))
+                        .append("=")
+                        .append(URLEncoder.encode(value, StandardCharsets.UTF_8))
+                        .append("&");
+            });
+            sb.deleteCharAt(sb.length() - 1); // remove trailing &
+        }
+        return URI.create(sb.toString());
     }
 
 }

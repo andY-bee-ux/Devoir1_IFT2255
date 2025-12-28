@@ -22,13 +22,16 @@ public class ApiService {
 
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
-
+// url de base de notre api
     private final String baseUrl = "http://172.17.0.1:7070/cours/rechercher/";
 
     public ObjectMapper getMapper() {
         return mapper;
     }
-
+    public static boolean estEntier(String s) {
+        if (s == null || s.isEmpty()) return false;
+        return s.matches("\\d+");
+    }
     /**
      * Cette méthode permet de récupérer les cours pour un programme donné.
      * @param programmeId identifiant du programme
@@ -69,6 +72,54 @@ public class ApiService {
     }
 
     /**
+     * Cette classe interne permet de parser la sortie de l'api ( json nom-id lors de la recherche de programmes).
+     */
+    public class ProgrammeDTO {
+        public String id;
+        public String name;
+
+        public ProgrammeDTO(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+    }
+
+    /**
+     * Cette méthode permet d'implémenter la logique pour la recherche de programmes par nom.
+     * @param nom nom du programme
+     * @return liste des programmes contenant ledit nom.
+     */
+    public List<ProgrammeDTO> rechercherProgrammesParNom(String nom) {
+        try {
+            String url = "http://172.17.0.1:7070/cours-programme/nom/" + nom;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                List<String> programmes = mapper.readValue(
+                        response.body(),
+                        new TypeReference<List<String>>() {}
+                );
+
+                return programmes.stream()
+                        .map(p -> {
+                            String[] parts = p.split("-", 2);
+                            return new ProgrammeDTO(parts[0], parts[1]);
+                        })
+                        .toList();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return List.of();
+    }
+
+
+    /**
      * Cette méthode permet de récupérer un cours à partir de son sigle.
      * @param sigle
      * @return
@@ -84,8 +135,8 @@ public class ApiService {
      * Cette méthode permet de rechercher un cours en faisant des appels HTTP à l'API de PickCourse.
      * @param param id | name | description
      * @param value valeur recherchée
-     * @param includeSchedule true | false
-     * @param session ex: H2024, A2024 (nullable)
+     * @param includeSchedule true ou false
+     * @param session ex: H24, A24, null
      */
     public List<Cours> rechercherCours(String param,
                                        String value,
@@ -163,7 +214,7 @@ public class ApiService {
     /**
      * Récupère la liste des cours offerts pour un programme et un semestre donnés.
      * @param programmeId id du programme
-     * @param session ex: H2024, A2024
+     * @param session ex: H24, A24
      * @return liste des sigles de cours
      */
     public List<String> getCoursesBySemester(String programmeId, String session) {
@@ -192,7 +243,7 @@ public class ApiService {
     /**
      * Récupère l'horaire détaillé d'un cours pour une session donnée
      * @param sigle sigle du cours
-     * @param session ex: H2024, A2024
+     * @param session ex: H24, A24
      * @return Map représentant l’horaire (sections, volets, dates, etc.)
      */
     public Map<String, Object> getCourseSchedule(String sigle, String session) {

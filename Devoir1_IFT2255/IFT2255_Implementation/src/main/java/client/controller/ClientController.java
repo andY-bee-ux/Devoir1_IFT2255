@@ -58,12 +58,15 @@ public class ClientController {
             "Combinaison",
             "Cours",
             "Crédits",
+            "Moyenne inofficielle de la charge de travail",
+            "Moyenne inofficielle de la difficulté",
+            "Moyenne résultats",
             "Prérequis",
             "Concomitants",
             "Périodes communes",
             "Sessions communes",
             "Horaires",
-            "Conflits"
+            "Conflits",
     };
 
 
@@ -287,6 +290,9 @@ public class ClientController {
         stage.show();
     }
 
+    /**
+     * Cette méthode permet d'afficher tous les avis de la plateforme.
+     */
     public void afficherAllAvis(){
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -382,6 +388,7 @@ public class ClientController {
         instruction.setStyle("-fx-font-weight: bold;");
 
         TextField champCycle = new TextField();
+        Label instructionCycle = new Label("Entrez votre cycle qui doit être un entier entre 1 et 4");
         champCycle.setPromptText("Entrez votre cycle (1-4)");
 
         TextField champCoursFaits = new TextField();
@@ -407,7 +414,7 @@ public class ClientController {
             }
         });
 
-        root.getChildren().addAll(instruction, champCycle, champCoursFaits, btnVerifier, resultat);
+        root.getChildren().addAll(instruction, instructionCycle, champCycle, champCoursFaits, btnVerifier, resultat);
 
         Scene scene = new Scene(root, 500, 250);
         stage.setScene(scene);
@@ -450,6 +457,11 @@ public class ClientController {
         root.getChildren().addAll(title, champSigle, btnVoir, zoneResultats);
         return root;
     }
+
+    /**
+     * Cette méthode permet de récupérer la vue de la comparaison.
+     * @return la vue de la comparaison.
+     */
 
     public VBox getVueComparaison() {
         if (comparaisonBox != null) return comparaisonBox;
@@ -551,7 +563,7 @@ public class ClientController {
         Button btnAjouterCombinaison = new Button("+ Ajouter une combinaison");
         btnAjouterCombinaison.setOnAction(e -> {
             ListView<String> lv = new ListView<>();
-            lv.setPrefHeight(80);
+            lv.setPrefHeight(100);
             combinaisons.add(lv);
 
             VBox bloc = new VBox(5, new Label("Combinaison " + combinaisons.size()), lv, creerAjoutCoursBox(lv));
@@ -613,6 +625,13 @@ public class ClientController {
 
         return comparaisonBox;
     }
+
+    /**
+     * Cette méthode permet d'afficher la comparaison basée sur les avis.
+     * @param ids ids de cours
+     * @param difficulteInoff difficulté ou non
+     * @param chargeInoff charge ou non
+     */
     private void afficherResultatsInofficiels(String[] ids, boolean difficulteInoff, boolean chargeInoff) {
         VBox container = new VBox(8);
         container.setStyle("-fx-padding: 10;");
@@ -650,7 +669,11 @@ public class ClientController {
     }
 
 
-    // Méthode utilitaire pour créer la zone d'ajout de cours dans une combinaison
+    /**
+     * Cette méthode permet de gérer l'ajout de cours dans une combinaison.
+     * @param lv la liste view.
+     * @return HBOX du bloc de combinaison.
+     */
     private HBox creerAjoutCoursBox(ListView<String> lv) {
         TextField champCours = new TextField();
         champCours.setPromptText("Ajouter sigle de cours");
@@ -670,35 +693,7 @@ public class ClientController {
         return new HBox(5, champCours, btnAjouter, btnSupprimer);
     }
 
-    /**
-     * Cette méthode permet de gérer la comparaison des ensembles de cours.
-     */
 
-    private void lancerComparaisonCombinaisons() {
-
-        List<List<String>> ensemblesCours = obtenirEnsemblesSelectionnes(); // méthode pour créer listes
-        if (ensemblesCours.isEmpty()) {
-            messageLabel.setText("Veuillez sélectionner au moins un ensemble de cours.");
-            return;
-        }
-
-        String session = sessionField.getText().trim().isEmpty() ? null : sessionField.getText().trim();
-
-        List<List<String>> resultat;
-        try {
-            resultat = coursService.comparerCombinaisonCoursApi(ensemblesCours, session);
-        } catch (Exception e) {
-            messageLabel.setText("Erreur lors de la comparaison des ensembles : " + e.getMessage());
-            return;
-        }
-
-        if (resultat == null || resultat.isEmpty()) {
-            messageLabel.setText("Aucun résultat de comparaison pour ces ensembles.");
-            return;
-        }
-
-        afficherTableResultats(resultat);
-    }
 
     /**
      * Cette méthode permet de convertir les listes en tableviews.
@@ -758,6 +753,12 @@ public class ClientController {
         tableComparaison.setItems(data);
     }
 
+    /**
+     * Cette méthode permet de nettoyer valeur afin d'enlever le =.
+     * @param valeur contenu à nettoyer
+     * @return contenu nettoyé
+     */
+
     private String nettoyerValeur(String valeur) {
         if (valeur == null) return "";
         int idx = valeur.indexOf('=');
@@ -773,6 +774,10 @@ public class ClientController {
         return ensembles;
     }
 
+    /**
+     * Cette méthode gère la logique derrière les deux types de comparaison
+     * pour tous les critères possibles.
+     */
 
     private void lancerComparaison() {
 
@@ -982,24 +987,13 @@ public class ClientController {
         stage.setScene(scene);
         stage.show();
     }
-    public void afficherCoursParTrimestre(String programmeId, String session) {
-        List<String> cours = coursService.getCoursesBySemester(programmeId, session);
 
-        if (cours.isEmpty()) {
-            System.out.println("Aucun cours trouvé pour " + session);
-        } else {
-            System.out.println("Cours offerts pour " + session + " : " + String.join(", ", cours));
-        }
-    }
-    public void afficherHoraireCours(String sigle, String session) {
-        Map<String, Object> horaire = coursService.getCourseSchedule(sigle, session);
 
-        if (horaire.isEmpty()) {
-            System.out.println("Aucun horaire trouvé pour " + sigle + " (" + session + ")");
-            return;
-        }
-
-    }
+    /**
+     *  Cette méthode permet d'afficher l'horaire d'un cours pour une session donnée.
+     * @param cours cours dont on veut l'horaire.
+     * @param session la session en question.
+     */
 
     public void afficherHoraire(Cours cours, String session) {
         if (cours == null || session == null || session.isEmpty()) return;
@@ -1018,42 +1012,60 @@ public class ClientController {
             layout.getChildren().add(new Label("Aucun horaire trouvé pour ce cours."));
         } else {
             // Parcours des sections
-            horaires.forEach((section, voletObj) -> {
-                layout.getChildren().add(new Label(section.toString())); // ex: "Section : A"
-                if (voletObj instanceof Map<?, ?> volets) {
-                    volets.forEach((volet, horaireObj) -> {
-                        if (horaireObj instanceof Map<?, ?> horairesMap) {
-                            if (horairesMap.containsKey("Date de debut :")) {
-                                Label lbl = new Label(volet + " → " +
-                                        String.valueOf(horairesMap.get("Jours :")) + " " +
-                                        String.valueOf(horairesMap.get("Heures :")) + " | " +
-                                        String.valueOf(horairesMap.get("Salle :")) + " | " +
-                                        "Mode: " + String.valueOf(horairesMap.get("Mode d'enseignement :")));
-                                lbl.setStyle("-fx-font-size: 13px;");
-                                layout.getChildren().add(lbl);
-                            } else {
-                                // Sous-volets (ex: "Horaire (1) :")
-                                horairesMap.forEach((k, v) -> {
-                                    if (v instanceof Map<?, ?> map) {
-                                        Label lbl = new Label(k + " → " +
-                                                String.valueOf(map.get("Jours :")) + " " +
-                                                String.valueOf(map.get("Heures :")) + " | " +
-                                                String.valueOf(map.get("Salle :")) + " | " +
-                                                "Mode: " + String.valueOf(map.get("Mode d'enseignement :")));
-                                        lbl.setStyle("-fx-font-size: 13px;");
-                                        layout.getChildren().add(lbl);
-                                    }
-                                });
-                            }
+            horaires.forEach((section, sectionObj) -> {
+                layout.getChildren().add(new Label(section.toString()));
+
+                if (sectionObj instanceof Map<?, ?> voletsMap) {
+                    // On parcourt chaque volet ou champ du map
+                    voletsMap.forEach((voletKey, voletValue) -> {
+                        if (voletValue instanceof Map<?, ?> horaireMap) {
+                            // Si c'est un horaire ou un sous-volet
+                            horaireMap.forEach((k, v) -> {
+                                if (v instanceof Map<?, ?> sousMap) {
+                                    // Horaire détaillé
+                                    String lblText = k + " → " +
+                                            getSafe(sousMap, "Jours :") + " " +
+                                            getSafe(sousMap, "Heures : ") + " | " +
+                                            getSafe(sousMap, "Salle : ") + " | " +
+                                            "Mode: " + getSafe(sousMap, "Mode d'enseignement : ") +
+                                            " | Campus: " + getSafe(sousMap, "Campus : ") +
+                                            " | Début: " + getSafe(sousMap, "Date de debut : ") +
+                                            " | Fin: " + getSafe(sousMap, "Date de fin : ");
+                                    Label lbl = new Label(lblText);
+                                    lbl.setStyle("-fx-font-size: 13px;");
+                                    layout.getChildren().add(lbl);
+                                } else if (k.toString().startsWith("Volets")) {
+                                    // On peut afficher le type de volet (Intra, Final, TH, TP, etc.)
+                                    Label lbl = new Label(voletKey + " → " + v.toString());
+                                    lbl.setStyle("-fx-font-size: 13px; -fx-font-weight: bold;");
+                                    layout.getChildren().add(lbl);
+                                }
+                            });
+                        } else {
+                            // Champs simples comme Professeur(s), Places restantes, Capacité
+                            Label lbl = new Label(voletKey + " → " + (voletValue != null ? voletValue.toString() : "N/A"));
+                            lbl.setStyle("-fx-font-size: 13px;");
+                            layout.getChildren().add(lbl);
                         }
                     });
                 }
             });
         }
 
-        Scene scene = new Scene(new ScrollPane(layout), 450, 350);
+        Scene scene = new Scene(new ScrollPane(layout), 500, 400);
         stage.setScene(scene);
         stage.show();
+    }
+
+    /**
+     * Cette méthode est une méthode utilitaire permettant d'éviter les réponses null.
+     * @param map le dictionnaire
+     * @param key la clé
+     * @return chaine de caractères N/A à la place de null.
+     */
+    private String getSafe(Map<?, ?> map, String key) {
+        Object val = map.get(key);
+        return val != null ? val.toString() : "N/A";
     }
 
 
