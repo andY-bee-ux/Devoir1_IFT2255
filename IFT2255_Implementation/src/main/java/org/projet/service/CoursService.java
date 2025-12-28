@@ -1440,24 +1440,7 @@ float moyenneAvisDifficulte = 0;
      * @return Un Optional qui est vide si le cours est indisponible, sinon il retourne le contenu JsonNode.
      **/
     private Optional<JsonNode> fetchSchedule(String courseID, String semester) {
-        try {
-
-            InputStream response = coursRepository.fetchSchedules(courseID, semester);
-            ObjectMapper mapper = new ObjectMapper();
-            ;
-            JsonNode json = mapper.readTree(response);
-            if (json.isArray()) {
-                for (JsonNode node : json) {
-                    if (semester.equals(node.get("semester").asText())) {
-                        return Optional.of(node);
-                    }
-                }
-            }
-        }
-    catch (Exception e) {
-            System.out.println("Erreur API schedules : " + e.getMessage());
-        }
-        return Optional.empty();
+        return this.coursRepository.fetchSchedule(courseID, semester);
     }
 
     /**

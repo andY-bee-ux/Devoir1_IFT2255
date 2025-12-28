@@ -347,10 +347,9 @@ public class CoursRepository implements IRepository {
      * @return un InputStream.
      * @throws Exception en cas d'erreur
      */
-
-    public InputStream fetchSchedules(String courseID, String semester) throws Exception{
-        String baseUrl = "https://planifium-api.onrender.com/api/v1/schedules";
-        Map<String, String> params = Map.of(
+    public Optional<JsonNode> fetchSchedule(String courseID, String semester){
+         String baseUrl = "https://planifium-api.onrender.com/api/v1/schedules";
+         Map<String, String> params = Map.of(
                 "courses_list", "[\"" + courseID + "\"]",
                 "min_semester", semester
         );
@@ -362,15 +361,21 @@ public class CoursRepository implements IRepository {
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
-return connection.getInputStream();
 
+            ObjectMapper mapper = new ObjectMapper();;
+            JsonNode json = mapper.readTree(connection.getInputStream());
 
-
-        }catch( Exception e) {
-            e.printStackTrace();
-            return null;
+            if (json.isArray()) {
+                for (JsonNode node : json) {
+                    if (semester.equals(node.get("semester").asText())) {
+                        return Optional.of(node);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur API schedules : " + e.getMessage());
         }
-
+        return Optional.empty();
     }
 
     /**
