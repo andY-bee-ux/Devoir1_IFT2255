@@ -22,7 +22,26 @@ public class CoursController {
 
    
 
+/**
+     * Cette méthode permet de comparer les statistiques de deux cours.
+     * @param ctx le contexte javalin qui contient la requête HTTP de l'utilisateur ainsi que notre réponse.
+     */
+    public void comparerDeuxCoursByResultats(Context ctx) {
+        RequeteDeuxCours req = ctx.bodyAsClass(RequeteDeuxCours.class);
 
+        Resultats res1 = coursService.getResultats(req.sigle1);
+        Resultats res2 = coursService.getResultats(req.sigle2);
+
+
+        Map<String, String> reponses = new HashMap<>();
+        reponses.put("popularite", coursService.comparerPopularite(res1, res2));
+        reponses.put("difficulte", coursService.comparerDifficulte(res1, res2));
+
+        ctx.json(reponses);
+    }
+
+
+    
     public void checkEligibility(Context ctx){
         RequeteEligibilite req = ctx.bodyAsClass(RequeteEligibilite.class);
         String resultat = coursService.checkEligibility(req.idCours,req.listeCours);
