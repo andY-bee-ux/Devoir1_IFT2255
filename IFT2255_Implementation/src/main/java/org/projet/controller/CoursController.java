@@ -30,7 +30,61 @@ public class CoursController {
     }
 
 
+/**
+     * Cette méthode permet de trouver les programmes par nom
+     * @param ctx requête + notre réponse.
+     */
+    public void foundPrograms(Context ctx){
+        String nom = ctx.pathParam("nom");
+        List<String> details = coursService.foundProgramms(nom);
 
+        if (details.isEmpty()) {
+            ctx.status(404).json(Map.of("error", "Les paramètres fournis sont invalides ou le programme n'existe pas."));
+            return;
+        }
+
+        ctx.status(200).json(details);
+    }
+
+    /**
+     * Cette méthode permet de gérer la requête utilisateur pour la comparaison basée sur la difficulté pour les avis.
+     * @param ctx
+     */
+    public void comparerParDifficulteAvis(Context ctx){
+        RequeteComparaisonAvis req = ctx.bodyAsClass(RequeteComparaisonAvis.class);
+        try{
+            List<List<String>> resultat = coursService.comparerCoursParNoteDifficulteAvis(req.idsCours);
+            ctx.status(200);
+            ctx.json(resultat);
+        }catch(RuntimeException e){
+            ctx.status(400);
+            ctx.json("Des avis pour ces cours n'ont pas été trouvés.");
+        }
+    }
+
+    /**
+     * Cette méthode permet de gérer la requête utilisateur pour la comparaison basée sur la difficulté pour les avis.
+     * @param ctx
+     */
+    public void comparerParChargeAvis(Context ctx){
+        RequeteComparaisonAvis req = ctx.bodyAsClass(RequeteComparaisonAvis.class);
+        try{
+            List<List<String>> resultat = coursService.comparerCoursParChargeTravailAvis(req.idsCours);
+            ctx.status(200);
+            ctx.json(resultat);
+        }catch(RuntimeException e){
+            ctx.status(400);
+            ctx.json("Des avis pour ces cours n'ont pas été trouvés.");
+        }
+    }
+ /**
+     * Permet de parser le body de la requête de comparaison par avis.
+     */
+    public static class RequeteComparaisonAvis{
+        public String[] idsCours;
+    }
+    
+    
 
 
     public void rechercherCours(Context ctx){
