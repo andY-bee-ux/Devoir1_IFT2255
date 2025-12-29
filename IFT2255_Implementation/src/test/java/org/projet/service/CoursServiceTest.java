@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 
@@ -569,6 +570,10 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode array = mapper.readTree(mockResponse);
+            when(mockRepo.fetchSchedules(courseID, semester)).thenReturn(Optional.of(array.get(0)));
+
             Method fetchMeth = CoursService.class.getDeclaredMethod("fetchSchedule", String.class, String.class);
             fetchMeth.setAccessible(true);
             Optional<JsonNode> result = (Optional<JsonNode>) fetchMeth.invoke(service, courseID, semester);
@@ -600,6 +605,8 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
+            when(mockRepo.fetchSchedules(courseID, semester)).thenReturn(Optional.empty());
+
             Method fetchMeth = CoursService.class.getDeclaredMethod("fetchSchedule", String.class, String.class);
             fetchMeth.setAccessible(true);
             Optional<JsonNode> result = (Optional<JsonNode>) fetchMeth.invoke(service, courseID, semester);
@@ -627,6 +634,8 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
         // Stop the server to simulate network error
         server.stop(0);
         try {
+            when(mockRepo.fetchSchedules(courseID, semester)).thenReturn(Optional.empty());
+
             Method fetchMeth = CoursService.class.getDeclaredMethod("fetchSchedule", String.class, String.class);
             fetchMeth.setAccessible(true);
             Optional<JsonNode> result = (Optional<JsonNode>) fetchMeth.invoke(service, courseID, semester);
@@ -665,6 +674,9 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode array = mapper.readTree(mockResponse);
+            when(mockRepo.fetchSchedules(courseID, semester)).thenReturn(Optional.of(array.get(0)));
 
             Method method = CoursService.class.getDeclaredMethod("isCourseAvailable", String.class, String.class);
             method.setAccessible(true);
@@ -696,6 +708,7 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
+            when(mockRepo.fetchSchedules(courseID, semester)).thenReturn(Optional.empty());
 
             Method method = CoursService.class.getDeclaredMethod("isCourseAvailable", String.class, String.class);
             method.setAccessible(true);
@@ -761,6 +774,10 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode array = mapper.readTree(mockResponse);
+            when(mockRepo.fetchSchedules(courseID, semester)).thenReturn(Optional.of(array.get(0)));
+
             List<String> result = service.getCourseSchedule(courseID, semester);
 
             assertNotNull(result);
@@ -793,6 +810,8 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
 
         HttpServer server = startServer((path, query) -> mockResponse);
         try {
+            when(mockRepo.fetchSchedules(courseID, semester)).thenReturn(Optional.empty());
+
             List<String> result = service.getCourseSchedule(courseID, semester);
 
             assertNotNull(result);
@@ -826,7 +845,7 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
             """;
 
         // le repository retourne le JSON simulé
-        when(coursRepository.getCoursesForAProgram(programID))
+        when(mockRepo.getCoursesForAProgram(programID))
                 .thenReturn(mockResponse);
 
         // appel du service
@@ -840,7 +859,7 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
         assertTrue(result.contains("IFT2035"));
 
         // vérifie que le repository a bien été appelé
-        verify(coursRepository).getCoursesForAProgram(programID);
+        verify(mockRepo).getCoursesForAProgram(programID);
     }
 
     /**
@@ -863,7 +882,7 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
         """;
 
         // le repository retourne un programme sans champ "courses"
-        when(coursRepository.getCoursesForAProgram(programID))
+        when(mockRepo.getCoursesForAProgram(programID))
                 .thenReturn(mockResponse);
 
         // appel du service
@@ -874,7 +893,7 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
         assertTrue(result.isEmpty());
 
         // vérifie que le repository a bien été appelé
-        verify(coursRepository).getCoursesForAProgram(programID);
+        verify(mockRepo).getCoursesForAProgram(programID);
     }
 
     /**
@@ -889,7 +908,7 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
         String programID = "117510";
 
         // le repository simule une erreur réseau
-        when(coursRepository.getCoursesForAProgram(programID))
+        when(mockRepo.getCoursesForAProgram(programID))
                 .thenThrow(new RuntimeException("Erreur réseau simulée"));
 
         // appel du service
@@ -900,7 +919,7 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
         assertTrue(result.isEmpty());
 
         // vérifie que le repository a bien été appelé
-        verify(coursRepository).getCoursesForAProgram(programID);
+        verify(mockRepo).getCoursesForAProgram(programID);
     }
 
 
@@ -958,6 +977,14 @@ private CoursRepository coursRepository = CoursRepository.getInstance();
         });
 
         try {
+            // stub the repository responses (unit tests use mockRepo)
+            when(mockRepo.getCoursesForAProgram(programID)).thenReturn(programResponse);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode arr1 = mapper.readTree(scheduleResponse1);
+            when(mockRepo.fetchSchedules("IFT1015", semester)).thenReturn(Optional.of(arr1.get(0)));
+            when(mockRepo.fetchSchedules("IFT1025", semester)).thenReturn(Optional.of(arr1.get(0)));
+            when(mockRepo.fetchSchedules("IFT2035", semester)).thenReturn(Optional.empty());
+
             List<String> result = service.getCourseBySemester(semester, programID);
 
             assertNotNull(result);

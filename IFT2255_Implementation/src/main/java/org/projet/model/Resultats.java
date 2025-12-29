@@ -64,7 +64,7 @@ public class Resultats {
             return resultatsMap;
         }
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, java.nio.charset.StandardCharsets.UTF_8))) {
 
             String line;
             br.readLine(); // ignorer l'en-tête

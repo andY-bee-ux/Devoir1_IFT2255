@@ -1440,7 +1440,7 @@ float moyenneAvisDifficulte = 0;
      * @return Un Optional qui est vide si le cours est indisponible, sinon il retourne le contenu JsonNode.
      **/
     private Optional<JsonNode> fetchSchedule(String courseID, String semester) {
-        return this.coursRepository.fetchSchedule(courseID, semester);
+        return this.coursRepository.fetchSchedules(courseID, semester);
     }
 
     /**

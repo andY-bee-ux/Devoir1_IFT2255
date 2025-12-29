@@ -6,8 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.projet.model.Cours;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -347,7 +345,7 @@ public class CoursRepository implements IRepository {
      * @return un InputStream.
      * @throws Exception en cas d'erreur
      */
-    public Optional<JsonNode> fetchSchedule(String courseID, String semester){
+    public Optional<JsonNode> fetchSchedules(String courseID, String semester){
          String baseUrl = "https://planifium-api.onrender.com/api/v1/schedules";
          Map<String, String> params = Map.of(
                 "courses_list", "[\"" + courseID + "\"]",

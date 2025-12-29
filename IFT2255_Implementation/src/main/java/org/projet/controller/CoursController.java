@@ -58,6 +58,12 @@ public class CoursController {
             List<List<String>> resultat =
                     coursService.comparerCours(req.cours, req.criteres, req.session);
 
+            if (resultat == null) {
+                ctx.status(400);
+                ctx.json(new ArrayList<>());
+                return;
+            }
+
             ctx.status(200);
             ctx.json(resultat);
 

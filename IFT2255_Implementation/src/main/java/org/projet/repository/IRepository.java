@@ -2,6 +2,8 @@ package org.projet.repository;
 
 import org.projet.model.Cours;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +70,7 @@ public interface IRepository {
      * @throws Exception en cas d'erreur
      */
 
-    public InputStream fetchSchedules(String courseID, String semester) throws Exception;
+    public Optional<JsonNode> fetchSchedules(String courseID, String semester) throws Exception;
 
 
 }
