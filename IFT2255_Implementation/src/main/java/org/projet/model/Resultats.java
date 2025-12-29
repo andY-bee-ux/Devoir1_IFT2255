@@ -93,23 +93,38 @@ public class Resultats {
 
         return resultatsMap;
     }
-
+    /**
+     * Retourne le nom du cours.
+     * @return nom du cours.
+     */
     public String getNom() {
         return nom;
     }
-
+    /**
+     * Retourne la moyenne obtenue pour le cours.
+     * @return moyenne du cours.
+     */
     public String getMoyenne() {
         return moyenne;
     }
-
+    /**
+     * Retourne le score numérique associé au cours.
+     * @return score du cours.
+     */
     public double getScore() {
         return score;
     }
-
+    /**
+     * Retourne le nombre de participants au cours.
+     * @return nombre de participants.
+     */
     public int getParticipants() {
         return participants;
     }
-
+    /**
+     * Retourne le trimestre associé aux résultats du cours.
+     * @return trimestre du cours.
+     */
     public int getTrimestre() {
         return trimestre;
     }

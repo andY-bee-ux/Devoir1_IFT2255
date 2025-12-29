@@ -298,7 +298,10 @@ public class CoursController {
      * on peut déclarer les attributs publics.
      */
     public static class RequeteDeuxCours{
+        /** Sigle du premier cours à comparer. */
         public String sigle1;
+
+        /** Sigle du second cours à comparer. */
         public String sigle2;
     }
 
@@ -307,6 +310,7 @@ public class CoursController {
      * on peut déclarer les attributs publics.
      */
     public static class RequeteStats {
+        /** Sigle du cours concerné par l’analyse statistique. */
         public String sigle;
     }
 
@@ -315,6 +319,7 @@ public class CoursController {
      * Cette classe parse le json du body de la requête Resultat.
      */
     public static class RequeteResultats {
+        /** Sigle du cours dont on souhaite consulter les résultats académiques. */
         public String sigle;
     }
     /**
@@ -322,6 +327,7 @@ public class CoursController {
      * on peut déclarer les attributs publics.
      */
     public static class RequeteUnCours{
+        /** Sigle du cours à analyser. */
         public String sigle;
     }
 
@@ -329,9 +335,16 @@ public class CoursController {
      * Requête utilisée pour générer les horaires possibles d’un ensemble de cours.
      */
     public static class RequeteHoraire {
+        /** Liste des identifiants de cours sélectionnés. */
         public List<String> idCours;
+
+        /** Session académique concernée (ex : A25, H26). */
         public String session;
+
+        /** Indique si des sections spécifiques sont sélectionnées. */
         public Boolean sections;
+
+        /** Choix des sections pour chaque cours. */
         public Map<String, Map<String, String>> choix;
     }
 
@@ -339,6 +352,7 @@ public class CoursController {
      * Permet de parser le body de la requête de comparaison par avis.
      */
     public static class RequeteComparaisonAvis{
+        /** Tableau des sigles de cours à comparer à partir des avis. */
         public String[] idsCours;
     }
     /**
@@ -346,8 +360,13 @@ public class CoursController {
      * on peut déclarer les attributs publics.
      */
     public static class RequeteComparaison {
+        /** Liste des cours à comparer. */
         public String[] cours;
+
+        /** Critères de comparaison sélectionnés. */
         public String[] criteres;
+
+        /** Session académique concernée par la comparaison. */
         public String session;
     }
 
@@ -357,9 +376,16 @@ public class CoursController {
      */
 
     public static class RequeteRecherche{
+        /** Paramètre de recherche (id, name ou description). */
         public String param;
+
+        /** Valeur associée au paramètre de recherche. */
         public String valeur;
+
+        /** Indique si l’horaire doit être inclus dans les résultats. */
         public String includeSchedule;
+
+        /** Trimestre académique ciblé par la recherche. */
         public String semester;
     }
     /**
@@ -367,7 +393,10 @@ public class CoursController {
      * on peut déclarer les attributs publics.
      */
     public static class RequeteEligibilite{
+        /** Identifiant du cours à vérifier. */
         public String idCours;
+
+        /** Liste des cours déjà complétés par l’étudiant. */
         public List<String> listeCours;
     }
 
@@ -376,7 +405,10 @@ public class CoursController {
      * on peut déclarer les attributs publics.
      */
     public static class RequeteComparaisonCombinaison{
+        /** Liste de combinaisons de cours à comparer. */
         public List<List<String>> listeCours;
+
+        /** Session académique concernée. */
         public String session;
     }
 
@@ -388,8 +420,13 @@ public class CoursController {
      * en tenant compte des cours complétés et du cycle d’études.
      */
     public static class RequeteEligibiliteNew{
+        /** Identifiant du cours à vérifier. */
         public String idCours;
+
+        /** Liste des cours déjà complétés par l’étudiant. */
         public List<String> listeCours;
+
+        /** Cycle d’études de l’étudiant (ex : 1, 2). */
         public Integer cycle;
     }
 

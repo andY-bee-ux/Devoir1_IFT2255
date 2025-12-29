@@ -40,7 +40,11 @@ public class CoursService {
 
     private CoursService() {
     }
-
+    /**
+     * Retourne l’instance unique de {@code CoursService} (Singleton).
+     *
+     * @return instance unique de CoursService.
+     */
     public static CoursService getInstance() {
         if (instance == null) {
             instance = new CoursService();
@@ -69,6 +73,10 @@ public class CoursService {
     }
 
     // pour stocker les ids de cours issu de l'appel à getAllCoursesId() afin de réduire le nombre d'appels HTTP quand on appelle validateIdCours.
+    /**
+     * Cache local contenant les identifiants de cours afin de
+     * réduire le nombre d’appels réseau lors des validations.
+     */
     public List<String> cacheCoursIds = new ArrayList<>();
 
     /**
@@ -450,7 +458,12 @@ float moyenneAvisDifficulte = 0;
             this.startTime = LocalTime.parse(start);
             this.endTime = LocalTime.parse(end);
         }
-
+        /**
+         * Retourne une représentation textuelle de l’activité,
+         * incluant le cours, la section, les jours et l’intervalle horaire.
+         *
+         * @return description textuelle de l’activité.
+         */
         @Override
         public String toString() {
             return coursId + " [" + section + "] " + days + " " + start + "-" + end;
@@ -491,7 +504,13 @@ float moyenneAvisDifficulte = 0;
         return s1.compareTo(e2) < 0 && s2.compareTo(e1) < 0;
     }
 
-
+    /**
+     * Compare des cours en fonction de la difficulté perçue,
+     * basée sur les avis des étudiants.
+     *
+     * @param idsCours identifiants des cours à comparer.
+     * @return tableau contenant la moyenne de difficulté pour chaque cours.
+     */
     public List<List<String>> comparerCoursParNoteDifficulteAvis(String[] idsCours) {
         List<List<String>> result = new ArrayList<>();
 
@@ -526,7 +545,13 @@ float moyenneAvisDifficulte = 0;
 
         return result;
     }
-
+    /**
+    * Compare des cours en fonction de la charge de travail perçue,
+    * basée sur les avis des étudiants.
+    *
+    * @param idsCours identifiants des cours à comparer.
+    * @return tableau contenant la moyenne de charge de travail pour chaque cours.
+    */
     public List<List<String>> comparerCoursParChargeTravailAvis(String[] idsCours) {
         List<List<String>> result = new ArrayList<>();
 
@@ -1069,9 +1094,19 @@ float moyenneAvisDifficulte = 0;
      * des conflits horaires détectés.
      */
     public class ResultatHoraire {
+        /** Horaire final par cours. */
         public Map<String, List<List<String>>> horaire;
+
+        /** Liste des conflits horaires détectés. */
         public List<ConflitHoraireGroupe> conflits;
 
+        /**
+         * Construit un résultat d’horaire contenant l’horaire généré
+         * ainsi que les conflits horaires détectés.
+         *
+         * @param horaire structure représentant l’horaire final.
+         * @param conflits liste des conflits horaires identifiés.
+         */
         public ResultatHoraire(
                 Map<String, List<List<String>>> horaire,
                 List<ConflitHoraireGroupe> conflits
@@ -1086,10 +1121,21 @@ float moyenneAvisDifficulte = 0;
      * sur un même jour et un même intervalle de temps.
      */
     public class ConflitHoraireGroupe {
+        /** Jour du conflit. */
         public String jour;
+
+        /** Intervalle horaire concerné. */
         public String intervalle;
+
+        /** Ensemble des cours impliqués dans le conflit. */
         public Set<String> cours;
 
+        /**
+         * Construit un conflit horaire pour un jour et un intervalle donnés.
+         *
+         * @param jour jour du conflit.
+         * @param intervalle intervalle horaire concerné.
+         */
         public ConflitHoraireGroupe(String jour, String intervalle) {
             this.jour = jour;
             this.intervalle = intervalle;
@@ -1199,11 +1245,24 @@ float moyenneAvisDifficulte = 0;
     private String format(int minutes) {
         return String.format("%02d:%02d", minutes / 60, minutes % 60);
     }
-
+    /**
+     * Objet de transfert représentant un programme académique.
+     * Contient l’identifiant et le nom du programme.
+     */
     public class ProgrammeDTO {
+    
+        /** Identifiant du programme. */
         public String id;
+
+        /** Nom du programme. */
         public String name;
 
+        /**
+         * Construit un objet ProgrammeDTO.
+         *
+         * @param id identifiant du programme.
+         * @param name nom du programme.
+         */
         public ProgrammeDTO(String id, String name) {
             this.id = id;
             this.name = name;
