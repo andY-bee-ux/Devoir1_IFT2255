@@ -73,3 +73,11 @@ Le dépôt Git du projet est disponible ici : https://github.com/andY-bee-ux/Dev
 - **Tests du modèle (`CoursTest`)**  
   Rédigés par **`M3`** .
 
+## Échéancier du devoir 3
+- Violet: Aude
+- Bleu: Andréa
+- Vert: Moussa
+- Rouge: Tidjani
+
+Lien vers la page Notion d'organisation:
+https://www.notion.so/Devoir-3-2c28409ee3f08057980fe49c094ec5a7?source=copy_link
