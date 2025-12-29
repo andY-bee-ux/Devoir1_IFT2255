@@ -87,8 +87,7 @@ Le répertoire est organisé comme suit :
 
 Les fonctionnalités testées sont les suivantes :
 
-- Voir les cours offerts dans un programme;
-- Voir les cours offerts pour un trimestre donné;
+- Voir des avis pour un cours;
 - Vérifier son éligibilité à un cours;
 - Voir les résultats académiques d'un cours;
 - Comparer deux cours;
@@ -99,11 +98,17 @@ Les fonctionnalités testées sont les suivantes :
 
 L'interface graphique a été developpée avec javaFX. Nous utilisons la dépendance maven associée à ce module, et pour afficher l'interface on procède comme suit :
 - S'assurer d'être dans le dossier IFT2255_Implementation/ ( car ce dernier contient le pom.xml);
+- Placer le fichier Avis.json à la racine du dossier dans lequel vous êtes ( c'est-à-dire le dossier principal, et donc Avis.json doit être au même niveau que Devoir1_IFT2255). En effet, on a pas pu le placer dans resources car on aurait pas pu le modifier et on ne peut pas non plus le placer dans un path défini car ça varie selon le dossier dans lequel on clône. Sans cela malheureusement, la logique des Avis ne fonctionne pas bien dans l'interface.
 - Lancer l'API Rest ( depuis le main.java comme spécifié plus bas dans la documentation du backend)
 - Utiliser la commande mvn clean javafx:run;
 
 Une fenêtre s'ouvrira après quelques secondes.
+
   **NB** : Certaines actions de l'utilisateur ouvrent une deuxième fenêtre ( par exemple dans la section "Horaire", lorsqu'on veut obtenir l'horaire pour un ensemble de cours, une deuxième fenêtre s'ouvre). Sans fermer cette deuxième fenêtre, la fenêtre principale reste figée. Il faut alors toujours fermer la fenêtre secondaire afin de continuer de naviguer dans la fenêtre principale.
+
+  Aussi, nous avons eu 2h avant la remise des warnings à cause de javafx et des dépendances maven, chose qu'on avait pas auparavant. C'est dû à javafx, mais si non tout fonctionne bien normalement.
+
+  
 
 # Documentation pour le bot Discord
 
