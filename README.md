@@ -23,6 +23,7 @@ L'objectif est de permettre aux étudiants d'obtenir une expérience fluide et f
 
 https://udemontreal-my.sharepoint.com/:v:/g/personal/andrea_noukoua_umontreal_ca/IQDAdlS55GhZRp4HaXTJ2QfGAfTtu9RrmSVBs_fcLBSf4dI?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=deuPrZhttps://udemontreal-my.sharepoint.com/:v:/g/personal/andrea_noukoua_umontreal_ca/IQDAdlS55GhZRp4HaXTJ2QfGAfTtu9RrmSVBs_fcLBSf4dI?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=deuPrZ
 
+**NB** : A cause d'erreurs dans la génération du javadoc, on a dû modifier les import dans le ClientController et les blocs pour les comparaisons de cours ne s'affichent plus bien comme dans la vidéo, car le setPrefHeight() n'a plus de priorités. Toutefois, les cours sont bien présents quand ils sont ajoutés.
 # Structure du projet
 
 Le répertoire est organisé comme suit :
