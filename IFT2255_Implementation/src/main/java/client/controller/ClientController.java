@@ -18,15 +18,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.lang.classfile.Label;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.table.TableColumn;
-import javax.swing.text.TableView;
-import javax.swing.text.TableView.TableCell;
-import javax.swing.text.html.ListView;
 
 /**
  * Cette classe permet de gérer les interactions avec les utilisateurs sur la plateforme PickCourse.
@@ -77,17 +71,11 @@ public class ClientController {
 
 
     private TextField champSession = new TextField();
-    /**
-     * Retourne le champ de saisie de la session académique.
-     * @return champ de session.
-     */
+
     public TextField getChampSession() {
         return champSession;
     }
-    /**
-     * Retourne le label utilisé pour afficher les messages à l’utilisateur.
-     * @return label des messages.
-     */
+
     public Label getMessageLabel(){ return messageLabel;}
 
     /**
@@ -104,10 +92,6 @@ public class ClientController {
 
         initialize();
     }
-    /**
-     * Retourne la boîte de sélection du type de recherche.
-     * @return composant permettant de choisir le type de recherche.
-     */
     public ComboBox<String> getTypeRecherche() {
         return typeRecherche;
     }
@@ -1114,24 +1098,9 @@ public class ClientController {
 
 
     // getters pour le Main
-    /**
-     * Retourne le champ de recherche principal.
-     * @return champ de recherche.
-     */
     public TextField getChampRecherche() { return champRecherche; }
-    /**
-     * Retourne la liste des résultats de cours affichés.
-     * @return liste des cours.
-     */
     public ListView<Cours> getListeResultats() { return listeResultats; }
-    /**
-     * Retourne le champ de saisie de la session.
-     * @return champ de session.
-     */
     public TextField getSessionField() { return sessionField;}
-    /**
-     * Réinitialise les résultats affichés et les messages d’erreur.
-     */
     public void resetResultats() {
         listeResultats.getItems().clear();
         messageLabel.setText("");
