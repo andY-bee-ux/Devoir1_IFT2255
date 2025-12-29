@@ -99,7 +99,7 @@ Les fonctionnalités testées sont les suivantes :
 
 L'interface graphique a été developpée avec javaFX. Nous utilisons la dépendance maven associée à ce module, et pour afficher l'interface on procède comme suit :
 - S'assurer d'être dans le dossier IFT2255_Implementation/ ( car ce dernier contient le pom.xml);
-- Lancer l'API Rest ( depuis le main.java comme spécifié plus bas dans la documentation du backend)
+- Lancer l'API Rest (depuis le main.java comme spécifié plus bas dans la documentation du backend)
 - Utiliser la commande mvn clean javafx:run;
 
 Une fenêtre s'ouvrira après quelques secondes.
@@ -139,6 +139,18 @@ Une fois le formulaire soumis, un message est envoyé dans le serveur afin que l
 ```
 
 ---
+# Etape pour exécuter le fichier `jar` :
+
+1. **Nécessite Java 21 et Maven**.
+2. **Ouvrir un terminal et se placer dans le dossier du projet (là où se trouve le fichier pom.xml) :**
+   `cd chemin/vers/le/projet`
+   - Dans notre cas, ce serait : `Devoir1_IFT2255/IFT2255_Implementation`
+3. **Générer le fichier JAR avec Maven :**
+   `mvn clean package`
+   Le fichier JAR est créé dans le dossier target/.
+4. **Lancer l’application :**
+   Une fois que le fichier créé, veuillez entrer ` target/IFT2255_Implementation-1.0-SNAPSHOT-jar-with-dependencies.jar` pour exécuter le fichier.
+
 ## Côté API (backend Java)
 L'avis est récupéré et stocké dans Avis.json.
 # Documentation pour l'API REST développée avec Javalin

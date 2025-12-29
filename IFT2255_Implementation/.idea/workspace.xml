@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="65307c7f-963f-44d3-8a04-367c1c1d96c7" name="Changes" comment="Test pour les CI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,49 +47,64 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.All in IFT2255_Implementation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AvisControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursControllerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursControllerTest.testComparerCombinaisonCours_singleCombination.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursControllerTest.testComparerCours_withValidCriteria.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursRepositoryTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursServiceTest.testCheckEligibilityEligible.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursServiceTest.testComparerCoursExistants.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CoursTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ResultatsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.RouteTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.MainApp.executor": "Run",
+    "JUnit.All in IFT2255_Implementation.executor": "Run",
+    "JUnit.AvisControllerTest.executor": "Run",
+    "JUnit.CoursControllerTest.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCombinaisonCours_singleCombination.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withInvalidCriteria.executor": "Run",
+    "JUnit.CoursControllerTest.testComparerCours_withValidCriteria.executor": "Run",
+    "JUnit.CoursRepositoryTest.executor": "Run",
+    "JUnit.CoursRepositoryTest.testGetCoursByIdCoursIFT1025.executor": "Run",
+    "JUnit.CoursServiceTest.executor": "Run",
+    "JUnit.CoursServiceTest.testCheckEligibilityEligible.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursCoursInexistant.executor": "Run",
+    "JUnit.CoursServiceTest.testComparerCoursExistants.executor": "Run",
+    "JUnit.CoursTest.executor": "Run",
+    "JUnit.ResultatsTest.executor": "Run",
+    "JUnit.RouteTest.executor": "Run",
+    "JUnit.UserTest.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/nashs/Devoir1_IFT2255/IFT2255_Implementation/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Application.Main">
+}]]></component>
+  <component name="RunManager" selected="Application.MainApp">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.projet.Main" />
       <module name="IFT2255_Implementation" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.projet.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="client.MainApp" />
+      <module name="IFT2255_Implementation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -142,28 +158,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="IFT2255_Implementation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.projet.model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.projet.model" />
-      <option name="MAIN_CLASS_NAME" value="org.projet.model.UserTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainApp" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.CoursControllerTest.testComparerCombinaisonCours_singleCombination" />
         <item itemvalue="JUnit.CoursServiceTest" />
         <item itemvalue="JUnit.CoursRepositoryTest" />
-        <item itemvalue="JUnit.UserTest" />
       </list>
     </recent_temporary>
   </component>
