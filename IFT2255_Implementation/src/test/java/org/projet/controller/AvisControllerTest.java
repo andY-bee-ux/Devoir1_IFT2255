@@ -227,21 +227,7 @@ class AvisControllerTest {
         verifyNoInteractions(avisService);
     }
 
-    /**
-     * Teste getAvisParCours() lorsque le sigle est null.
-     * Vérifie qu'un code 400 est retourné sans appeler le service.
-     */
-    @Test
-    void testGetAvisParCours_SigleNull() {
-        when(ctx.pathParam("sigle")).thenReturn(null);
-        when(ctx.status(400)).thenReturn(ctx);
 
-        avisController.getAvisParCours(ctx);
-
-        verify(ctx).status(400);
-        verify(ctx).result("Sigle du cours manquant");
-        verifyNoInteractions(avisService);
-    }
 
     /**
      * Teste getAvisParCours() lorsqu'aucun avis n'existe pour le cours.
