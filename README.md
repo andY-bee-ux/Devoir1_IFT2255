@@ -23,7 +23,6 @@ L'objectif est de permettre aux étudiants d'obtenir une expérience fluide et f
 
 https://udemontreal-my.sharepoint.com/:v:/g/personal/andrea_noukoua_umontreal_ca/IQDAdlS55GhZRp4HaXTJ2QfGAfTtu9RrmSVBs_fcLBSf4dI?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=deuPrZhttps://udemontreal-my.sharepoint.com/:v:/g/personal/andrea_noukoua_umontreal_ca/IQDAdlS55GhZRp4HaXTJ2QfGAfTtu9RrmSVBs_fcLBSf4dI?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=deuPrZ
 
-**NB** : A cause d'erreurs dans la génération du javadoc, on a dû modifier les import dans le ClientController et les blocs pour les comparaisons de cours ne s'affichent plus bien comme dans la vidéo, car le setPrefHeight() n'a plus de priorités. Toutefois, les cours sont bien présents quand ils sont ajoutés.
 # Structure du projet
 
 Le répertoire est organisé comme suit :
@@ -110,6 +109,7 @@ L'interface graphique a été developpée avec javaFX. Nous utilisons la dépend
 Une fenêtre s'ouvrira après quelques secondes.
   **NB** : Certaines actions de l'utilisateur ouvrent une deuxième fenêtre ( par exemple dans la section "Horaire", lorsqu'on veut obtenir l'horaire pour un ensemble de cours, une deuxième fenêtre s'ouvre). Sans fermer cette deuxième fenêtre, la fenêtre principale reste figée. Il faut alors toujours fermer la fenêtre secondaire afin de continuer de naviguer dans la fenêtre principale.
 
+**NB** : A cause d'erreurs dans la génération du javadoc, on a dû modifier les import dans le ClientController et les blocs pour les comparaisons de cours ne s'affichent plus bien comme dans la vidéo, car le setPrefHeight() n'a plus de priorités. Toutefois, les cours sont bien présents quand ils sont ajoutés.
 # Documentation pour le bot Discord
 
 Notre bot Discord, **Danielle**, a été developpé avec Python. Pour le lancer, on utilise un environnement virtuel dans lequel on installe toutes les dépendances python au préalable, mais cela n'est pas nécessaire si vous avez déjà toutes les dépendances installées sur votre machine principale. Pour run le bot, il faut d'abord run l'API REST ( depuis le fichier main.java comme spécifié plus bas dans la documentation du backend), puis créer un fichier .env qui contient TOKEN=TOKEN_DISCORD. Le token_discord a été joint lors de la remise sur StudiUM. Ensuite, run le main en utilisant la commande python3 main.py.
