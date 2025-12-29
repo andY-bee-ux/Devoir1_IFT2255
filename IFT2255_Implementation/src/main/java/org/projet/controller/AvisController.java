@@ -6,6 +6,11 @@ import org.projet.model.Avis;
 
 import java.util.List;
 
+/**
+ * Contrôleur responsable de la gestion des avis étudiants.
+ * Il permet de soumettre des avis, de récupérer tous les avis
+ * ou les avis associés à un cours donné.
+ */
 public class AvisController {
 
     private final AvisService avisService = AvisService.getInstance(); // singleton
@@ -38,7 +43,7 @@ public class AvisController {
 
     /**
      * Cette méthode permet de récupérer tous les avis.
-     * @param ctx
+     * @param ctx 
      */
 
     public void getAllAvis(Context ctx){
@@ -104,10 +109,19 @@ public class AvisController {
      * Cette classe permet de parser le json d'avis.
      */
     public static class RequeteAvis {
+        /** Sigle du cours concerné par l’avis (ex : IFT2255). */
         public String sigleCours;
+
+        /** Nom du professeur ayant enseigné le cours. */
         public String professeur;
+
+        /** Note représentant la difficulté perçue du cours. */
         public int noteDifficulte;
+
+        /** Note représentant la charge de travail perçue du cours. */
         public int noteCharge;
+
+        /** Commentaire libre de l’étudiant sur le cours. */
         public String commentaire;
     }
 }

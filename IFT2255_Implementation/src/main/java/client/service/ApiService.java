@@ -24,10 +24,18 @@ public class ApiService {
     private final ObjectMapper mapper = new ObjectMapper();
 // url de base de notre api
     private final String baseUrl = "http://localhost:7070/cours/rechercher/";
-
+    /**
+     * Retourne l’instance d’ObjectMapper utilisée pour la sérialisation JSON.
+     * @return object mapper.
+     */
     public ObjectMapper getMapper() {
         return mapper;
     }
+    /**
+     * Vérifie si une chaîne représente un entier valide.
+     * @param s chaîne à vérifier.
+     * @return true si la chaîne est un entier, false sinon.
+     */
     public static boolean estEntier(String s) {
         if (s == null || s.isEmpty()) return false;
         return s.matches("\\d+");
@@ -75,9 +83,17 @@ public class ApiService {
      * Cette classe interne permet de parser la sortie de l'api ( json nom-id lors de la recherche de programmes).
      */
     public class ProgrammeDTO {
+        /** Identifiant du programme. */
         public String id;
+
+        /** Nom du programme. */
         public String name;
 
+        /**
+         * Construit un ProgrammeDTO.
+         * @param id identifiant du programme.
+         * @param name nom du programme.
+         */
         public ProgrammeDTO(String id, String name) {
             this.id = id;
             this.name = name;
@@ -505,13 +521,34 @@ public class ApiService {
     }
 
     // cette classe interne constitue le corps de la requête
+    /**
+     * Cette classe interne représente le corps de la requête envoyée à l’API
+     * pour générer un horaire à partir d’un ensemble de cours.
+     */
     public static class HoraireRequest {
+        /** Liste des identifiants des cours sélectionnés. */
         public List<String> idCours;
-        public String session;
-        public boolean sections;
-        public Map<String, Map<String, String>> choix;
 
+        /** Session académique concernée (ex : H24, A24). */
+        public String session;
+
+        /** Indique si des sections spécifiques sont prises en compte. */
+        public boolean sections;
+
+        /** Choix personnalisés de sections pour chaque cours. */
+        public Map<String, Map<String, String>> choix;
+        /**
+         * Constructeur vide requis pour la désérialisation JSON.
+         */
         public HoraireRequest() {}
+        /**
+         * Construit une requête d’horaire avec les paramètres fournis.
+         *
+         * @param idCours liste des identifiants de cours.
+         * @param session session académique.
+         * @param sections indique si des sections sont sélectionnées.
+         * @param choix choix personnalisés de sections.
+         */
         public HoraireRequest(List<String> idCours, String session, boolean sections,
                               Map<String, Map<String, String>> choix) {
             this.idCours = idCours;
@@ -522,15 +559,34 @@ public class ApiService {
     }
 
     // cette classe interne permet de parser la réponse de l'API.
+    /**
+     * Cette classe interne représente le résultat retourné par l’API
+     * lors de la génération d’un horaire.
+     */
     public static class ResultatHoraire {
+        /** Structure représentant l’horaire généré. */
         public Map<String, List<List<String>>> horaire;
+
+        /** Liste des conflits horaires détectés. */
         public List<ConflitHoraireDTO> conflits;
 
+        /**
+         * Cette classe représente un conflit horaire détecté
+         * pour un ou plusieurs cours.
+         */
         public static class ConflitHoraireDTO {
+            /** Jour où le conflit a lieu. */
             public String jour;
-            public String intervalle;
-            public Set<String> cours;
 
+            /** Intervalle horaire du conflit. */
+            public String intervalle;
+
+            /** Ensemble des cours impliqués dans le conflit. */
+            public Set<String> cours;
+            /**
+             * Retourne une représentation textuelle du conflit horaire.
+             * @return description du conflit.
+             */
             @Override
             public String toString() {
                 return jour + " " + intervalle + " : " + String.join(", ", cours);
@@ -623,7 +679,14 @@ public class ApiService {
         }
     }
 
-
+    /**
+     * Cette méthode permet de récupérer la difficulté estimée des cours
+     * basée sur les avis des étudiants, via l’API PickCourse.
+     *
+     * @param idsCours tableau des identifiants des cours à analyser.
+     * @return liste contenant, pour chaque cours, les informations liées
+     *         à la difficulté perçue selon les avis.
+     */
     public List<List<String>> getDifficulteAvis(String[] idsCours) {
         try {
             String url = "http://localhost:7070/cours/comparer/avis/difficulte";

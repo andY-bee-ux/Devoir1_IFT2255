@@ -30,6 +30,10 @@ import java.util.*;
 public class CoursRepository implements IRepository {
     private static CoursRepository instance;
     private CoursRepository() {}
+    /**
+     * Retourne l’unique instance du CoursRepository (Singleton).
+     * @return instance unique de CoursRepository.
+     */
     public static CoursRepository getInstance() {
         if (instance == null) {
             instance = new CoursRepository();
