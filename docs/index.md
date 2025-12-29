@@ -20,6 +20,16 @@ Ce projet vise à développer un outil d’aide au choix de cours pour les étud
 
 Le dépôt Git du projet est disponible ici : https://github.com/andY-bee-ux/Devoir1_IFT2255
 
+## Documentation Javadoc
+
+La documentation Javadoc du projet a été générée automatiquement à l’aide du plugin `maven-javadoc-plugin`.
+
+Elle est accessible à partir du fichier d’entrée principal suivant :  
+[javadoc/reports/apidocs/index.html](javadoc/reports/apidocs/index.html)
+
+> **Note :** La classe `ClientController.java` a été volontairement exclue de la génération de la Javadoc.  
+> Cette exclusion est due à l’utilisation de composants JavaFX qui provoquaient des erreurs lors de l’exécution du plugin de génération de documentation dans l’environnement de build Maven.
+
 ## Équipe
 
 - **`M1`:** Deazo Aude-Prunelle Ahui (20268927) #prupru1203
