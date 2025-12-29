@@ -88,6 +88,22 @@
     <build>
         <plugins>
 
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.12.0</version>
+            <configuration>
+                <show>public</show>
+                <subpackages>
+                    org.projet
+                </subpackages>
+                <excludePackageNames>
+                    client.controller:client
+                </excludePackageNames>
+                <doclint>none</doclint>
+            </configuration>
+        </plugin>
+
             <!-- Plugin JavaFX (OBLIGATOIRE) -->
             <plugin>
                 <groupId>org.openjfx</groupId>
