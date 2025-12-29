@@ -19,6 +19,10 @@ L'objectif est de permettre aux étudiants d'obtenir une expérience fluide et f
 - voir les résultats académiques officiels propres à des cours;
 - Voir l'horaire d'un cours donné pour une session spécifique. 
 
+# Lien vers la vidéo de présentation
+
+https://udemontreal-my.sharepoint.com/:v:/g/personal/andrea_noukoua_umontreal_ca/IQDAdlS55GhZRp4HaXTJ2QfGAfTtu9RrmSVBs_fcLBSf4dI?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=deuPrZhttps://udemontreal-my.sharepoint.com/:v:/g/personal/andrea_noukoua_umontreal_ca/IQDAdlS55GhZRp4HaXTJ2QfGAfTtu9RrmSVBs_fcLBSf4dI?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=deuPrZ
+
 # Structure du projet
 
 Le répertoire est organisé comme suit :
